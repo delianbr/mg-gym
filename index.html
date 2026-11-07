@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MG Gym">
+<meta name="theme-color" content="#f4f4f5">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>MG Gym</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}img{max-width:100%}[hidden]{display:none!important}body{margin:0;min-height:100vh}
+
+/* Layout: modern fitness app — soft cards on a cool canvas, pill controls, compact type; rose for Vicky, blue for Delian, violet when together */
+:root{
+  --bg:#f4f4f5;--surface:#ffffff;--sunk:#efeff1;--ink:#232428;--muted:#7a7b81;--line:#e2e2e6;
+  --red:#c2453b;--v:#c2453b;--v-soft:#f7ebe9;--d:#4b4d54;--d-soft:#ebebee;--both:#6f7077;--both-soft:#f0f0f2;--ok:#34353a;--ok-soft:#e9e9ec;--on-ok:#ffffff;--warn:#c2453b;
+  --sk:#56575d;--sk2:#bdbec3;--paper:#fafafa;
+  --shadow:0 1px 2px rgba(30,30,35,.04),0 10px 30px rgba(30,30,35,.06);
+  --display:"Sora","Segoe UI",system-ui,sans-serif;--body:"Manrope","Segoe UI",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111113;--surface:#1a1a1d;--sunk:#151517;--ink:#ececee;--muted:#9b9ca2;--line:#2a2a2f;--red:#e06a5f;--v:#e06a5f;--v-soft:#33201e;--d:#c3c4ca;--d-soft:#25252a;--both:#a5a6ac;--both-soft:#212124;--ok:#e3e3e6;--ok-soft:#28282c;--on-ok:#111113;--warn:#e06a5f;--sk:#cfd0d5;--sk2:#4c4d53;--paper:#18181b;--shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111113;--surface:#1a1a1d;--sunk:#151517;--ink:#ececee;--muted:#9b9ca2;--line:#2a2a2f;--red:#e06a5f;--v:#e06a5f;--v-soft:#33201e;--d:#c3c4ca;--d-soft:#25252a;--both:#a5a6ac;--both-soft:#212124;--ok:#e3e3e6;--ok-soft:#28282c;--on-ok:#111113;--warn:#e06a5f;--sk:#cfd0d5;--sk2:#4c4d53;--paper:#18181b;--shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3);color-scheme:dark}
+body{background:var(--bg) radial-gradient(1200px 600px at 85% -10%,var(--surface),transparent 70%) no-repeat;color:var(--ink);font:14.5px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:920px;margin:0 auto;display:grid;gap:22px}
+h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.015em;margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(1.5rem,4vw,2rem)}h2{font-size:1.1rem}h3{font-size:.98rem}
+p{margin:0}
+.lede{color:var(--muted);max-width:62ch;font-size:.92rem}
+.label{font:600 .68rem/1.2 var(--body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.foot{color:var(--muted);font-size:.76rem}
+.foot a{color:inherit}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+button{font-family:var(--body)}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--both);outline-offset:2px}
+.tabs{display:inline-flex;gap:4px;flex-wrap:wrap;background:var(--sunk);padding:4px;border-radius:999px}
+.tabs button{font:600 .84rem/1 var(--body);padding:8px 14px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.tabs button[aria-pressed="true"][data-p="v"],.tabs [data-who="v"][aria-pressed="true"]{color:var(--v)}
+.tabs button[aria-pressed="true"][data-p="d"],.tabs [data-who="d"][aria-pressed="true"]{color:var(--d)}
+.tabs [data-who="b"][aria-pressed="true"]{color:var(--both)}
+.ci,.phase,.notes,.day,.goal div,.wd{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.ci{padding:16px;display:grid;gap:12px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.tile{font:600 .9rem/1.25 var(--display);text-align:left;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);cursor:pointer;display:grid;gap:4px;transition:transform .12s,border-color .12s}
+.tile:hover{border-color:var(--both);transform:translateY(-1px)}
+.tile small{font:500 .72rem/1 var(--body);color:var(--muted)}
+.tile.on{background:var(--ok-soft);border-color:transparent}
+.tile.on small{color:var(--ok)}
+.other summary{cursor:pointer;font-size:.78rem;color:var(--muted)}
+.other input{margin-top:8px;font:500 .9rem var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--sunk);color:var(--ink)}
+.status{background:var(--both-soft);color:var(--both);border-radius:12px;padding:10px 14px;font-size:.84rem}
+.wk{display:flex;align-items:center;gap:6px}
+.wk button{font:600 .82rem/1 var(--body);width:32px;height:32px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.wk #wk-today{width:auto;padding:0 12px}
+.wk span{font:600 .84rem/1 var(--body);min-width:11ch;text-align:center}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.wd{padding:10px 8px;display:grid;gap:6px;align-content:start;min-height:84px;box-shadow:none}
+.wd.today{border-color:var(--ink)}
+.wd b{font:600 .78rem/1 var(--display)}
+.wd b small{font:500 .7rem var(--mono);color:var(--muted)}
+.rest{color:var(--muted);font-size:.72rem}
+.chip{font:600 .68rem/1.25 var(--body);padding:5px 6px;border-radius:8px}
+button.chip{border:0;text-align:left;cursor:pointer;display:grid;gap:2px;width:100%}
+button.chip small{font:500 .62rem/1 var(--mono);opacity:.8}
+button.chip.sel{outline:2px solid currentColor;outline-offset:1px}
+.cv{background:var(--v-soft);color:var(--v)}.cd{background:var(--d-soft);color:var(--d)}.cb{background:var(--both-soft);color:var(--both)}
+@media (max-width:640px){.week{grid-template-columns:1fr 1fr}.wd{min-height:0}}
+.goal{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.goal div{padding:10px 12px;display:grid;gap:4px;box-shadow:none}
+.goal strong{font:600 1.05rem/1.15 var(--display)}
+.phase{padding:14px 16px;display:grid;gap:6px;font-size:.88rem}
+.phase ol,.notes ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.notes{padding:14px 16px;display:grid;gap:8px;font-size:.88rem}
+.day{overflow:hidden}
+.dayhead{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;position:relative}
+.dayhead::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--acc)}
+.dayhead p{color:var(--muted);font-size:.8rem}
+.prog{font:500 .76rem/1 var(--mono);color:var(--ok);background:var(--ok-soft);padding:3px 7px;border-radius:999px}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.cta{font:600 .82rem/1 var(--body);padding:9px 14px;border-radius:999px;border:0;background:var(--ink);color:var(--bg);cursor:pointer}
+.ghost{font:600 .76rem/1 var(--body);padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.danger{color:var(--warn)}
+.slot{padding:12px 16px;border-top:1px solid var(--line);display:grid;gap:8px;background:var(--sunk)}
+.slothead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.slothead b{font:600 .84rem/1 var(--display);color:var(--acc)}
+.slothead span{font-size:.76rem;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px}
+.opt{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.opt.on{border-color:var(--ok)}
+.opt a{color:var(--ink);text-decoration:none;font-size:.78rem;font-weight:600}
+.opt a:hover{color:var(--acc)}
+.cnt{font:500 .7rem/1 var(--mono);color:var(--muted)}
+.opt button{font:600 .7rem/1 var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 9px;cursor:pointer;white-space:nowrap}
+.opt.on button{background:var(--ok);border-color:var(--ok);color:var(--on-ok)}
+.block{background:var(--both-soft);padding:12px 16px;border-top:1px solid var(--line);display:grid;gap:6px;font-size:.84rem}
+.block b{color:var(--both);font-weight:700}
+.ex{display:grid;grid-template-columns:96px minmax(0,1fr) 180px;gap:12px;padding:12px 16px;border-top:1px solid var(--line);align-items:start}
+.ex img{width:96px;aspect-ratio:4/3;object-fit:cover;border-radius:10px;max-width:100%;background:var(--line)}
+.nm{font:600 .9rem/1.3 var(--display)}
+.cue{color:var(--muted);font-size:.8rem}
+.where{font-size:.7rem;color:var(--acc);font-weight:700;margin-top:2px}
+.links{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.links a{font:600 .7rem/1 var(--body);color:var(--ink);text-decoration:none;background:var(--sunk);border-radius:999px;padding:5px 9px}
+.links a:hover{color:var(--acc)}
+.det{margin-top:8px;border-radius:10px;background:var(--sunk);padding:8px 10px;font-size:.8rem}
+.det summary{cursor:pointer;font-weight:700;color:var(--acc)}
+.det p{margin-top:6px}
+.det ul{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}
+.load{display:grid;gap:6px;font-variant-numeric:tabular-nums}
+.load .sets{font:500 .82rem/1.2 var(--mono)}
+.load .kg{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.76rem}
+.load .kg span:nth-child(odd){color:var(--muted)}
+.load .kg b{font-family:var(--mono);font-weight:500}
+.rounds{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.rounds label{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--line);background:var(--sunk);border-radius:8px;font:500 .74rem/1 var(--mono);cursor:pointer;user-select:none}
+.rounds input{position:absolute;opacity:0;width:1px;height:1px}
+.rounds input:checked+label{background:var(--ok);border-color:var(--ok);color:var(--on-ok)}
+.rounds input:focus-visible+label{outline:2px solid var(--both);outline-offset:2px}
+@media (max-width:640px){.ex{grid-template-columns:72px minmax(0,1fr)}.ex img{width:72px}.load{grid-column:1/-1}}
+#session{scroll-margin-top:16px}
+.detin{display:grid;grid-template-columns:170px minmax(0,1fr);gap:12px;align-items:start;margin-top:8px}
+.sk{width:100%;max-width:170px;aspect-ratio:4/3;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.sk .bd{fill:none;stroke:var(--sk);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.sk .bd2{fill:none;stroke:var(--sk2);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+.sk .hd{fill:var(--paper);stroke:var(--sk);stroke-width:2.2}
+.sk .pr{fill:none;stroke:var(--sk2);stroke-width:1.6;stroke-linecap:round}
+.sk .cb{stroke:var(--sk2);stroke-width:1;stroke-dasharray:2 3}
+.sk .fl{stroke:var(--sk2);stroke-width:1;stroke-dasharray:1 4}
+.sk .gd{fill:none;stroke:var(--sk);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
+.sk .mu{fill:var(--red);fill-opacity:.2;stroke:var(--red);stroke-width:1;stroke-dasharray:2 2}
+.sk .ar{fill:none;stroke:var(--red);stroke-width:1.8;stroke-linecap:round}
+.key{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:.7rem;color:var(--muted)}
+.key span{display:inline-block;width:12px;height:8px;border-radius:4px;margin-right:-6px}
+.k1{background:var(--red);opacity:.35}.k2{background:var(--red);height:2px!important}.k3{border-top:1px dashed var(--sk);height:0!important}
+@media (max-width:520px){.detin{grid-template-columns:1fr}.sk{max-width:220px}}
+@media (prefers-reduced-motion:reduce){.tile{transition:none}.tile:hover{transform:none}}
+.gate{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:var(--bg);padding:max(16px,env(safe-area-inset-left,0px))}
+.gate .box{width:100%;max-width:360px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:22px;display:grid;gap:12px}
+.gate img{width:64px;height:64px;border-radius:14px}
+.gate input{font:500 1rem var(--body);padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--sunk);color:var(--ink);width:100%}
+.gate .cta{width:100%;padding:13px}
+.gate .msg{font-size:.82rem;color:var(--muted)}
+.gate .err{color:var(--warn)}
+</style>
+</head>
+<body>
+<div class="gate" id="gate" hidden><form class="box" id="gate-form" novalidate>
+ <img src="icon-180.png" alt="">
+ <h1 style="font-size:1.3rem">MG Gym</h1>
+ <p class="msg" id="gate-msg">Sign in with your email and password.</p>
+ <input type="email" id="gate-email" placeholder="you@example.com" autocomplete="email" inputmode="email">
+ <input type="password" id="gate-pass" placeholder="Password (at least 6 characters)" autocomplete="current-password">
+ <button class="cta" id="gate-btn" type="submit">Sign in</button>
+ <button type="button" id="gate-switch" style="background:none;border:0;color:var(--muted);font:500 .85rem var(--body);text-decoration:underline;cursor:pointer;padding:4px">First time? Create an account</button>
+ <p class="msg err" id="gate-err" hidden></p>
+</form></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--red)"/></marker></defs></svg>
+<div class="wrap">
+  <header style="display:grid;gap:10px">
+    <span class="label">Moderncoach Gym Deggendorf · Östlicher Stadtgraben 30 · open 24/7</span>
+    <h1>Vicky & Delian Gym Plan</h1>
+    <p class="lede">Pick a program when you get to the gym and check in. It goes straight onto the shared calendar, and you tick off rounds, warm-up and recovery as you go. Vicky has five programs, Delian three; the three shared ones can be done together.</p>
+  </header>
+
+  <section class="ci" aria-label="Check in">
+    <div class="bar"><h2>Check in</h2><span class="label" id="ci-day">Today</span></div>
+    <div class="tabs" role="group" aria-label="Who is training">
+      <button data-who="v">Vicky</button><button data-who="d">Delian</button><button data-who="b">Both</button>
+    </div>
+    <div class="tiles" id="ci-tiles"></div>
+    <details class="other"><summary>Not today?</summary><input type="date" id="ci-date" aria-label="Day to check in"></details>
+  </section>
+
+  <p class="status" id="status" hidden></p>
+
+  <section style="display:grid;gap:10px">
+    <div class="bar">
+      <h2>Our schedule</h2>
+      <div class="wk" aria-label="Choose week">
+        <button id="wk-prev" aria-label="Previous week">‹</button>
+        <span id="wk-label">This week</span>
+        <button id="wk-next" aria-label="Next week">›</button>
+        <button class="ghost" id="wk-today">Today</button>
+      </div>
+    </div>
+    <div class="week" id="cal"></div>
+    <p class="foot">V = Vicky, D = Delian. Numbers show rounds done; W and R mean warm-up and recovery done. Tap a check-in to open it.</p>
+  </section>
+
+  <section id="session" hidden></section>
+
+  <section style="display:grid;gap:14px">
+    <div class="bar">
+      <h2>Programs</h2>
+      <div class="tabs" role="group" aria-label="Choose person">
+        <button id="tab-v" data-p="v" aria-pressed="true">Vicky</button>
+        <button id="tab-d" data-p="d" aria-pressed="false">Delian</button>
+      </div>
+    </div>
+    <section class="goal" id="goal"></section>
+    <section class="phase" id="phase"></section>
+    <section style="display:grid;gap:18px" id="days"></section>
+    <section class="notes" id="notes"></section>
+  </section>
+  <p class="foot"><button class="ghost" id="signout" type="button">Sign out</button></p>
+  <p class="foot">Weights are starting estimates: pick the load where the last 2 reps of a round are hard but clean. Plate-loaded numbers are the plates you add per side unless marked total. Program week counts from your first check-in. Photos: moderncoachgym.de studio gallery. Demos: <a href="https://www.muscleandstrength.com/exercises" target="_blank" rel="noopener">Muscle & Strength</a>, <a href="https://www.physitrack.com/exercise-library" target="_blank" rel="noopener">Physitrack</a> and YouTube.</p>
+</div>
+
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script>
+const IMG={cable:'img/cable.jpg',cables:'img/cables2.jpg',cablebench:'img/cablebench.jpg',plate:'img/plate.jpg',plate2:'img/plate2.jpg',row:'img/platerow.jpg',leg:'img/legpress.jpg',racks:'img/racks.jpg',turf:'img/turf.jpg',bench:'img/benches.jpg',db:'img/dumbbells.jpg',dbarea:'img/dbarea.jpg',cardio:'img/cardio.jpg'}
+const WHERE={cable:'Cable towers',cables:'Cable stations',cablebench:'Cable station + bench',plate:'Plate-loaded machines',plate2:'Machine floor',row:'Plate-loaded row, window side',leg:'Leg machines by the corridor',racks:'Power racks',turf:'Turf lane + racks',bench:'Adjustable benches',db:'Dumbbell rack',dbarea:'Dumbbell area + mirrors',cardio:'Cardio floor'}
+const MS='https://www.muscleandstrength.com/exercises/'
+const yt=q=>'https://www.youtube.com/results?search_query='+encodeURIComponent(q)
+const DEMO={
+ pulldown:[['Video guide',MS+'lat-pull-down.html']],
+ platerow:[['Video guide',MS+'seated-row.html'],['Plate-loaded version',yt('plate loaded seated row machine form')]],
+ dbrow:[['Video guide',MS+'one-arm-dumbbell-row.html']],
+ facepull:[['Video guide',MS+'cable-face-pull']],
+ reardelt:[['Video guide',MS+'bent-over-rear-delt-fly-head-on-bench']],
+ hammer:[['Video',yt('dumbbell hammer curl proper form')]],
+ deadbug:[['Video guide',MS+'dead-bug']],
+ abdlean:[['Video (PT)',yt('cadeira abdutora tronco inclinado')]],
+ hipthrust:[['Video guide',MS+'barbell-hip-thrust'],['Video (PT)',yt('elevação pélvica barra livre')]],
+ bulgarian:[['Video guide',MS+'one-leg-dumbbell-squat-aka-bulgarian-squat.html'],['Smith version (PT)',yt('búlgaro na barra guiada')]],
+ ext45:[['Video guide',MS+'hyperextension.html'],['Glute version (PT)',yt('extensão de quadril banco 45 glúteo')]],
+ abd:[['Video (PT)',yt('cadeira abdutora postura ereta')]],
+ walk:[['Video',yt('incline treadmill walk workout form')]],
+ chestpress:[['Video',yt('plate loaded chest press machine form')]],
+ incdb:[['Video guide',MS+'incline-dumbbell-bench-press.html']],
+ cablerow:[['Video guide',MS+'seated-row.html']],
+ dbpress:[['Video guide',MS+'seated-dumbbell-press.html']],
+ cablelat:[['Video guide',MS+'two-arm-cable-lateral-raise.html'],['Single-arm',yt('single arm cable lateral raise form')]],
+ pushdown:[['Video',yt('rope tricep pushdown proper form')]],
+ pallof:[['Video guide',MS+'pallof-press']],
+ squat:[['Video',yt('barbell back squat proper form beginner')]],
+ legpress:[['Video',yt('leg press machine proper form')]],
+ rdl:[['Video guide',MS+'stiff-leg-deadlift-aka-romanian-deadlift.html']],
+ legcurl:[['Video guide',MS+'leg-curl.html']],
+ lunge:[['Video guide',MS+'dumbbell-walking-lunge.html']],
+ sled:[['Video',yt('sled push proper form')]],
+ plank:[['Video',yt('plank proper form neutral neck')]],
+ dbcurl:[['Video',yt('dumbbell bicep curl proper form')]],
+ goblet:[['Video guide',MS+'dumbbell-goblet-squat']],
+ dbrdl:[['Video',yt('dumbbell romanian deadlift proper form')]],
+ csrow:[['Video',yt('chest supported row machine form')]],
+ cablefly:[['Video',yt('standing cable chest fly proper form')]],
+ sldl:[['Video',yt('single leg dumbbell romanian deadlift form')]],
+ pullthrough:[['Video',yt('cable pull through glutes hamstrings form')]],
+ birddog:[['Video',yt('bird dog exercise proper form')]],
+ ohtri:[['Video',yt('overhead cable tricep extension rope form')]],
+ legext:[['Video',yt('leg extension machine proper form')]],
+ calf:[['Video',yt('calf raise on leg press machine')]],
+ cablecrunch:[['Video',yt('kneeling cable crunch proper form')]]
+}
+const DET={
+ pulldown:['Lats (sides of your back, under the armpits), plus the middle back',['Sit tall, thighs locked under the pad','Lean back only slightly, about 10°','Pull with the elbows down toward your hips, not with the hands','Shoulders stay down, away from the ears','Ribs stay down, no arching of the lower back']],
+ platerow:['Middle back between the shoulder blades, rear shoulders',['Chest stays on the pad, spine long','Start each rep by pulling the shoulder blades back','Elbows travel close to the body','Head neutral: chin tucked, no poking forward','Control the weight back, don\'t let it yank you']],
+ dbrow:['Lats and middle back on the working side',['Flat back, parallel to the floor','Hips and shoulders square, don\'t twist open','Pull the elbow toward the hip, not straight up','Full stretch at the bottom, shoulder blade moves','Neck in line, eyes to the floor']],
+ facepull:['Rear shoulders and the muscles between the shoulder blades',['Rope at face height or slightly above','Pull toward your eyes, hands split wide','Elbows high and out, thumbs pointing back at the end','Stand tall, don\'t lean back to cheat','Hold 1 s at the back with shoulder blades squeezed']],
+ reardelt:['Back of the shoulders',['Chest supported on the incline bench','Slight bend in the elbows, fixed for the whole rep','Lift out to the sides, little fingers lead','No shrugging: neck relaxed','Light weight, slow lowering']],
+ hammer:['Biceps and forearm (outer part of the upper arm)',['Elbows pinned to your sides','Thumbs stay up the whole rep','No swinging from hips or shoulders','Lower slowly, 2–3 s']],
+ deadbug:['Deep abs; this also trains rib-flare control',['Lower back pressed into the floor the whole time','Exhale fully as the arm and leg go out','Move opposite arm and leg slowly','Stop the range where the back starts to lift','Ribs stay down, neck relaxed on the floor']],
+ abdlean:['Outer glutes (glute medius), the upper "shelf" of the glutes',['Lean forward and grip the machine, hips back','Push the pads out with the knees, not with the feet','Pause briefly at the widest point','Slow return, don\'t let the pads slam together','Last round to failure: keep form until the very last rep']],
+ hipthrust:['Glutes, mainly the big glute max',['Upper back on the bench edge, just under the shoulder blades','Feet flat, shins vertical at the top','Chin tucked, eyes forward: ribs and pelvis move together','Lock out by squeezing the glutes, not by arching the lower back','Pause 1 s at the top, pad on the bar for comfort']],
+ bulgarian:['Glutes and quads of the front leg',['Rear foot laces-down on the bench','Front foot far enough out that you can drop straight down','Lean the torso slightly forward to load the glutes','Front knee tracks over the toes, no caving in','Drive up through the whole front foot']],
+ ext45:['Glute version: glutes. Lower-back version: lower back and hamstrings',['Pad just below the hip bones so you can hinge freely','Glute version: round the upper back, toes slightly out, squeeze glutes to lift','Lower-back version: keep the back flat, hinge only at the hips','Stop at a straight line, never overarch at the top','Slow on the way down']],
+ abd:['Outer glutes and hips',['Back fully on the pad, sit tall','Push out with the knees, feet relaxed','Pause at the widest point','Slow return, no bouncing']],
+ chestpress:['Chest, with front shoulders and triceps helping',['Seat height: handles at mid-chest','Shoulder blades pinched back and down against the pad','Press without letting the shoulders roll forward','Elbows about 45° from the body, not flared to 90°','Full stretch at the back, no bouncing']],
+ incdb:['Upper chest, front shoulders, triceps',['Bench at about 30°','Shoulder blades back and down, slight arch in the upper back','DBs lower to the sides of the upper chest','Elbows ~45° from the body','Press up and slightly together, don\'t clang the DBs']],
+ cablefly:['Chest',['Stagger stance, slight forward lean','Elbows softly bent and fixed','Bring the hands together in an arc, like hugging a tree','Squeeze the chest for 1 s in the middle','Shoulders stay down and back']],
+ cablerow:['Middle back and lats',['Sit tall, knees slightly bent','Pull to the belly button','Shoulder blades squeeze at the end','Don\'t rock the torso to move the weight','Neck long, chin slightly tucked']],
+ dbpress:['Shoulders (front and side)',['Back on the upright pad, ribs down','Neutral grip (palms facing in) is easier on the shoulders','Press up, not forward','Don\'t arch the lower back to finish the rep','Lower to about ear height']],
+ cablelat:['Side shoulders (the "cap" of the shoulder)',['Cable from the low pulley, crossed behind or in front','Lead with the elbow, slight bend','Stop at shoulder height','No shrugging: neck stays relaxed','Slow lowering, no swinging']],
+ pushdown:['Triceps (back of the upper arm)',['Elbows pinned to the sides','Only the forearms move','Spread the rope apart at the bottom','Stand tall, slight forward lean at most','Control the way up']],
+ ohtri:['Triceps, especially the long head',['Face away from the stack, staggered stance','Elbows by the ears and pointing forward','Stretch fully behind the head','Extend without the elbows flaring out','Ribs down, no arching']],
+ dbcurl:['Biceps',['Elbows stay at your sides','Turn the palms up as you lift','No swinging from the hips','Squeeze at the top, lower slowly']],
+ pallof:['Abs and obliques (anti-rotation)',['Stand side-on to the cable, feet hip-width','Hands at the chest, press straight out','Don\'t let the cable twist you','Ribs down, glutes lightly squeezed','Breathe out as you press']],
+ squat:['Quads and glutes',['Bar on the upper back, not on the neck','Brace the core before you go down','Knees track over the toes','Go as deep as you can keep a flat back','Drive up with the chest rising with the hips']],
+ legpress:['Quads and glutes',['Lower back stays flat on the pad the whole rep','Feet mid-platform, hip-width','Knees track over the toes, no caving in','Lower until the knees are at about 90°','Never fully lock the knees at the top']],
+ legext:['Quads (front of the thigh)',['Knee lined up with the machine\'s pivot','Back against the pad, hold the handles','Pause 1 s at the top','Slow lowering']],
+ calf:['Calves',['Balls of the feet on the platform edge','Full stretch at the bottom','Rise up as high as you can','Knees soft but not bending during the rep']],
+ rdl:['Hamstrings and glutes',['Soft knees, then push the hips back','Bar stays close to the legs','Back flat, chest proud','Lower until you feel a strong hamstring stretch (about mid-shin)','Drive the hips forward to stand, squeeze the glutes']],
+ dbrdl:['Hamstrings and glutes',['Hips back, soft knees','DBs slide down the front of the thighs','Flat back, head in line with the spine','Stop at the hamstring stretch','Stand by pushing the hips forward']],
+ sldl:['Hamstrings and glutes of the standing leg, plus balance',['Hips square to the floor','Back leg stays in line with the torso','Soft knee on the standing leg','Reach the DB toward mid-shin','Touch down the free foot if you lose balance']],
+ legcurl:['Hamstrings (back of the thigh)',['Knees just off the pad edge','Hips pressed into the bench','Curl all the way up','3 s lowering']],
+ pullthrough:['Glutes and hamstrings',['Face away from the low pulley, rope between the legs','Hinge back with a flat back','Snap the hips forward, squeeze glutes at the top','Arms stay straight, they only hold the rope']],
+ birddog:['Lower back, glutes and deep abs',['Hands under the shoulders, knees under the hips','Reach opposite arm and leg long, not high','Keep the hips level: imagine a glass of water on your back','Slow and controlled']],
+ lunge:['Quads and glutes',['Long steps, torso tall','Back knee drops toward the floor','Front knee tracks over the toes','Push through the front heel']],
+ sled:['Quads, glutes and full body',['Arms straight or bent, body angled low','Back flat','Short, powerful steps','Drive through the balls of the feet']],
+ plank:['Deep abs and whole core',['Elbows under the shoulders','Body in one line from head to heels','Squeeze glutes and abs','Neck long, eyes to the floor','Stop when the hips sag']],
+ goblet:['Quads and glutes',['Hold the DB vertically at the chest','Sit down between the heels','Chest up, elbows inside the knees','Knees track over the toes','Drive up through the whole foot']],
+ cablecrunch:['Abs',['Kneel facing the stack, rope by the head','Hips stay still','Round down: ribs toward the hips','Exhale fully at the bottom','Don\'t pull with the arms']],
+ csrow:['Middle back',['Chest on the pad the whole time','Pull the elbows back, squeeze the shoulder blades','Neck neutral','Controlled return']]
+}
+const Y=id=>'https://www.youtube.com/watch?v='+id
+const WARM_SOLO=[['pw1','10 min full-body Pilates warm-up',Y('F2MzENuR9X4')],['pw2','Pilates warm-up: activate, mobilize, energize',Y('zPddUzsFQcI')],['pw3','Standing Pilates warm-up (beginner)',Y('aDMEJ90TffE')],['pw4','Pilates flow & glute activation',Y('Y13VdBGZEcc')],['pw5','10 Minuten Pilates Warm Up (Deutsch)',Y('OX46gCbMcT0')]]
+const WARM_DUO=[['dw1','10 min dynamic warm-up, upper & lower body',Y('2XJhz-wJics')],['dw2','10 min upper-body mobility routine',Y('_Ngbu3fHx0A')],['dw3','10 min full-body dynamic warm-up',Y('5lmfWSeT2WE')],['dw4','10 min dynamic warm-up, no repeats',Y('fdi-bJkoHSE')],['dw5','Forward-head posture follow-along',Y('jDnW7Bu6VpA')],['dw6','10 min daily posture routine',Y('aPd06RUKDsE')]]
+const COOL=[['rc1','10 min full-body stretch & cool down',Y('qwcwu8447yY')],['rc2','10 min post-workout stretch',Y('_OVruog-j-s')],['rc3','10 min cool-down, full-body tension release',Y('h_Ag29TQG5k')],['rc4','10 min post-workout yoga, lower body',Y('-ZPyCILWvT0')],['rc5','10 min neck hump & forward head fix',Y('he7Jaid68dY')],['rc6','Standing wall Pilates for neck & posture',Y('JUSYUNQgLGA')]]
+const ALLOPT=Object.fromEntries([...WARM_SOLO,...WARM_DUO,...COOL].map(o=>[o[0],o[1]]))
+const POSTURE=[
+ ['Chin tucks','2×10, hold 5 s','https://www.physitrack.com/exercise-library/how-to-perform-the-chin-tuck-exercise-exercise'],
+ ['Wall slides','2×10',yt('wall slides exercise posture')],
+ ['Band pull-aparts','2×15',yt('band pull apart proper form')],
+ ['Thoracic extension on foam roller','1 min','https://us.physitrack.com/home-exercise-video/thoracic-foam-roll'],
+ ['Doorway chest stretch','2×30 s','https://uk.physitrack.com/home-exercise-video/dynamic-pec-stretch-against-doorframe']]
+// [name, cue, photo, demo, rounds, reps, rest, start load, week-8 goal]
+const PLAN={
+ v:{goal:[['Now','76 kg'],['By New Year','−4 to 6 kg'],['Next target','68 → 65 kg']],
+  phases:['Weeks 1–2: find your loads. Stop each round with 2 reps left.','Weeks 3–6: add 1 rep per round each week until you hit the top of the range, then add the smallest weight step (2.5 kg machines and barbell, 1–2 kg dumbbells).','Week 7: push. Last round of each exercise to failure.','Week 8: deload. Same exercises, 2 rounds each at ~70% of the load. Then re-test and set new starting weights.'],
+  days:[
+   {d:'Monday',t:'Glutes',both:0,s:'Solo · ~60 min',ex:[
+    ['Hip abduction, torso leaning forward','Cadeira abdutora tronco inclinado. 2 rounds of 15–20, then 1 round of 12–15 to failure','plate2','abdlean',3,'15–20','1 min','40–50 kg','55–65 kg'],
+    ['Barbell hip thrust','Elevação pélvica. 1 feeler round of 10–12, then 3 rounds of 6–10 to failure','racks','hipthrust',4,'6–10','2–3 min','40–50 kg incl. bar','60–70 kg'],
+    ['Bulgarian split squat','Búlgaro na barra guiada. Lean slightly forward for glutes','racks','bulgarian',3,'8–10 /leg','1–2 min','Smith bar + 5 kg /side','+10–15 kg /side'],
+    ['45° back extension, glute bias','Extensão de quadril. Round upper back, squeeze at top','plate','ext45',3,'10–12','1–2 min','Bodyweight','Hold 10 kg plate'],
+    ['Hip abduction, sitting upright','Cadeira abdutora. Back on the pad, posture tall','plate2','abd',3,'12–15','2 min','50–60 kg','70–80 kg']]},
+   {d:'Tuesday',t:'Chest & back',both:1,s:'Together · ~70 min',ex:[
+    ['Lat pulldown','Chest up, pull bar to collarbones, ribs down','cable','pulldown',4,'8–10','90 s','30–35 kg','40–45 kg'],
+    ['Plate-loaded chest press','Shoulders down and back, full range','plate','chestpress',4,'8–10','90 s','5–10 kg /side','15 kg /side'],
+    ['Plate-loaded seated row','Squeeze shoulder blades, no shrugging','row','platerow',4,'8–10','90 s','10–15 kg /side','20 kg /side'],
+    ['Incline DB press','Bench 30°, elbows ~45° from body','bench','incdb',3,'10','90 s','8–10 kg each','12 kg each'],
+    ['Single-arm DB row','Hand + knee on bench, elbow to hip','bench','dbrow',3,'10 /side','60 s','12–14 kg','16–18 kg'],
+    ['Cable fly','Slight elbow bend, hug a tree','cables','cablefly',3,'12–15','60 s','5–7.5 kg /side','10 kg /side'],
+    ['Face pull (rope)','Pull to eyes, thumbs back, elbows high','cables','facepull',3,'15','45 s','10–15 kg','17.5–20 kg']]},
+   {d:'Wednesday',t:'Hamstrings & lower back',both:0,s:'Solo · ~60 min',ex:[
+    ['Romanian deadlift','Hinge, soft knees, bar close to legs','racks','rdl',4,'8–10','2 min','35–45 kg incl. bar','50–55 kg'],
+    ['Lying leg curl','Hips pressed down, slow 3 s lowering','plate2','legcurl',3,'10–12','90 s','25–30 kg','35–40 kg'],
+    ['Single-leg DB RDL','Hips square, reach the DB to mid-shin','dbarea','sldl',3,'10 /leg','60 s','8–10 kg','12–14 kg'],
+    ['45° back extension, lower-back bias','Flat back this time, hinge from the hips','plate','ext45',3,'12','60 s','Bodyweight','Hold 10 kg plate'],
+    ['Cable pull-through','Rope between legs, snap hips forward','cables','pullthrough',3,'12–15','60 s','15–20 kg','25–30 kg'],
+    ['Bird dog','Opposite arm and leg, no rocking','turf','birddog',2,'10 /side','45 s','Bodyweight','3 s hold each rep']]},
+   {d:'Thursday',t:'Arms & shoulders',both:1,s:'Together · ~65 min',ex:[
+    ['Seated DB shoulder press','Neutral grip, back on the pad, no arching','dbarea','dbpress',3,'10','90 s','6–8 kg each','10 kg each'],
+    ['Cable lateral raise','Lead with the elbow, stop at shoulder height','cables','cablelat',3,'15 /side','45 s','2.5–5 kg','5–7.5 kg'],
+    ['Rear delt fly','Chest on incline bench, light DBs','db','reardelt',3,'15','45 s','4–5 kg','6–7 kg'],
+    ['DB curl','Elbows pinned, slow lowering','dbarea','dbcurl',3,'10–12','60 s','7–8 kg','10 kg'],
+    ['Triceps rope pushdown','Elbows still, spread rope at bottom','cable','pushdown',3,'12','60 s','15–20 kg','22.5–25 kg'],
+    ['Hammer curl','Thumbs up, no swinging','dbarea','hammer',3,'12','45 s','8 kg','10 kg'],
+    ['Overhead cable triceps extension','Face away from the stack, elbows by ears','cablebench','ohtri',3,'12','45 s','10–12.5 kg','15–17.5 kg']]},
+   {d:'Saturday',t:'Legs & abs',both:1,s:'Together · ~70 min',ex:[
+    ['Back squat','Brace, knees track over toes','racks','squat',4,'6–8','2 min','35–45 kg incl. bar','50–55 kg'],
+    ['Leg press','Feet mid-platform, don\'t lock knees','leg','legpress',3,'10–12','90 s','30–40 kg /side','50 kg /side'],
+    ['Leg extension','Pause 1 s at the top','plate2','legext',3,'12–15','60 s','25–30 kg','35–40 kg'],
+    ['Walking lunges','Long steps, torso tall','turf','lunge',2,'12 /leg','60 s','6–8 kg each','10–12 kg each'],
+    ['Calf raise on leg press','Full stretch at the bottom','leg','calf',3,'15','45 s','30–40 kg /side','50 kg /side'],
+    ['Cable crunch','Kneel, round down, ribs to hips','cable','cablecrunch',3,'12–15','45 s','20–25 kg','30–35 kg'],
+    ['Dead bug','Low back glued down, exhale fully (rib flare)','turf','deadbug',3,'10','45 s','Bodyweight','Hold 2 kg plate']]}],
+  notes:['Five gym days, no cardio day. Fat loss comes from 8–10k steps every day plus the calorie deficit.','Start every session with your corrective warm-up: rib flare, wrists, hip flexors. On the together days, add the posture block.','Eat ~400–500 kcal under maintenance with 110–130 g protein. Keep the low-GI meal prep.','Strength should hold or rise while you lose weight. If your loads drop two weeks in a row, eat a little more on training days.']},
+ d:{goal:[['Now','56 kg'],['Target','~65 kg'],['Pace','+0.25–0.5 kg / week']],
+  phases:['Weeks 1–2: learn the movements. Use the lower start weight and stop each round with 3 reps left. Film one set per exercise and compare with the demo.','Weeks 3–6: when every round hits the top of the range, add the smallest step next session. Beginners can add weight almost every week.','Week 7: add one extra round to the first two exercises of each day.','Week 8: deload. 2 rounds per exercise, light. Check the neck: if posture feels better, keep going; if pain is the same or worse, see a physio.'],
+  days:[
+   {d:'Tuesday',t:'Chest & back',both:1,s:'Together with Vicky · ~60 min',ex:[
+    ['Lat pulldown','Chest up, pull to collarbones, no neck craning','cable','pulldown',3,'10','90 s','25–30 kg','40–45 kg'],
+    ['Plate-loaded chest press','Shoulders down and back','plate','chestpress',3,'10','90 s','5 kg /side','15–20 kg /side'],
+    ['Plate-loaded seated row','Squeeze shoulder blades, chin tucked','row','platerow',3,'10','90 s','5–10 kg /side','15–20 kg /side'],
+    ['Incline DB press','Bench 30°, light at first','bench','incdb',3,'10','90 s','8–10 kg each','14–16 kg each'],
+    ['Face pull (rope)','The key posture exercise: pull to eyes, thumbs back','cables','facepull',3,'15','60 s','7.5–10 kg','15 kg'],
+    ['Leg press','Legs in support: feet mid-platform','leg','legpress',3,'10','90 s','20–30 kg /side','50 kg /side'],
+    ['Plank','Neck long, eyes to the floor','turf','plank',3,'20–30 s','45 s','Bodyweight','45–60 s']]},
+   {d:'Thursday',t:'Arms & shoulders, posture-safe',both:1,s:'Together with Vicky · ~60 min',ex:[
+    ['Seated cable row','Extra pulling for posture','cablebench','cablerow',3,'12','60 s','25–30 kg','40 kg'],
+    ['Cable lateral raise','Light, lead with the elbow','cables','cablelat',2,'15 /side','45 s','2.5 kg','5 kg'],
+    ['Rear delt fly','Chest on incline bench, light DBs','db','reardelt',3,'15','45 s','3–4 kg','6 kg'],
+    ['DB curl','Elbows pinned, no swinging','dbarea','dbcurl',3,'10–12','60 s','6–8 kg','10–12 kg'],
+    ['Triceps rope pushdown','Elbows still','cable','pushdown',3,'12','60 s','12.5–15 kg','20–25 kg'],
+    ['Hammer curl','Thumbs up','dbarea','hammer',2,'12','45 s','6–8 kg','10 kg'],
+    ['Goblet squat','Hold DB at chest, sit between heels','dbarea','goblet',3,'10','90 s','12–16 kg','20–24 kg']]},
+   {d:'Saturday',t:'Legs & abs',both:1,s:'Together with Vicky · ~60 min',ex:[
+    ['Leg press','Controlled, full range','leg','legpress',3,'10','90 s','20–30 kg /side','50 kg /side'],
+    ['DB Romanian deadlift','Hinge, keep the head in line with the spine','dbarea','dbrdl',3,'10','90 s','12–14 kg each','20 kg each'],
+    ['Leg extension','Pause 1 s at the top','plate2','legext',3,'12','60 s','20–25 kg','35 kg'],
+    ['Lying leg curl','Slow lowering','plate2','legcurl',3,'12','60 s','20–25 kg','35 kg'],
+    ['Walking lunges','Start bodyweight, add DBs when easy','turf','lunge',2,'10 /leg','60 s','Bodyweight','8–10 kg each'],
+    ['Dead bug','Low back flat','turf','deadbug',3,'10','45 s','Bodyweight','Hold 2 kg plate']]}],
+  notes:['Three days, always with Vicky. He skips Monday and Wednesday (her glute and hamstring days).','Not for now: shrugs, upright rows, overhead pressing, behind-the-neck anything, neck machines.','Eat ~300–400 kcal above maintenance with 100–110 g protein: 3 meals + 2 snacks. Without the surplus, the 65 kg won\'t happen.','If neck or front-of-head pain gets worse with training, see a physio before pushing on.']}
+}
+const FL='M8 140H192'
+const bench=(x,y,w,h)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" class="pr"/>`
+const cab=(x1,y1,x2,y2)=>`<path d="M${x1} ${y1}L${x2} ${y2}" class="cb"/>`
+const plate=(x,y,r=10)=>`<circle cx="${x}" cy="${y}" r="${r}" class="pr"/><circle cx="${x}" cy="${y}" r="2" class="pr"/>`
+const dbl=(x,y)=>`<path d="M${x-7} ${y}H${x+7}" class="pr" stroke-width="2"/><rect x="${x-9}" y="${y-4}" width="4" height="8" rx="1" class="pr"/><rect x="${x+5}" y="${y-4}" width="4" height="8" rx="1" class="pr"/>`
+const ln=(...p)=>`<path d="M${p.slice(0,2)}L${p.slice(2).join(' ')}" class="pr"/>`
+const SK={
+ pulldown:{h:[86,40],b:[[88,50,92,96],[92,96,120,96,122,136],[88,56,80,76,96,58]],p:bench(76,98,36,6)+plate(120,88,5)+ln(80,58,114,58)+cab(104,58,104,6),m:[[86,72,6,12]],a:[[124,22,124,48]],g:[[84,48,90,98]]},
+ platerow:{h:[84,36],b:[[86,46,86,94],[86,94,116,90,132,112],[86,54,70,68,98,66]],p:bench(70,96,30,6)+ln(136,96,138,124)+ln(98,60,98,72)+cab(98,66,190,66),m:[[82,64,6,12]],a:[[152,56,124,56]],g:[[80,44,80,96]]},
+ csrow:{h:[98,32],b:[[96,42,86,94],[86,94,116,96,118,136],[96,52,78,62,108,64]],p:bench(70,96,32,6)+`<rect x="104" y="40" width="8" height="34" rx="3" class="pr"/>`+ln(108,60,108,70)+plate(150,62,12),m:[[90,62,6,12]],a:[[150,44,124,44]],g:[[90,38,80,96]]},
+ cablerow:{h:[84,36],b:[[86,46,86,94],[86,94,116,92,134,112],[86,54,72,74,100,78]],p:bench(70,96,30,6)+ln(138,98,140,124)+cab(100,78,190,104),m:[[82,66,6,12]],a:[[152,70,124,74]],g:[[80,44,80,96]]},
+ dbrow:{h:[146,62],b:[[130,70,82,78],[130,72,132,96],[82,78,84,96,60,96],[82,78,74,110,72,140],[128,72,112,64,114,88]],p:bench(55,96,90,8)+dbl(114,90),m:[[108,74,10,5]],a:[[124,112,124,86]],g:[[80,70,132,62]]},
+ facepull:{h:[100,26],b:[[100,36,100,88],[100,88,92,114,86,140],[100,88,108,114,112,140],[100,44,84,34,108,28]],p:cab(108,28,190,28)+ln(106,24,110,32),m:[[96,44,5,5]],a:[[162,20,132,20]],g:[]},
+ reardelt:{h:[136,60],b:[[126,70,76,116],[76,116,62,126,52,140],[120,76,136,90,150,96]],p:ln(58,132,128,70)+ln(70,128,70,140)+dbl(150,98),m:[[120,74,5,5]],a:[[134,120,150,102]],g:[]},
+ hammer:{h:[100,26],b:[[100,36,100,88],[100,88,96,114,94,140],[100,88,106,114,108,140],[100,44,102,70,118,58]],p:dbl(118,56),m:[[100,58,3,8]],a:[[128,86,126,60]],g:[[92,70,110,70]]},
+ dbcurl:{h:[100,26],b:[[100,36,100,88],[100,88,96,114,94,140],[100,88,106,114,108,140],[100,44,102,70,118,58]],p:dbl(118,56),m:[[100,58,3,8]],a:[[128,86,126,60]],g:[[92,70,110,70]]},
+ pushdown:{h:[102,26],b:[[101,36,99,88],[99,88,95,114,93,140],[99,88,105,114,107,140],[101,44,102,70,112,92]],p:cab(112,92,112,6)+ln(108,94,116,94),m:[[96,58,3,8]],a:[[126,66,126,94]],g:[]},
+ ohtri:{h:[108,28],b:[[104,38,96,88],[96,88,116,110,122,140],[96,88,84,112,72,140],[104,44,112,26,134,16]],p:cab(134,16,30,34),m:[[104,36,3,7]],a:[[120,34,142,14]],g:[]},
+ deadbug:{h:[40,120],b:[[50,124,104,124],[56,124,58,92],[56,124,28,112],[104,124,112,98,132,98],[104,124,140,118,170,120]],p:ln(14,132,186,132),m:[[80,121,14,4]],a:[[80,98,80,114]],g:[]},
+ plank:{h:[150,90],b:[[140,98,95,104,45,126],[140,98,138,126,156,128]],p:ln(14,132,186,132),m:[[110,106,12,4]],a:[],g:[[142,92,45,120]]},
+ birddog:{h:[134,86],b:[[124,92,78,92],[124,92,124,126],[78,92,78,126,54,126],[124,92,160,88],[78,92,30,90]],p:ln(14,130,186,130),m:[[76,90,8,5]],a:[],g:[[30,82,160,82]]},
+ hipthrust:{h:[56,82],b:[[64,92,112,84],[112,84,142,92,142,138],[76,90,104,80]],p:bench(36,96,28,40)+plate(110,76,11),m:[[110,92,9,5]],a:[[128,128,128,98]],g:[[62,86,142,86]]},
+ abd:{h:[100,34],b:[[84,52,116,52],[100,44,100,92],[84,52,78,76,82,92],[116,52,122,76,118,92],[92,92,66,100,72,136],[108,92,134,100,128,136]],p:`<rect x="54" y="92" width="8" height="16" rx="3" class="pr"/><rect x="138" y="92" width="8" height="16" rx="3" class="pr"/>`+ln(86,96,114,96),m:[[90,94,7,5],[110,94,7,5]],a:[[58,118,38,118],[142,118,162,118]],g:[]},
+ abdlean:{h:[100,54],b:[[84,66,116,66],[100,62,100,92],[84,66,80,84],[116,66,120,84],[92,92,66,100,72,136],[108,92,134,100,128,136]],p:`<rect x="54" y="92" width="8" height="16" rx="3" class="pr"/><rect x="138" y="92" width="8" height="16" rx="3" class="pr"/>`+ln(76,84,124,84),m:[[90,94,7,5],[110,94,7,5]],a:[[58,118,38,118],[142,118,162,118]],g:[]},
+ bulgarian:{h:[104,26],b:[[102,36,96,86],[96,86,124,108,122,140],[96,86,76,118,46,100],[100,44,98,68,98,86]],p:bench(14,100,40,8)+dbl(98,88),m:[[98,92,7,5]],a:[[136,124,136,96]],g:[[124,104,124,140]]},
+ ext45:{h:[150,54],b:[[110,86,142,60],[110,86,80,112,62,130],[128,72,134,78]],p:ln(84,120,116,88)+ln(56,124,70,138),m:[[106,86,7,5]],a:[[152,94,150,66]],g:[]},
+ chestpress:{h:[80,30],b:[[82,40,82,92],[82,92,108,94,108,136],[82,50,96,58,120,52]],p:bench(66,94,30,6)+ln(70,28,70,94)+ln(120,44,120,60),m:[[90,52,8,5]],a:[[130,52,156,52]],g:[]},
+ incdb:{h:[116,62],b:[[108,72,64,112],[64,112,98,114,104,140],[104,76,96,58,110,40]],p:ln(50,120,112,68)+ln(58,120,58,140)+dbl(110,38),m:[[100,76,8,5]],a:[[126,68,126,42]],g:[]},
+ cablefly:{h:[104,28],b:[[102,38,98,88],[98,88,90,114,84,140],[98,88,110,114,116,140],[102,46,122,52,136,58]],p:cab(136,58,30,22),m:[[108,52,8,5]],a:[[150,40,140,56]],g:[]},
+ dbpress:{h:[100,30],b:[[100,40,100,92],[100,92,126,94,126,136],[100,48,112,44,112,18]],p:bench(84,94,36,6)+ln(90,12,90,94)+dbl(112,16),m:[[104,46,5,5]],a:[[126,46,126,18]],g:[]},
+ cablelat:{h:[100,26],b:[[84,44,116,44],[100,36,100,88],[100,88,92,140],[100,88,108,140],[116,44,140,46,158,50],[84,44,80,70,82,88]],p:cab(158,50,60,138),m:[[118,44,5,5]],a:[[152,84,158,58]],g:[]},
+ pallof:{h:[100,26],b:[[86,44,114,44],[100,36,100,88],[100,88,88,140],[100,88,112,140],[86,44,94,56,100,58],[114,44,106,56,100,58]],p:cab(100,58,190,58),m:[[100,76,8,10]],a:[],g:[[100,14,100,140]]},
+ squat:{h:[112,52],b:[[108,62,86,100],[86,100,118,108,112,140],[106,64,112,70,104,62]],p:plate(104,60,10),m:[[88,102,8,5],[104,104,10,4]],a:[[142,128,142,96]],g:[[118,106,118,140]]},
+ goblet:{h:[104,50],b:[[102,60,90,100],[90,100,120,106,116,140],[102,66,114,74,110,64]],p:dbl(112,66),m:[[104,104,10,4]],a:[[142,128,142,96]],g:[[120,104,120,140]]},
+ legpress:{h:[46,66],b:[[52,76,74,116],[74,116,96,82,124,72]],p:ln(40,70,70,124)+ln(118,54,132,92),m:[[86,98,10,4]],a:[[142,98,162,76]],g:[[46,80,68,120]]},
+ legext:{h:[86,32],b:[[88,42,88,92],[88,92,116,92],[116,92,146,84]],p:bench(72,94,46,6)+ln(78,28,78,94)+plate(146,90,5),m:[[104,88,10,4]],a:[[154,118,152,92]],g:[]},
+ calf:{h:[46,66],b:[[52,76,74,116],[74,116,104,88,126,70]],p:ln(40,70,70,124)+ln(120,52,134,90),m:[[116,80,6,4]],a:[[142,80,152,62]],g:[]},
+ rdl:{h:[140,64],b:[[128,70,90,84],[90,84,96,112,96,140],[126,72,124,110]],p:plate(124,114,10),m:[[94,100,4,10]],a:[[62,86,84,86]],g:[[88,78,130,64]]},
+ dbrdl:{h:[140,64],b:[[128,70,90,84],[90,84,96,112,96,140],[126,72,124,108]],p:dbl(124,110),m:[[94,100,4,10]],a:[[62,86,84,86]],g:[[88,78,130,64]]},
+ sldl:{h:[146,74],b:[[134,80,92,86],[92,86,94,112,94,140],[92,86,50,82],[132,82,130,110]],p:dbl(130,112),m:[[94,100,4,10]],a:[],g:[[50,76,146,70]]},
+ legcurl:{h:[160,90],b:[[150,98,96,98],[96,98,64,98],[64,98,70,66]],p:bench(50,104,120,6)+plate(70,64,5),m:[[80,96,10,4]],a:[[52,94,58,70]],g:[]},
+ pullthrough:{h:[136,66],b:[[126,72,94,86],[94,86,100,112,102,140],[124,74,104,110]],p:cab(104,110,20,136),m:[[92,88,7,5]],a:[[60,90,84,88]],g:[[92,80,128,66]]},
+ lunge:{h:[100,26],b:[[100,36,100,88],[100,88,126,112,126,140],[100,88,80,132,58,138],[100,44,98,66,98,86]],p:dbl(98,88),m:[[104,96,10,4]],a:[[142,124,142,100]],g:[[100,16,100,90]]},
+ sled:{h:[130,50],b:[[122,58,84,92],[84,92,108,112,110,140],[84,92,62,118,44,138],[120,62,140,72]],p:ln(140,58,140,124)+bench(136,124,40,8)+plate(160,112,10),m:[[90,98,8,4]],a:[[148,38,178,38]],g:[]},
+ cablecrunch:{h:[118,98],b:[[80,100,96,82,112,90],[80,100,80,138,54,138],[100,84,108,90]],p:cab(108,90,122,6),m:[[94,92,8,5]],a:[[136,70,132,100]],g:[]}
+}
+function sketch(k){
+ const s=SK[k];if(!s)return''
+ const pl=a=>'M'+a.slice(0,2)+'L'+a.slice(2).reduce((o,v,i)=>o+(i%2?','+v:(i?' ':'')+v),'')
+ const j=a=>a.map((v,i)=>v+(i%2?.7:.9))
+ return `<svg class="sk" viewBox="0 0 200 150" role="img" aria-label="Sketch of the movement"><path d="${FL}" class="fl"/>${s.p}
+ ${s.g.map(g=>`<path d="${pl(g)}" class="gd"/>`).join('')}
+ ${s.m.map(([x,y,rx,ry])=>`<ellipse cx="${x}" cy="${y}" rx="${rx+2}" ry="${ry+2}" class="mu"/>`).join('')}
+ ${s.b.map(b=>`<path d="${pl(j(b))}" class="bd2"/><path d="${pl(b)}" class="bd"/>`).join('')}
+ <circle cx="${s.h[0]}" cy="${s.h[1]}" r="8" class="hd"/><circle cx="${s.h[0]+.8}" cy="${s.h[1]+.6}" r="8.4" class="bd2" fill="none"/>
+ ${s.a.map(a=>`<path d="${pl(a)}" class="ar" marker-end="url(#ah)"/>`).join('')}</svg>`
+}
+
+const pid=t=>/glute/i.test(t)?'glutes':/chest/i.test(t)?'chestback':/ham/i.test(t)?'hams':/arm/i.test(t)?'arms':'legs'
+const PROGS={v:PLAN.v.days.map(x=>({...x,id:pid(x.t)})),d:PLAN.d.days.map(x=>({...x,id:pid(x.t)}))}
+const NAME={v:'Vicky',d:'Delian'}
+const PNAME={glutes:'Glutes',chestback:'Chest & back',hams:'Hamstrings & lower back',arms:'Arms & shoulders',legs:'Legs & abs'}
+const SHARED=['chestback','arms','legs']
+const pad=n=>String(n).padStart(2,'0')
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
+const today=iso(new Date())
+const monday=d=>{const x=new Date(d);x.setHours(12);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+const fmt=s=>new Date(s+'T12:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})
+let tab='v',weekStart=monday(new Date()),open=null,checks={},db=null,live=false,status='Connecting…'
+try{tab=localStorage.getItem('who')||'v'}catch(e){}
+const $=id=>document.getElementById(id)
+const links=k=>(DEMO[k]||[]).map(([l,u])=>`<a href="${u}" target="_blank" rel="noopener">▶ ${l}</a>`).join('')
+const mine=p=>Object.values(checks).filter(c=>c.person===p)
+const times=(p,id)=>mine(p).filter(c=>c.warm===id||c.cool===id).length
+const progOf=(p,id)=>PROGS[p].find(x=>x.id===id)
+function weekNo(p){const ds=mine(p).map(c=>c.date).sort();if(!ds.length)return 1;return Math.min(8,Math.floor((monday(new Date(today+'T12:00'))-monday(new Date(ds[0]+'T12:00')))/6048e5)+1)}
+let sb=null
+const row=c=>({key:c.key,date:c.date,person:c.person,program:c.program,rounds:c.rounds||{},warm:c.warm||null,cool:c.cool||null,at:c.at||new Date().toISOString()})
+async function save(c){checks[c.key]=c;render();if(!sb)return;const {error}=await sb.from('checkins').upsert(row(c));if(error){status='Couldn\'t save that change. Check your connection and try again.';render()}}
+async function remove(k){delete checks[k];if(open===k)open=null;render();if(sb){const {error}=await sb.from('checkins').delete().eq('key',k);if(error){status='Couldn\'t remove that check-in. Try again.';render()}}}
+function checkIn(prog){
+ const date=$('ci-date').value||today,ppl=ciWho==='b'?['v','d']:[ciWho];let first=null
+ ppl.forEach(p=>{const key=`${date}_${p}_${prog}`;if(!checks[key])save({key,date,person:p,program:prog,rounds:{},warm:null,cool:null,at:new Date().toISOString()});first=first||key})
+ open=first;render();setTimeout(()=>$('session')?.scrollIntoView({behavior:'smooth',block:'start'}),50)
+}
+function renderCi(){
+ const ids=ciWho==='b'?SHARED:PROGS[ciWho].map(x=>x.id),d=$('ci-date').value||today
+ document.querySelectorAll('[data-who]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.who===ciWho))
+ $('ci-day').textContent=d===today?'Today':fmt(d)
+ $('ci-tiles').innerHTML=ids.map(i=>{const done=(ciWho==='b'?['v','d']:[ciWho]).every(p=>checks[`${d}_${p}_${i}`]);return `<button class="tile${done?' on':''}" data-go="${i}">${PNAME[i]}<small>${done?'Checked in ✓':'Tap to start'}</small></button>`}).join('')
+}
+function slot(title,list,c,field){
+ const cur=c?.[field]
+ return `<div class="slot"><div class="slothead"><b>${title}</b><span>${cur?'✓ Done: '+ALLOPT[cur]:'Pick one, then mark it done'}</span></div>
+ <div class="opts">${list.map(([id,n,u])=>`<div class="opt${cur===id?' on':''}"><a href="${u}" target="_blank" rel="noopener">▶ ${n}</a><span class="cnt">×${times(c?c.person:tab,id)}</span>${c?`<button data-f="${field}" data-opt="${id}" aria-pressed="${cur===id}">${cur===id?'Done ✓':'Mark done'}</button>`:''}</div>`).join('')}</div></div>`
+}
+function card(p,x,c){
+ const acc=x.both?'var(--both)':p==='v'?'var(--v)':'var(--d)',total=x.ex.reduce((a,e)=>a+e[4],0)
+ const got=c?Object.keys(c.rounds||{}).length:0
+ return `<article class="day" style="--acc:${acc}">
+ <div class="dayhead"><div><span class="label">${c?NAME[p]+' · '+fmt(c.date):'Suggested: '+x.d+(x.both?' · together':' · solo')}</span><h2>${x.t}</h2></div><p>${x.s.replace(/^[^·]*· /,'')}${c?` · <span class="prog">${got}/${total} rounds</span>`:''}</p>
+ ${c?`<div class="acts"><button class="ghost" data-close>Close</button><button class="ghost danger" data-del="${c.key}">Remove check-in</button></div>`:`<button class="cta" data-quick="${p}|${x.id}">Check in today</button>`}</div>
+ ${slot('Start · 10 min '+(x.both?'warm-up':'Pilates warm-up'),x.both?WARM_DUO:WARM_SOLO,c,'warm')}
+ ${x.both?`<div class="block"><b>Posture block · first 10 min</b><div class="links">${POSTURE.map(([n,s,u])=>`<a href="${u}" target="_blank" rel="noopener">▶ ${n} · ${s}</a>`).join('')}</div></div>`:''}
+ ${x.ex.map(([n,cue,i,dk,r,reps,rest,st,goal],ei)=>`<div class="ex"><img src="${IMG[i]}" alt="${WHERE[i]} at Moderncoach Deggendorf" loading="lazy">
+  <div style="min-width:0"><div class="nm">${n}</div><div class="cue">${cue}</div><div class="where">${WHERE[i]}</div><div class="links">${links(dk)}</div>${DET[dk]?`<details class="det"><summary>Form &amp; feel</summary><div class="detin">${sketch(dk)}<div><p><b>Feel it in:</b> ${DET[dk][0]}</p><ul>${DET[dk][1].map(t=>`<li>${t}</li>`).join('')}</ul><p class="key"><span class="k1"></span>feel it here <span class="k2"></span>movement <span class="k3"></span>keep this line</p></div></div></details>`:''}</div>
+  <div class="load"><div class="sets">${r} × ${reps} <small style="color:var(--muted)">· rest ${rest}</small></div>
+   <div class="kg"><span>Start</span><b>${st}</b><span>Week 8</span><b>${goal}</b></div>
+   ${c?`<div class="rounds">${[...Array(r)].map((_,ri)=>{const k=ei+'-'+ri,id='r-'+c.key+'-'+k;return `<input type="checkbox" id="${id}" data-r="${k}" ${c.rounds?.[k]?'checked':''}><label for="${id}" title="Round ${ri+1}">${ri+1}</label>`}).join('')}</div>`:''}</div></div>`).join('')}
+ ${slot('Finish · 10 min recovery',COOL,c,'cool')}
+ </article>`
+}
+function render(){
+ const days=[...Array(7)].map((_,i)=>{const d=new Date(weekStart);d.setDate(d.getDate()+i);return iso(d)})
+ renderCi()
+ $('wk-label').textContent='Week of '+fmt(days[0]).replace(/^\w+ /,'')
+ $('status').textContent=status;$('status').hidden=!status
+ $('cal').innerHTML=days.map(d=>{const cs=Object.values(checks).filter(c=>c.date===d).sort((a,b)=>a.person<b.person?1:-1)
+  return `<div class="wd${d===today?' today':''}"><b>${fmt(d).split(' ')[0]} <small>${d.slice(8)}</small></b>${cs.length?cs.map(c=>{const p=progOf(c.person,c.program),tot=p?p.ex.reduce((a,e)=>a+e[4],0):0,g=Object.keys(c.rounds||{}).length
+  return `<button class="chip c${c.person}${open===c.key?' sel':''}" data-open="${c.key}">${NAME[c.person][0]} · ${PNAME[c.program]}<small>${g}/${tot}${c.warm?' · W':''}${c.cool?' · R':''}</small></button>`}).join(''):`<span class="rest">${d<today?'Rest':'—'}</span>`}</div>`}).join('')
+ const c=open&&checks[open]
+ $('session').innerHTML=c&&progOf(c.person,c.program)?card(c.person,progOf(c.person,c.program),c):''
+ $('session').hidden=!c
+ document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===tab))
+ const P=PLAN[tab],ms=mine(tab),wk=days.filter(d=>ms.some(c=>c.date===d)).length
+ $('goal').innerHTML=P.goal.map(([l,v])=>`<div><span class="label">${l}</span><strong>${v}</strong></div>`).join('')+
+  `<div><span class="label">Gym days this week</span><strong>${wk}</strong></div><div><span class="label">Program week</span><strong>${weekNo(tab)} of 8</strong></div><div><span class="label">Warm-ups · recoveries</span><strong>${ms.filter(x=>x.warm).length} · ${ms.filter(x=>x.cool).length}</strong></div>`
+ $('phase').innerHTML=`<h3>8-week progression</h3><ol>${P.phases.map(x=>`<li>${x}</li>`).join('')}</ol>`
+ $('days').innerHTML=PROGS[tab].map(x=>card(tab,x,null)).join('')
+ $('notes').innerHTML=`<h3>Rules for ${NAME[tab]}</h3><ul>${P.notes.map(n=>`<li>${n}</li>`).join('')}</ul>`
+ try{localStorage.setItem('who',tab)}catch(e){}
+}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('button');if(!t)return
+ if(t.dataset.p){tab=t.dataset.p;render()}
+ else if(t.id==='wk-prev'||t.id==='wk-next'){weekStart.setDate(weekStart.getDate()+(t.id==='wk-prev'?-7:7));render()}
+ else if(t.id==='wk-today'){weekStart=monday(new Date());render()}
+ else if(t.dataset.who){ciWho=t.dataset.who;render()}
+ else if(t.dataset.go)checkIn(t.dataset.go)
+ else if(t.dataset.open){open=open===t.dataset.open?null:t.dataset.open;render();if(open)setTimeout(()=>$('session').scrollIntoView({behavior:'smooth',block:'start'}),50)}
+ else if('close' in t.dataset){open=null;render()}
+ else if(t.dataset.del){remove(t.dataset.del)}
+ else if(t.dataset.quick){const [p,id]=t.dataset.quick.split('|');$('ci-date').value=today;ciWho=p;checkIn(id)}
+ else if(t.dataset.f&&open){const c={...checks[open]};c[t.dataset.f]=c[t.dataset.f]===t.dataset.opt?null:t.dataset.opt;save(c)}
+})
+document.addEventListener('change',e=>{
+ if(e.target.id==='ci-date')render()
+ if(e.target.dataset.r&&open){const c={...checks[open],rounds:{...checks[open].rounds}};if(e.target.checked)c.rounds[e.target.dataset.r]=1;else delete c.rounds[e.target.dataset.r];const y=scrollY;save(c);scrollTo(0,y)}
+})
+$('ci-date').value=today;ciWho=tab;render()
+;(()=>{
+ const C=window.MG_CONFIG||{},gate=$('gate')
+ if(!window.supabase||!C.url||/YOUR_/.test(C.url+C.anonKey)){status='Add your Supabase project URL and anon key to config.js to turn on syncing.';render();return}
+ sb=window.supabase.createClient(C.url,C.anonKey,{auth:{persistSession:true,autoRefreshToken:true}})
+ let chan=null,step='email'
+ async function load(){
+  const {data,error}=await sb.from('checkins').select('*')
+  if(error){status='Saved check-ins couldn\'t load. Pull down or reopen the app to try again.';render();return}
+  checks={};data.forEach(r=>{checks[r.key]={...r,date:String(r.date).slice(0,10)}});status='';render()
+ }
+ function live(){if(chan)return;chan=sb.channel('checkins-live').on('postgres_changes',{event:'*',schema:'public',table:'checkins'},p=>{if(p.eventType==='DELETE'){delete checks[p.old.key];if(open===p.old.key)open=null}else checks[p.new.key]={...p.new,date:String(p.new.date).slice(0,10)};render()}).subscribe()}
+ async function start(session){gate.hidden=!!session;if(!session)return;await load();live()}
+ sb.auth.getSession().then(({data})=>start(data.session))
+ sb.auth.onAuthStateChange((ev,session)=>{if(ev==='SIGNED_IN'||ev==='SIGNED_OUT')start(session)})
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&gate.hidden)load()})
+ const setMode=m=>{step=m;const up=m==='signup';$('gate-btn').textContent=up?'Create account':'Sign in';$('gate-switch').textContent=up?'Already have an account? Sign in':'First time? Create an account';$('gate-pass').autocomplete=up?'new-password':'current-password';$('gate-msg').textContent=up?'Pick a password. We\'ll email you a link to confirm it\'s you.':'Sign in with your email and password.';$('gate-err').hidden=true}
+ $('gate-switch').addEventListener('click',()=>setMode(step==='signup'?'email':'signup'))
+ $('gate-form').addEventListener('submit',async e=>{
+  e.preventDefault();const err=$('gate-err'),btn=$('gate-btn'),email=$('gate-email').value.trim().toLowerCase(),password=$('gate-pass').value;err.hidden=true
+  if(!email||password.length<6){err.textContent='Enter your email and a password of at least 6 characters.';err.hidden=false;return}
+  btn.disabled=true
+  if(step==='signup'){
+   const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href.split('#')[0]}})
+   btn.disabled=false
+   if(error){err.textContent='Couldn\'t create the account: '+error.message;err.hidden=false;return}
+   if(!data.session){setMode('email');$('gate-msg').textContent='Almost done: open the email from Supabase and tap the confirmation link. Then come back to this app and sign in.'}
+  }else{
+   const {error}=await sb.auth.signInWithPassword({email,password})
+   btn.disabled=false
+   if(error){err.textContent=/confirm/i.test(error.message)?'Confirm your email first: tap the link in the email from Supabase, then sign in here.':'Wrong email or password. First time here? Tap "Create an account".';err.hidden=false}
+  }
+ })
+ $('signout').addEventListener('click',async()=>{await sb.auth.signOut();checks={};render()})
+ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})
+})()
+</script>
+</body>
+</html>
