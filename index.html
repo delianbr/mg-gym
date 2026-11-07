@@ -6,12 +6,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="MG Gym">
+<meta name="apple-mobile-web-app-title" content="VickyDeli Gym">
 <meta name="theme-color" content="#fdf6f3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#120d10" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>MG Gym</title>
+<title>VickyDeli Gym App</title>
 <style>
 /* iPhone system fonts (SF Pro / SF Pro Rounded) so it reads as a native app and works offline */
 :root{
@@ -324,6 +324,14 @@ body:has(.mini:not([hidden])) .view{padding-bottom:calc(var(--safe-b) + 160px)}
 .lovenote .bigemo{font-size:3rem}
 @keyframes pop{from{transform:scale(.6) rotate(-6deg);opacity:0}}
 .field{font:500 1.05rem var(--text);padding:15px 14px;border:0;border-radius:14px;background:var(--card);color:var(--ink);width:100%;box-shadow:var(--shadow)}
+.toast-btn{margin-left:10px;padding:6px 12px;border-radius:99px;background:color-mix(in srgb,var(--bg) 22%,transparent);color:inherit;font:700 .86rem/1 var(--text)}
+.linkbtn{font:600 .82rem/1 var(--text);color:rgba(255,255,255,.85);text-decoration:underline;justify-self:center;padding:4px}
+.trash{flex:none;width:44px;height:44px;margin:0 12px 0 -4px;border-radius:12px;background:var(--fill);font-size:1.05rem}
+.trash.sure{width:auto;padding:0 12px;background:#ff3b5c;color:#fff;font:700 .8rem/1 var(--text)}
+.dayitem{display:flex;align-items:center;border-top:1px solid var(--line)}
+.dayitem:first-child{border-top:0}
+.dayitem .row{flex:1;border-top:0}
+.mini-btn{width:auto;padding:10px 14px;font-size:.88rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -333,6 +341,7 @@ body:has(.mini:not([hidden])) .view{padding-bottom:calc(var(--safe-b) + 160px)}
 <div class="gate" id="gate" hidden>
  <form id="gate-form" novalidate>
   <img src="icon-180.png" alt="">
+  <p class="eyebrow">VickyDeli Gym App</p>
   <h1>Who's training? 💪</h1>
   <p class="muted">Tap your name. You'll stay signed in on this phone.</p>
   <div class="pick"><button type="button" class="pv" data-login="v" aria-pressed="false"><span class="avatar">V</span>Vicky</button><button type="button" class="pd" data-login="d" aria-pressed="false"><span class="avatar">D</span>Delian</button></div>
@@ -346,7 +355,7 @@ body:has(.mini:not([hidden])) .view{padding-bottom:calc(var(--safe-b) + 160px)}
 <div class="mini" id="mini" hidden></div>
 <div id="layer"></div>
 <div id="hearts" aria-hidden="true"></div>
-<p class="toast" id="toast" role="status" hidden></p>
+<div class="toast" id="toast" role="status" hidden></div>
 <input type="file" id="snap-input" class="hidden-input" accept="image/*" capture="environment">
 
 <nav class="tabbar" aria-label="Sections">
@@ -641,9 +650,10 @@ async function remove(key){
  if(error){syncNote='Couldn\'t remove that check-in from the server. Try again with a connection.';render()}
 }
 function startWorkout(person,programIdToStart,date=today){
- const key=`${date}_${person}_${programIdToStart}`
- if(!checkins[key])save({key,date,person,program:programIdToStart,rounds:{},warm:null,cool:null,at:new Date().toISOString()})
+ const key=`${date}_${person}_${programIdToStart}`,fresh=!checkins[key]
+ if(fresh)save({key,date,person,program:programIdToStart,rounds:{},warm:null,cool:null,at:new Date().toISOString()})
  openWorkout(key)
+ if(fresh)offerUndo(key)
 }
 function openWorkout(key,step){
  const c=checkins[key],program=programOf(c)
@@ -699,7 +709,7 @@ function weekStrip(person){
 function installBanner(){
  const iphone=/iPhone|iPad/.test(navigator.userAgent),installed=navigator.standalone||matchMedia('(display-mode: standalone)').matches
  if(!iphone||installed||store.get('hideInstall'))return ''
- return `<div class="banner"><div style="flex:1"><b>Put MG Gym on your Home Screen</b>Tap <b style="display:inline">Share ⬆︎</b>, then <b style="display:inline">Add to Home Screen</b>. It opens full-screen like any app.</div><button class="icon" data-act="hide-install" aria-label="Hide">✕</button></div>`
+ return `<div class="banner"><div style="flex:1"><b>Put VickyDeli Gym on your Home Screen</b>Tap <b style="display:inline">Share ⬆︎</b>, then <b style="display:inline">Add to Home Screen</b>. It opens full-screen like any app.</div><button class="icon" data-act="hide-install" aria-label="Hide">✕</button></div>`
 }
 
 function renderToday(){
@@ -709,6 +719,7 @@ function renderToday(){
   <header class="top"><div><p class="eyebrow">${atNoon(today).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</p><h1 class="title">${greet[0]},<br>${NAME[me]} <span data-act="egg" data-egg="greeting">${greet[1]}</span></h1></div>
    <div class="topbtns"><button class="icon passbtn" data-act="pass" aria-label="Show gym pass">🎫</button><button data-view="plan" aria-label="Your plan">${avatar(me)}</button></div></header>
   ${installBanner()}
+  ${pushBanner()}
   ${syncNote?`<p class="status">${syncNote}</p>`:''}
   ${joinBanner()}
   ${started?sessionHero(started):programPicker()}
@@ -728,7 +739,8 @@ function sessionHero(c){
   <h2>${shown.t} ${emojiFor(shown.id)}</h2>
   <p class="meta">${shown.ex.length} exercises · ${total} sets · ${shown.s.split('· ').pop()}</p>
   <div class="bar"><i style="width:${done/total*100}%"></i></div><p class="meta">${done} of ${total} sets done</p>
-  <button class="big" data-open="${c.key}">${done===total?'Done · view session':'Continue workout'}</button></section>`
+  <button class="big" data-open="${c.key}">${done===total?'Done · view session':'Continue workout'}</button>
+  <button class="linkbtn" data-delete="${c.key}">${confirmDelete===c.key?'Tap again to remove it for good':done?'Logged by mistake? Remove it':'Started by mistake? Remove it'}</button></section>`
 }
 function programPicker(){
  const [pick,why]=suggestedProgram(),p=PROGRAMS[me].find(x=>x.id===pick),others=PROGRAMS[me].filter(x=>x.id!==pick)
@@ -765,6 +777,7 @@ function renderPlan(){
    <button class="row" data-act="pass"><span class="wkday">🎫</span><span class="grow"><b>Gym pass</b><span class="muted small">Your QR for the door at Moderncoach</span></span><span class="chev">›</span></button>
    ${me==='v'?`<button class="row" data-act="book"><span class="wkday">💌</span><span class="grow"><b>Love notes</b><span class="muted small">${eggsFound.length} of ${LOVE_NOTES.length} found${eggsFound.length<LOVE_NOTES.length?' · keep exploring':' · all of them 🥹'}</span></span><span class="chev">›</span></button>`:''}
    <button class="row" data-act="share"><span class="wkday">📲</span><span class="grow"><b>Share the app</b><span class="muted small">Send the link to ${NAME[PARTNER[me]]}</span></span><span class="chev">›</span></button>
+   <button class="row" data-act="${pushState()==='off'?'push-on':'push-info'}"><span class="wkday">🔔</span><span class="grow"><b>Notifications</b><span class="muted small">${PUSH_LABEL[pushState()]}</span></span><span class="chev">›</span></button>
    <button class="row" data-act="password"><span class="wkday">🔐</span><span class="grow"><b>Change password</b><span class="muted small">Signed in as ${NAME[me]}</span></span><span class="chev">›</span></button>
    <button class="row" data-act="signout"><span class="grow"><b style="color:var(--v)">Sign out</b></span></button>
   </div>
@@ -857,7 +870,9 @@ document.addEventListener('click',e=>{
   const c={...checkins[workout.key],rounds:{...checkins[workout.key].rounds}},was=c.rounds[d.set]
   if(was)delete c.rounds[d.set];else{c.rounds[d.set]=1;startRest(+d.rest)}
   save(c)
-  if(!was&&roundsDone(c)===totalRounds(programOf(c))){hearts(28);toast('Every set done. So proud of you 🎉');sendCheer('done',{program:c.program});if(c.program==='glutes')findEgg('peach')}
+  // the partner hears "started" only with the first ticked set, so an accidental Start never pings anyone
+  if(!was&&roundsDone(c)===1&&c.date===today&&c.person===me)notifyPartner('start',{program:c.program})
+  if(!was&&roundsDone(c)===totalRounds(programOf(c))){hearts(28);toast('Every set done. So proud of you 🎉');sendCheer('done',{program:c.program});notifyPartner('done',{program:c.program});if(c.program==='glutes')findEgg('peach')}
  }
  else if(d.pick&&workout){const c={...checkins[workout.key]};c[d.pick]=c[d.pick]===d.id?null:d.id;save(c)}
  else if(d.step&&workout){
@@ -874,11 +889,16 @@ document.addEventListener('click',e=>{
  else if(d.act==='sheet-bg'){sheetOpen=false;render()}
  else if(d.tune)tuneIn(d.tune)
  else if(d.act==='tune-out')tuneOut()
- else if(d.act==='heart'){sendCheer('heart');hearts(8);toast(`Heart sent to ${NAME[PARTNER[me]]} 💕`)}
+ else if(d.act==='heart'){sendCheer('heart');notifyPartner('heart');hearts(8);toast(`Heart sent to ${NAME[PARTNER[me]]} 💕`)}
  else if(d.instant)openInstant(d.instant)
  else if(d.act==='close-instant'){viewing=null;render()}
  else if(d.act==='send-instant')sendInstant()
  else if(d.act==='cancel-instant'){URL.revokeObjectURL(composing.preview);composing=null;render()}
+ else if(d.delete)askOrDelete(d.delete)
+ else if(d.act==='undo-start'){$('toast').hidden=true;if(checkins[undoKey]){remove(undoKey);toast('Removed. No harm done 🙂')}}
+ else if(d.act==='push-on')enablePush()
+ else if(d.act==='push-info')toast(PUSH_LABEL[pushState()])
+ else if(d.act==='hide-push'){store.set('hidePush','1');render()}
  else if(d.act==='pass'){passFor=me;render()}
  else if(d.act==='close-pass'){passFor=null;render()}
  else if(d.act==='close-note'){noteOpen=null;render()}
@@ -889,7 +909,7 @@ document.addEventListener('click',e=>{
  else if(d.act==='save-pass')savePassword()
  else if(d.act==='cancel-pass'){passwordSheet=false;render()}
  else if(d.act==='hide-install'){store.set('hideInstall','1');render()}
- else if(d.act==='share'){const url=location.href.split('#')[0];navigator.share?navigator.share({title:'MG Gym',text:'Our gym plan',url}).catch(()=>{}):navigator.clipboard?.writeText(url).then(()=>{syncNote='Link copied: '+url;view='today';render()})}
+ else if(d.act==='share'){const url=location.href.split('#')[0];navigator.share?navigator.share({title:'VickyDeli Gym App',text:'Our gym plan',url}).catch(()=>{}):navigator.clipboard?.writeText(url).then(()=>{syncNote='Link copied: '+url;view='today';render()})}
   else if(d.act==='signout'){sb?.auth.signOut();checkins={};store.set('workout',null)}
 })
 document.addEventListener('change',e=>{
@@ -939,7 +959,7 @@ function tuneIn(id){
  switching=true;tuned=id;loadStream(id)
  radio.play().then(()=>{switching=false}).catch(()=>{switching=false;tuned=null;toast('The stream didn\'t start. Check your connection and tap the station again.');render()})
  if('mediaSession' in navigator){
-  navigator.mediaSession.metadata=new MediaMetadata({title:station.name,artist:`SomaFM · ${station.vibe}`,album:'MG Gym radio',artwork:[{src:'icon-512.png',sizes:'512x512',type:'image/png'}]})
+  navigator.mediaSession.metadata=new MediaMetadata({title:station.name,artist:`SomaFM · ${station.vibe}`,album:'VickyDeli Gym radio',artwork:[{src:'icon-512.png',sizes:'512x512',type:'image/png'}]})
   navigator.mediaSession.setActionHandler('pause',tuneOut)
   navigator.mediaSession.setActionHandler('play',()=>tuneIn(id))
  }
@@ -1006,7 +1026,7 @@ async function sendInstant(){
  sending=false
  if(up.error||row.error){toast('Your instant didn\'t send. Check your connection and try again.');render();return}
  URL.revokeObjectURL(composing.preview);composing=null
- toast(`Sent to ${NAME[PARTNER[me]]} 💌`);hearts(6);loadInstants()
+ toast(`Sent to ${NAME[PARTNER[me]]} 💌`);hearts(6);loadInstants();notifyPartner('instant')
  if(caption&&/delian/i.test(caption))findEgg('caption')
 }
 async function openInstant(id){
@@ -1040,7 +1060,11 @@ function hearts(count){
  }
 }
 let toastTimer=null
-function toast(message){const t=$('toast');t.textContent=message;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.hidden=true,3200)}
+function toast(message,action,ms=3200){
+ const t=$('toast');t.textContent=message
+ if(action)t.insertAdjacentHTML('beforeend',` <button class="toast-btn" data-act="${action.act}">${action.label}</button>`)
+ t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.hidden=true,ms)
+}
 
 // days you both checked into the same shared program: the number that counts for "together"
 function sessionsTogether(){
@@ -1168,7 +1192,9 @@ function renderDaySheet(){
  if(!dayOpen)return ''
  const cs=Object.values(checkins).filter(c=>c.date===dayOpen).sort((a,b)=>a.person===me?-1:1)
  return `<div class="sheet" data-act="day-bg"><div class="p${me}"><span class="grab"></span><h2 class="section">${shortDate(dayOpen)}</h2>
-  <div class="list">${cs.map(c=>`<button class="row p${c.person}" data-open="${c.key}"><span class="wkday">${PROGRAM_EMOJI[c.program]}</span><span class="grow"><b>${NAME[c.person]} · ${PROGRAM_NAME[c.program]}</b><span class="muted small">${roundsDone(c)} of ${totalRounds(programOf(c))} sets${c.warm?' · warm-up ✓':''}${c.cool?' · recovery ✓':''}</span></span><span class="chev">›</span></button>`).join('')}</div></div></div>`
+  <div class="list">${cs.map(c=>`<div class="dayitem"><button class="row p${c.person}" data-open="${c.key}"><span class="wkday">${PROGRAM_EMOJI[c.program]}</span><span class="grow"><b>${NAME[c.person]} · ${PROGRAM_NAME[c.program]}</b><span class="muted small">${roundsDone(c)} of ${totalRounds(programOf(c))} sets${c.warm?' · warm-up ✓':''}${c.cool?' · recovery ✓':''}</span></span><span class="chev">›</span></button>
+   <button class="trash${confirmDelete===c.key?' sure':''}" data-delete="${c.key}" aria-label="Remove this session">${confirmDelete===c.key?'Remove?':'🗑'}</button></div>`).join('')}</div>
+  <p class="small muted center">Logged one by accident? Tap 🗑, then tap again to confirm.</p></div></div>`
 }
 
 // the membership QR lives in a private table, never in the public code; each phone keeps a copy so the pass opens at the door without signal
@@ -1215,7 +1241,7 @@ function findEgg(name){
  if(fresh){
   eggsFound.push(name);store.set('eggs',JSON.stringify(eggsFound))
   sb?.auth.updateUser({data:{eggs:eggsFound}})
-  sendCheer('egg',{count:eggsFound.length})
+  sendCheer('egg',{count:eggsFound.length});notifyPartner('egg',{count:eggsFound.length})
  }
  noteOpen=name;hearts(fresh?20:6);render()
 }
@@ -1247,6 +1273,59 @@ async function savePassword(){
  passwordSheet=false;toast('New password saved 🔐');render()
 }
 
+
+// iPhones only allow notifications for web apps that were added to the Home Screen (iOS 16.4+)
+const PUSH_SUPPORTED='serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window
+const isInstalled=()=>navigator.standalone||matchMedia('(display-mode: standalone)').matches
+let pushOn=false
+
+function pushState(){
+ if(pushOn)return 'on'
+ if(!isInstalled())return 'install'
+ if(!PUSH_SUPPORTED)return 'unsupported'
+ return Notification.permission==='denied'?'blocked':'off'
+}
+const PUSH_LABEL={on:'On ✓ · pings for hearts, instants and workouts',off:'Off · tap to turn on',install:'Add VickyDeli Gym to your Home Screen first',unsupported:'Needs iOS 16.4 or newer',blocked:'Blocked: iPhone Settings → Notifications → VickyDeli Gym'}
+
+async function checkPush(){
+ if(!PUSH_SUPPORTED||!isInstalled())return
+ const reg=await navigator.serviceWorker.ready
+ pushOn=!!(await reg.pushManager.getSubscription())&&Notification.permission==='granted'
+ render()
+}
+async function enablePush(){
+ // asking must be the very first thing after the tap, or iOS refuses to show the permission prompt
+ const permission=await Notification.requestPermission()
+ if(permission!=='granted'){toast('No notifications then. You can allow them later in iPhone Settings → Notifications → VickyDeli Gym.');render();return}
+ const {data,error}=await sb.functions.invoke('notify',{body:{kind:'key'}})
+ if(error||!data?.publicKey){toast('Couldn\'t switch notifications on. Check your internet and try again.');return}
+ const reg=await navigator.serviceWorker.ready
+ const subscription=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:base64UrlToBytes(data.publicKey)})
+ const saved=await sb.from('push_subscriptions').upsert({endpoint:subscription.endpoint,person:me,subscription:subscription.toJSON()})
+ if(saved.error){toast('Notifications are allowed, but this phone didn\'t register. Try once more.');return}
+ pushOn=true;toast(`Notifications on 🔔 You'll know when ${NAME[PARTNER[me]]} needs you.`);render()
+}
+function base64UrlToBytes(text){
+ const base64=(text+'='.repeat((4-text.length%4)%4)).replace(/-/g,'+').replace(/_/g,'/')
+ return Uint8Array.from(atob(base64),ch=>ch.charCodeAt(0))
+}
+// a missed ping isn't worth interrupting a set for, so failures stay quiet and the in-app banner still shows
+function notifyPartner(kind,extra={}){sb?.functions.invoke('notify',{body:{kind,...extra}})}
+
+function pushBanner(){
+ if(pushState()!=='off'||store.get('hidePush'))return ''
+ return `<div class="banner p${PARTNER[me]}"><div style="flex:1"><b>🔔 Turn on notifications</b>Get a ping when ${NAME[PARTNER[me]]} starts a workout, sends an instant or a heart.</div><button class="big solid mini-btn" data-act="push-on">Turn on</button><button class="icon" data-act="hide-push" aria-label="Not now">✕</button></div>`
+}
+
+// "Undo" is offered for a few seconds after Start, the moment an accidental tap is most likely noticed
+let undoKey=null,confirmDelete=null
+function offerUndo(key){undoKey=key;toast(`Started ${PROGRAM_NAME[checkins[key].program].toLowerCase()} ${PROGRAM_EMOJI[checkins[key].program]}`,{label:'Undo',act:'undo-start'},6000)}
+function askOrDelete(key){
+ if(confirmDelete!==key){confirmDelete=key;render();setTimeout(()=>{if(confirmDelete===key){confirmDelete=null;render()}},4000);return}
+ const c=checkins[key];confirmDelete=null
+ remove(key);toast(`${PROGRAM_NAME[c.program]} on ${shortDate(c.date)} removed`)
+}
+
 let load=null,chooseLogin=()=>{}
 ;(()=>{
  const C=window.MG_CONFIG||{},gate=$('gate')
@@ -1274,7 +1353,7 @@ let load=null,chooseLogin=()=>{}
   if(!session)return
   me=session.user.user_metadata?.who||me;store.set('who',me)
   eggsFound=[...new Set([...eggsFound,...(session.user.user_metadata?.eggs||[])])]
-  await load();listen()
+  await load();listen();checkPush()
  }
  sb.auth.getSession().then(({data})=>start(data.session))
  sb.auth.onAuthStateChange((ev,session)=>{if(ev==='SIGNED_IN'||ev==='SIGNED_OUT')start(session)})
