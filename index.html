@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- SomaFM refuses streams whose request names another website as the referrer (403); sending none lets the radio play -->
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -942,7 +944,10 @@ const STATIONS=[
 // Both servers go in as <source>s so the player falls back to ice4 by itself, inside the same tap iOS requires for audio
 const STREAM_SERVERS=['ice2.somafm.com','ice4.somafm.com']
 function loadStream(id){
- radio.replaceChildren(...STREAM_SERVERS.map(server=>Object.assign(document.createElement('source'),{src:`https://${server}/${id}-128-mp3`,type:'audio/mpeg'})))
+ const sources=STREAM_SERVERS.map(server=>Object.assign(document.createElement('source'),{src:`https://${server}/${id}-128-mp3`,type:'audio/mpeg'}))
+ // only when the last server fails too is the stream really unreachable; until then the player moves on by itself
+ sources.at(-1).addEventListener('error',()=>{if(tuned!==id)return;tuned=null;shareListening(null);toast('SomaFM isn\'t answering right now. Try another station or again in a minute.');render()})
+ radio.replaceChildren(...sources)
  radio.load()
 }
 const stationById=id=>STATIONS.find(s=>s.id===id)
