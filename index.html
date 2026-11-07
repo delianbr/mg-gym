@@ -211,13 +211,14 @@ details.day[open]>summary .chev{transform:rotate(90deg)}
 .status{background:var(--fill);border-radius:14px;padding:10px 14px;font-size:.86rem}
 
 .gate{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;padding:24px 20px}
-.gate form,.gate .who{width:100%;max-width:380px;display:grid;gap:12px}
+.gate form{width:100%;max-width:380px;display:grid;gap:12px}
 .gate img{width:76px;height:76px;border-radius:18px;box-shadow:var(--shadow);margin-bottom:6px}
 .gate h1{font:800 2rem/1.05 var(--round);letter-spacing:-.02em}
 .gate input{font:500 1.05rem var(--text);padding:15px 14px;border:0;border-radius:14px;background:var(--card);color:var(--ink);width:100%;box-shadow:var(--shadow)}
 .gate .err{color:var(--v);font-size:.88rem}
 .gate .pick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.gate .pick button{border-radius:20px;padding:22px 10px;background:var(--acc);color:#fff;font:800 1.2rem/1 var(--round);display:grid;justify-items:center;gap:10px}
+.gate form:has([aria-pressed="true"]) .pick button[aria-pressed="false"]{opacity:.45}
+.gate .pick button{transition:opacity .15s;border-radius:20px;padding:22px 10px;background:var(--acc);color:#fff;font:800 1.2rem/1 var(--round);display:grid;justify-items:center;gap:10px}
 .gate .pick .avatar{background:rgba(255,255,255,.25);width:52px;height:52px;line-height:52px;font-size:1.4rem}
 
 .emo{font-size:.85em}
@@ -278,6 +279,51 @@ body:has(.mini:not([hidden])) .view{padding-bottom:calc(var(--safe-b) + 160px)}
 #hearts span{position:absolute;bottom:-40px;animation:floatup 2.8s ease-out forwards}
 @keyframes floatup{to{transform:translateY(-105vh) rotate(25deg);opacity:0}}
 .hidden-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.topbtns{display:flex;align-items:center;gap:8px}
+.passbtn{width:38px;height:38px;font-size:1.1rem;background:var(--card);box-shadow:var(--shadow)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.tile{background:var(--card);border-radius:20px;padding:14px;display:grid;gap:4px;text-align:left;box-shadow:var(--shadow);border-top:4px solid var(--acc)}
+.tile b{font:700 .98rem/1.2 var(--round)}
+.streaks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.streak{background:linear-gradient(160deg,var(--acc-soft),var(--card) 70%);border-radius:20px;padding:12px;display:grid;gap:3px;box-shadow:var(--shadow)}
+.streak b{font:800 1.15rem/1.1 var(--round);color:var(--acc)}
+.rings{display:flex;justify-content:space-around}
+.ring{position:relative;display:grid;justify-items:center;gap:4px}
+.ring svg{width:84px;height:84px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:7}
+.ring .bg{stroke:var(--fill)}.ring .fg{stroke:var(--acc);stroke-linecap:round;transition:stroke-dashoffset .6s}
+.ring b{position:absolute;top:30px;font:800 1.05rem/1 var(--round)}
+.ring span{font:600 .8rem/1 var(--text)}
+.cal{display:grid;gap:12px}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr) 28px;gap:4px;text-align:center}
+.calgrid>span{font:600 .7rem/1 var(--text);color:var(--muted);padding:4px 0;align-self:center}
+.calgrid .day{position:relative;aspect-ratio:1;border-radius:12px;background:var(--fill);display:grid;place-items:center;padding:0}
+.calgrid .day i{position:absolute;top:3px;left:5px;font:600 .62rem/1 var(--text);font-style:normal;color:var(--muted)}
+.calgrid .day em{font-style:normal;font-size:1.15rem;line-height:1;margin-top:6px}
+.calgrid .day.out{opacity:.35}
+.calgrid .day.future{background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+.calgrid .day.now{box-shadow:0 0 0 2px var(--acc)}
+.calgrid .day:has(em){background:var(--acc-soft)}
+.calgrid .matedot{position:absolute;bottom:4px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--mate,var(--v))}
+.pd .calgrid .matedot{background:var(--v)}.pv .calgrid .matedot{background:var(--d)}
+.calgrid .wk{font-size:1rem}
+.passview{position:fixed;inset:0;z-index:55;background:#fff;color:#2a1f24;display:grid;align-content:start;gap:20px;padding:calc(var(--safe-t) + 12px) 20px calc(var(--safe-b) + 20px)}
+.passview .bar{display:flex;gap:10px;align-items:center}
+.passview .seg{flex:1;background:#f4e9e6}
+.passview .seg button[aria-pressed="true"]{background:#fff}
+.passview .icon{background:#f4e9e6;color:#2a1f24}
+.pass{display:grid;justify-items:center;gap:12px;text-align:center;padding:18px;border-radius:28px;background:linear-gradient(180deg,var(--acc-soft),#fff 40%)}
+.pass .eyebrow{color:#97868c}
+.qr{width:min(78vw,320px);aspect-ratio:1;image-rendering:pixelated;background:#fff;padding:14px;border-radius:20px;box-shadow:0 10px 30px rgba(80,40,50,.12)}
+.note-bg{align-items:center;padding:20px}
+.sheet>.lovenote{max-height:none;padding-bottom:24px}
+.sheet>.lovenote,.lovenote{background:#fffaf5;color:#4a2a33;border-radius:26px;padding:24px 22px;display:grid;gap:12px;justify-items:center;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);animation:pop .45s cubic-bezier(.2,1.5,.4,1);max-width:400px;margin:0 auto;width:100%}
+.lovenote .eyebrow{color:#b08a94}
+.lovenote .paper{font:600 1.2rem/1.45 var(--round);background:repeating-linear-gradient(transparent 0 30px,#f3dfe3 30px 31px);padding:6px 4px}
+.lovenote .sig{font:700 1.05rem var(--round);color:var(--v);justify-self:end}
+.lovenote .bigemo{font-size:3rem}
+@keyframes pop{from{transform:scale(.6) rotate(-6deg);opacity:0}}
+.field{font:500 1.05rem var(--text);padding:15px 14px;border:0;border-radius:14px;background:var(--card);color:var(--ink);width:100%;box-shadow:var(--shadow)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -287,23 +333,13 @@ body:has(.mini:not([hidden])) .view{padding-bottom:calc(var(--safe-b) + 160px)}
 <div class="gate" id="gate" hidden>
  <form id="gate-form" novalidate>
   <img src="icon-180.png" alt="">
-  <h1>MG Gym</h1>
-  <p class="muted" id="gate-msg">Your shared plan for Moderncoach Deggendorf.</p>
-  <div class="seg" role="group" aria-label="Sign in or create account">
-   <button type="button" data-mode="email" aria-pressed="true">Sign in</button>
-   <button type="button" data-mode="signup" aria-pressed="false">Create account</button>
-  </div>
-  <input type="email" id="gate-email" placeholder="Email" autocomplete="email" inputmode="email">
-  <input type="password" id="gate-pass" placeholder="Password" autocomplete="current-password">
-  <button class="big solid" id="gate-btn" type="submit">Sign in</button>
+  <h1>Who's training? 💪</h1>
+  <p class="muted">Tap your name. You'll stay signed in on this phone.</p>
+  <div class="pick"><button type="button" class="pv" data-login="v" aria-pressed="false"><span class="avatar">V</span>Vicky</button><button type="button" class="pd" data-login="d" aria-pressed="false"><span class="avatar">D</span>Delian</button></div>
+  <input type="password" id="gate-pass" placeholder="Password" autocomplete="current-password" hidden>
+  <button class="big solid" id="gate-btn" type="submit" hidden>Let's go</button>
   <p class="err" id="gate-err" hidden></p>
  </form>
- <div class="who" id="who" hidden>
-  <img src="icon-180.png" alt="">
-  <h1>Whose phone is this?</h1>
-  <p class="muted">The app opens on your own plan and colour from now on.</p>
-  <div class="pick"><button class="pv" data-me="v"><span class="avatar">V</span>Vicky</button><button class="pd" data-me="d"><span class="avatar">D</span>Delian</button></div>
- </div>
 </div>
 
 <main id="app"></main>
@@ -315,7 +351,7 @@ body:has(.mini:not([hidden])) .view{padding-bottom:calc(var(--safe-b) + 160px)}
 
 <nav class="tabbar" aria-label="Sections">
  <button data-view="today" aria-current="page"><svg viewBox="0 0 24 24"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.2 1.5 1 2.5 2 3 0-3 0-6 1-8.5z"/></svg>Today</button>
- <button data-view="week"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Week</button>
+ <button data-view="progress"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M9 15l2 2 4-4"/></svg>Progress</button>
  <label class="cam" for="snap-input" aria-label="Send an instant"><svg viewBox="0 0 24 24"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.5"/></svg></label>
  <button data-view="radio"><svg viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>Radio</button>
  <button data-view="plan"><svg viewBox="0 0 24 24"><path d="M2.5 9.5v5M5.5 7v10M18.5 7v10M21.5 9.5v5M5.5 12h13"/></svg>Plan</button>
@@ -550,6 +586,324 @@ function sketch(k){
 }
 
 
+// Program ids stay the same as before, so check-ins already saved in Supabase still match their programs
+const programId=title=>/glute/i.test(title)?'glutes':/chest/i.test(title)?'chestback':/ham/i.test(title)?'hams':/arm/i.test(title)?'arms':'legs'
+const PROGRAMS={v:PLAN.v.days.map(x=>({...x,id:programId(x.t)})),d:PLAN.d.days.map(x=>({...x,id:programId(x.t)}))}
+const NAME={v:'Vicky',d:'Delian'}
+const PARTNER={v:'d',d:'v'}
+const PROGRAM_NAME={glutes:'Glutes',chestback:'Chest & back',hams:'Hamstrings & lower back',arms:'Arms & shoulders',legs:'Legs & abs'}
+// what each of you should do on a day off, taken from your own plan rules
+const REST_TIP={v:'Get your 8–10k steps in and keep the calorie deficit.',d:'Eat the surplus today too: 3 meals and 2 snacks, 100–110 g protein.'}
+
+const pad=n=>String(n).padStart(2,'0')
+const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
+const atNoon=s=>new Date(s+'T12:00')
+const mondayOf=d=>{const x=new Date(d);x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+const shortDate=s=>atNoon(s).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})
+const $=id=>document.getElementById(id)
+const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}}
+
+let today=iso(new Date())
+let me=store.get('who'),view='today',planFor=null
+let checkins={},sb=null,syncNote='',confirmRemove=false
+let workout=null   // {key, step}; step 0 = warm-up, 1..n = exercises, n+1 = recovery, n+2 = finished
+let rest=null      // {ends, total}
+
+const totalRounds=program=>program.ex.reduce((sum,e)=>sum+e[4],0)
+const roundsDone=c=>Object.keys(c?.rounds||{}).length
+const programOf=c=>PROGRAMS[c.person].find(p=>p.id===c.program)
+const checkinsOf=(person,date)=>Object.values(checkins).filter(c=>c.person===person&&(!date||c.date===date))
+const accentClass=(program,person)=>program?.both?'pb':'p'+person
+
+// the 8-week block starts at each person's first check-in, like the original plan says
+function programWeek(person){
+ const first=checkinsOf(person).map(c=>c.date).sort()[0]
+ if(!first)return 1
+ return Math.min(8,Math.floor((mondayOf(atNoon(today))-mondayOf(atNoon(first)))/6048e5)+1)
+}
+const sentence=t=>t.charAt(0).toUpperCase()+t.slice(1)
+const phaseIndex=week=>week<=2?0:week<=6?1:week===7?2:3
+
+// rest values in the plan read like "90 s", "1–2 min" or "2–3 min"; the timer uses the lower bound so nobody waits longer than planned
+function restSeconds(text){const n=parseFloat(text);return /min/.test(text)?n*60:n}
+
+const row=c=>({key:c.key,date:c.date,person:c.person,program:c.program,rounds:c.rounds||{},warm:c.warm||null,cool:c.cool||null,at:c.at||new Date().toISOString()})
+async function save(c){
+ checkins[c.key]=c;render()
+ if(!sb)return
+ const {error}=await sb.from('checkins').upsert(row(c))
+ if(error){syncNote='That change didn\'t reach the server. It\'s kept on this phone; check your connection.';render()}
+}
+async function remove(key){
+ delete checkins[key];closeWorkout()
+ if(!sb)return
+ const {error}=await sb.from('checkins').delete().eq('key',key)
+ if(error){syncNote='Couldn\'t remove that check-in from the server. Try again with a connection.';render()}
+}
+function startWorkout(person,programIdToStart,date=today){
+ const key=`${date}_${person}_${programIdToStart}`
+ if(!checkins[key])save({key,date,person,program:programIdToStart,rounds:{},warm:null,cool:null,at:new Date().toISOString()})
+ openWorkout(key)
+}
+function openWorkout(key,step){
+ const c=checkins[key],program=programOf(c)
+ // reopening jumps to the first exercise with unticked sets, so a paused session picks up where it stopped
+ const resume=c.warm?1+Math.max(0,program.ex.findIndex((e,ei)=>[...Array(e[4])].some((_,ri)=>!c.rounds?.[`${ei}-${ri}`]))):0
+ workout={key,step:step??(roundsDone(c)===totalRounds(program)?program.ex.length+1:resume)}
+ store.set('workout',JSON.stringify(workout));confirmRemove=false;keepAwake(true);render()
+}
+function closeWorkout(){workout=null;rest=null;store.set('workout',null);keepAwake(false);render()}
+
+let wakeLock=null
+async function keepAwake(on){
+ try{if(on&&!wakeLock&&navigator.wakeLock)wakeLock=await navigator.wakeLock.request('screen');if(!on&&wakeLock){wakeLock.release();wakeLock=null}}catch(e){wakeLock=null}
+}
+
+let tick=null
+function startRest(seconds){rest={ends:Date.now()+seconds*1000,total:seconds};runTimer()}
+// the "Go" state stays up for a few seconds after the rest ends, then the bar tucks itself away
+function runTimer(){
+ clearInterval(tick);drawTimer()
+ tick=setInterval(()=>{if(rest&&Date.now()>rest.ends+5000)rest=null;drawTimer();if(!rest)clearInterval(tick)},250)
+}
+function drawTimer(){
+ const el=$('timer');if(!el)return
+ if(!rest){el.hidden=true;return}
+ const left=Math.max(0,Math.ceil((rest.ends-Date.now())/1000)),done=left===0
+ if(done&&!rest.buzzed){rest.buzzed=true;navigator.vibrate?.([120,60,120])}
+ const r=16,len=2*Math.PI*r,frac=done?1:1-left/rest.total
+ el.hidden=false;el.className='timer'+(done?' go':'')
+ el.innerHTML=`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="${r}" stroke="currentColor" stroke-opacity=".2"/><circle cx="20" cy="20" r="${r}" stroke="currentColor" stroke-dasharray="${len}" stroke-dashoffset="${len*(1-frac)}" stroke-linecap="round"/></svg>
+ <div class="grow"><b>${done?'Go':Math.floor(left/60)+':'+pad(left%60)}</b><span>${done?'Next set when you\'re ready':'Rest'}</span></div>
+ ${done?'':'<button data-rest="+15">+15 s</button>'}<button data-rest="skip">${done?'OK':'Skip'}</button>`
+}
+
+const avatar=(p,egg)=>`<span class="avatar p${p}"${egg?` data-act="egg" data-egg="${egg}"`:''}>${NAME[p][0]}</span>`
+
+function partnerLine(){
+ const mate=PARTNER[me],theirs=checkinsOf(mate,today)[0],theirProgram=theirs&&programOf(theirs)
+ const text=!theirs?'Not at the gym yet':roundsDone(theirs)===totalRounds(theirProgram)?`Finished ${PROGRAM_NAME[theirs.program].toLowerCase()} ✓`:`${PROGRAM_NAME[theirs.program]} · ${roundsDone(theirs)} of ${totalRounds(theirProgram)} sets`
+ const together=sessionsTogether()
+ return `<div class="card partner p${mate}">${avatar(mate,'avatar')}<div style="flex:1"><b>${NAME[mate]}</b><span class="muted small">${text}</span>${together?`<span class="small together">💞 ${together} session${together>1?'s':''} together</span>`:''}</div><button class="heart" data-act="heart" aria-label="Send ${NAME[mate]} a heart">💗</button></div>`
+}
+
+function weekStrip(person){
+ const monday=mondayOf(atNoon(today)),mate=PARTNER[person]
+ return `<div class="card strip p${person}" style="--mate:var(--${mate})">${[...Array(7)].map((_,i)=>{
+  const d=new Date(monday);d.setDate(d.getDate()+i);const s=iso(d)
+  const cls=[checkinsOf(person,s).length&&'done',s===today&&'today',checkinsOf(mate,s).length&&'mate'].filter(Boolean).join(' ')
+  return `<div><span>${'MTWTFSS'[i]}</span><i class="${cls}">${d.getDate()}</i></div>`}).join('')}</div>`
+}
+
+
+function installBanner(){
+ const iphone=/iPhone|iPad/.test(navigator.userAgent),installed=navigator.standalone||matchMedia('(display-mode: standalone)').matches
+ if(!iphone||installed||store.get('hideInstall'))return ''
+ return `<div class="banner"><div style="flex:1"><b>Put MG Gym on your Home Screen</b>Tap <b style="display:inline">Share ⬆︎</b>, then <b style="display:inline">Add to Home Screen</b>. It opens full-screen like any app.</div><button class="icon" data-act="hide-install" aria-label="Hide">✕</button></div>`
+}
+
+function renderToday(){
+ const greet=greeting(),started=checkinsOf(me,today).sort((x,y)=>roundsDone(x)===totalRounds(programOf(x))?1:-1)[0]
+ const week=programWeek(me),[phaseLabel,...phaseText]=PLAN[me].phases[phaseIndex(week)].split(': ')
+ return `<div class="view p${me}">
+  <header class="top"><div><p class="eyebrow">${atNoon(today).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</p><h1 class="title">${greet[0]},<br>${NAME[me]} <span data-act="egg" data-egg="greeting">${greet[1]}</span></h1></div>
+   <div class="topbtns"><button class="icon passbtn" data-act="pass" aria-label="Show gym pass">🎫</button><button data-view="plan" aria-label="Your plan">${avatar(me)}</button></div></header>
+  ${installBanner()}
+  ${syncNote?`<p class="status">${syncNote}</p>`:''}
+  ${joinBanner()}
+  ${started?sessionHero(started):programPicker()}
+  ${instantsSection()}
+  ${partnerLine()}
+  <h2 class="section">This week</h2>
+  ${weekStrip(me)}
+  <section class="card phase"><div class="steps4">${[0,1,2,3].map(i=>`<i class="${i<=phaseIndex(week)?'on':''}"></i>`).join('')}</div><p class="eyebrow">Week ${week} of 8 · ${phaseLabel}</p><h3>${sentence(phaseText.join(': '))}</h3></section>
+  <button class="big soft" data-act="other">Log a workout for another day</button>
+ </div>`
+}
+const emojiFor=id=>id==='chestback'?`<span class="emo" data-act="egg" data-egg="butterfly">🦋</span>`:`<span class="emo">${PROGRAM_EMOJI[id]}</span>`
+function sessionHero(c){
+ const shown=programOf(c),total=totalRounds(shown),done=roundsDone(c)
+ return `<section class="hero ${accentClass(shown,me)}"><img src="${IMG[shown.ex[0][2]]}" alt="">
+  <p class="eyebrow">Today · ${shown.both?`with ${NAME[PARTNER[me]]}`:'solo'}</p>
+  <h2>${shown.t} ${emojiFor(shown.id)}</h2>
+  <p class="meta">${shown.ex.length} exercises · ${total} sets · ${shown.s.split('· ').pop()}</p>
+  <div class="bar"><i style="width:${done/total*100}%"></i></div><p class="meta">${done} of ${total} sets done</p>
+  <button class="big" data-open="${c.key}">${done===total?'Done · view session':'Continue workout'}</button></section>`
+}
+function programPicker(){
+ const [pick,why]=suggestedProgram(),p=PROGRAMS[me].find(x=>x.id===pick),others=PROGRAMS[me].filter(x=>x.id!==pick)
+ return `<section class="hero ${accentClass(p,me)}"><img src="${IMG[p.ex[0][2]]}" alt="">
+  <p class="eyebrow">${why==='join'?`${NAME[PARTNER[me]]} just started this · join in`:`Suggested · last time ${sinceLabel(lastDone(me,p.id))}`}</p>
+  <h2>${p.t} ${emojiFor(p.id)}</h2>
+  <p class="meta">${p.ex.length} exercises · ${totalRounds(p)} sets · ${p.s.split('· ').pop()}${p.both?' · together':''}</p>
+  <button class="big" data-start="${p.id}">Start ${p.t.toLowerCase()}</button></section>
+  <div><p class="eyebrow" style="margin:0 2px 8px">Or pick another</p><div class="tiles">${others.map(o=>`<button class="tile ${accentClass(o,me)}" data-start="${o.id}"><span class="bigemo">${PROGRAM_EMOJI[o.id]}</span><b>${o.t}</b><span class="small muted">${sinceLabel(lastDone(me,o.id))}</span></button>`).join('')}</div>
+  <p class="small muted center" style="margin-top:10px">Not training today? ${REST_TIP[me]}</p></div>`
+}
+
+function howTo(key){
+ const det=DET[key],demos=(DEMO[key]||[]).map(([label,url])=>`<a href="${url}" target="_blank" rel="noopener">▶ ${label}</a>`).join('')
+ if(!det&&!demos)return ''
+ return `<details class="how"><summary>How to do it ›</summary><div class="in">${det?`${sketch(key)}<p><b>Feel it in:</b> ${det[0]}</p><ul>${det[1].map(t=>`<li>${t}</li>`).join('')}</ul>`:''}<div class="links">${demos}</div></div></details>`
+}
+
+function renderPlan(){
+ const who=planFor||me,P=PLAN[who],week=programWeek(who),mine=checkinsOf(who)
+ return `<div class="view p${who}">
+  <header class="top"><div><p class="eyebrow">8-week program</p><h1 class="title">Plan</h1></div>${avatar(who)}</header>
+  <div class="seg" role="group" aria-label="Whose plan">${['v','d'].map(p=>`<button class="p${p}" data-plan="${p}" aria-pressed="${p===who}">${NAME[p]}${p===me?' (you)':''}</button>`).join('')}</div>
+  <div class="stats">${P.goal.map(([label,value])=>`<div class="stat"><span class="eyebrow">${label}</span><b>${value}</b></div>`).join('')}
+   <div class="stat"><span class="eyebrow">Program week</span><b>${week} of 8</b></div><div class="stat"><span class="eyebrow">Sessions logged</span><b>${mine.length}</b></div></div>
+  <section class="card phase"><div class="steps4">${[0,1,2,3].map(i=>`<i class="${i<=phaseIndex(week)?'on':''}"></i>`).join('')}</div>
+   ${P.phases.map((x,i)=>{const [l,...t]=x.split(': ');return `<p class="small${i===phaseIndex(week)?'':' muted'}"><b>${l}.</b> ${sentence(t.join(': '))}</p>`}).join('')}</section>
+  <h2 class="section">Programs</h2>
+  ${PROGRAMS[who].map(p=>`<details class="day ${accentClass(p,who)}"><summary><span class="wkday">${PROGRAM_EMOJI[p.id]}</span><span class="grow" style="flex:1;display:grid;gap:2px"><b>${p.t}</b><span class="muted small">${p.ex.length} exercises · ${p.s.split('· ').pop()} · last ${sinceLabel(lastDone(who,p.id))}</span></span>${p.both?'<span class="tag">Together</span>':''}<span class="chev">›</span></summary>
+   ${p.ex.map(([name,cue,img,key,rounds,reps,restText,start,goal])=>`<div class="exrow"><img src="${IMG[img]}" alt="" loading="lazy"><div><b>${name}</b><p class="muted small">${cue}</p><p class="load">${rounds} × ${reps} · rest ${restText}<br>${start} → ${goal}</p>${howTo(key)}</div></div>`).join('')}
+   <div style="padding:12px 16px 16px"><button class="big solid" data-start="${p.id}" data-for="${who}">Start ${p.t.toLowerCase()} now</button></div></details>`).join('')}
+  <section class="card"><h3 class="section" style="margin-bottom:8px"${who==='v'?' data-act="egg" data-egg="rules"':''}>Rules for ${NAME[who]}</h3><ul style="margin:0;padding-left:18px;display:grid;gap:6px">${P.notes.map(n=>`<li>${n}</li>`).join('')}</ul></section>
+  <div class="list">
+   <button class="row" data-act="pass"><span class="wkday">🎫</span><span class="grow"><b>Gym pass</b><span class="muted small">Your QR for the door at Moderncoach</span></span><span class="chev">›</span></button>
+   ${me==='v'?`<button class="row" data-act="book"><span class="wkday">💌</span><span class="grow"><b>Love notes</b><span class="muted small">${eggsFound.length} of ${LOVE_NOTES.length} found${eggsFound.length<LOVE_NOTES.length?' · keep exploring':' · all of them 🥹'}</span></span><span class="chev">›</span></button>`:''}
+   <button class="row" data-act="share"><span class="wkday">📲</span><span class="grow"><b>Share the app</b><span class="muted small">Send the link to ${NAME[PARTNER[me]]}</span></span><span class="chev">›</span></button>
+   <button class="row" data-act="password"><span class="wkday">🔐</span><span class="grow"><b>Change password</b><span class="muted small">Signed in as ${NAME[me]}</span></span><span class="chev">›</span></button>
+   <button class="row" data-act="signout"><span class="grow"><b style="color:var(--v)">Sign out</b></span></button>
+  </div>
+  <p class="muted small">Weights are starting estimates: pick the load where the last 2 reps are hard but clean. Plate-loaded numbers are per side unless marked total. Photos: moderncoachgym.de.</p>
+ </div>`
+}
+
+function workoutStep(c,program,step){
+ const n=program.ex.length
+ if(step===0){
+  const list=program.both?WARM_DUO:WARM_SOLO
+  return `<p class="eyebrow">Step 1 · 10 min</p><h2 class="exname">${program.both?'Warm-up':'Pilates warm-up'}</h2><p class="muted">Pick one video, follow along, then tick it.</p>
+   ${videoList(list,c,'warm')}
+   ${program.both?`<h3 class="section">Posture block</h3><div class="list">${POSTURE.map(([name,dose,url])=>`<a class="row" href="${url}" target="_blank" rel="noopener"><span class="play">▶</span><span class="grow"><b>${name}</b><span class="muted small">${dose}</span></span><span class="chev">›</span></a>`).join('')}</div>`:''}`
+ }
+ if(step===n+1)return `<p class="eyebrow">Last step · 10 min</p><h2 class="exname">Recovery</h2><p class="muted">Stretch it out before you leave.</p>${tuned&&tuned!==RECOVERY_STATION?`<button class="big soft" data-tune="${RECOVERY_STATION}">🥗 Switch the music to Groove Salad</button>`:''}${videoList(COOL,c,'cool')}`
+ if(step===n+2){
+  const done=roundsDone(c),total=totalRounds(program)
+  return `<div class="finish"><span class="badge">${done===total?'🎉':'✓'}</span><h2 class="exname">${done===total?'Session complete':'Session saved'}</h2><p class="muted">${done} of ${total} sets · warm-up ${c.warm?'✓':'skipped'} · recovery ${c.cool?'✓':'skipped'}</p><p class="muted small">${NAME[c.person]} has trained ${checkinsOf(c.person).filter(x=>x.date>=iso(mondayOf(atNoon(today)))).length} days this week.</p></div>`
+ }
+ const ei=step-1,[name,cue,img,key,rounds,reps,restText,start,goal]=program.ex[ei]
+ return `<div class="photo"><img src="${IMG[img]}" alt="${WHERE[img]} at Moderncoach Deggendorf"><span>📍 ${WHERE[img]}</span></div>
+  <div><p class="eyebrow">Exercise ${step} of ${n}</p><h2 class="exname">${name}</h2><p class="muted" style="margin-top:4px">${cue}</p></div>
+  <div class="sets">${[...Array(rounds)].map((_,ri)=>{const k=`${ei}-${ri}`;return `<button class="set${c.rounds?.[k]?' on':''}" data-set="${k}" data-rest="${restSeconds(restText)}" aria-pressed="${!!c.rounds?.[k]}"><b>${ri+1}</b><span>${c.rounds?.[k]?'done':reps}</span></button>`}).join('')}</div>
+  <div class="specs"><div><b>${start}</b><span>start weight</span></div><div><b>${goal}</b><span>week 8 goal</span></div><div><b>${rounds} × ${reps}</b><span>sets × reps</span></div><div><b>${restText}</b><span>rest between sets</span></div></div>
+  ${howTo(key)}`
+}
+
+function videoList(list,c,field){
+ return `<div class="list">${list.map(([id,title,url])=>{const used=checkinsOf(c.person).filter(x=>x[field]===id).length
+  return `<div class="opt"><a href="${url}" target="_blank" rel="noopener"><span class="play">▶</span><span class="grow"><b>${title}</b><span class="muted small">${used?`Done ${used}× before`:'New'}</span></span></a><button class="tick${c[field]===id?' on':''}" data-pick="${field}" data-id="${id}" aria-label="Mark done" aria-pressed="${c[field]===id}">✓</button></div>`}).join('')}</div>`
+}
+
+function renderWorkout(){
+ if(!workout||!checkins[workout.key])return ''
+ const c=checkins[workout.key],program=programOf(c),n=program.ex.length,step=workout.step
+ const exDone=ei=>[...Array(program.ex[ei][4])].every((_,ri)=>c.rounds?.[`${ei}-${ri}`])
+ const segs=[c.warm,...program.ex.map((_,ei)=>exDone(ei)),c.cool]
+ const nextLabel=step===n+2?'Back to today':step===n+1?'Finish':step===0?'Start exercises':step===n?'Recovery':'Next exercise'
+ return `<div class="workout ${accentClass(program,c.person)}">
+  <div class="wtop"><div class="bar"><button class="icon" data-act="close" aria-label="Close">✕</button><div class="wtitle"><h1>${PROGRAM_EMOJI[program.id]} ${program.t}${c.person!==me?` · ${NAME[c.person]}`:''}${c.date!==today?` · ${shortDate(c.date)}`:''}</h1>${tuned?`<button class="onair" data-act="tune-out">♪ ${stationById(tuned).name} · pause</button>`:''}</div><button class="icon${confirmRemove?' confirm':''}" data-act="remove" aria-label="Remove check-in">${confirmRemove?'Remove?':'⋯'}</button></div>
+   <div class="segs">${segs.map((done,i)=>`<i class="${done?'done':i===Math.min(step,n+1)?'here':''}"></i>`).join('')}</div></div>
+  <div class="wbody">${workoutStep(c,program,step)}</div>
+  <div class="timer" id="timer" hidden></div>
+  <nav class="stepnav">${step>0?'<button class="icon" data-step="-1" aria-label="Previous">‹</button>':''}<button class="big solid" data-step="${step===n+2?'done':1}">${nextLabel}</button></nav>
+ </div>`
+}
+
+function renderSheet(){
+ if(!sheetOpen)return ''
+ return `<div class="sheet" data-act="sheet-bg"><div class="p${me}"><span class="grab"></span><h2 class="section">Log a workout</h2>
+  <label class="small muted">Day<input type="date" id="other-date" value="${sheetDate}" max="${today}"></label>
+  <div class="list">${PROGRAMS[me].map(p=>`<button class="row ${accentClass(p,me)}" data-start="${p.id}" data-pick-date><span class="wkday">${PROGRAM_EMOJI[p.id]}</span><span class="grow"><b>${p.t}</b><span class="muted small">${p.ex.length} exercises</span></span><span class="chev">›</span></button>`).join('')}</div></div></div>`
+}
+let sheetOpen=false,sheetDate=today
+
+function render(){
+ today=iso(new Date())
+ if(!me)return
+ if(me==='v'&&new Date().getHours()<5&&!eggsFound.includes('night'))return findEgg('night')
+ document.body.className='p'+me
+ const scroll=view==='today'?renderToday():view==='progress'?renderProgress():view==='radio'?renderRadio():renderPlan()
+ $('app').innerHTML=scroll
+ document.querySelectorAll('.tabbar button').forEach(b=>b.dataset.view===view?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'))
+ const keepY=$('layer').querySelector('.workout')?.scrollTop
+ $('layer').innerHTML=renderWorkout()+renderSheet()+renderDaySheet()+renderComposer()+renderViewer()+renderPass()+renderPasswordSheet()+renderNotesBook()+renderNote()
+ // the Radio screen already has the big now-playing card, so the mini player only follows you elsewhere
+ $('mini').innerHTML=miniPlayer();$('mini').hidden=!tuned||view==='radio'
+ const w=$('layer').querySelector('.workout');if(w&&keepY!=null&&!render.resetScroll)w.scrollTop=keepY
+ render.resetScroll=false
+ drawTimer()
+}
+
+document.addEventListener('click',e=>{
+ const t=e.target.closest('button,[data-act]');if(!t)return
+ const d=t.dataset
+ // a tap inside a sheet bubbles up to its backdrop; only a tap on the backdrop itself should close it
+ if(/-bg$/.test(d.act)&&e.target!==t)return
+ if(d.view){view=d.view;planFor=null;render();scrollTo(0,0)}
+ else if(d.login)chooseLogin(d.login)
+ else if(d.start){const date=d.pickDate!=null?($('other-date')?.value||today):today;sheetOpen=false;startWorkout(d.for||me,d.start,date)}
+ else if(d.open){dayOpen=null;openWorkout(d.open)}
+ else if(d.day){dayOpen=d.day;render()}
+ else if(d.month){if(d.month==='0'){monthStart=new Date();monthStart.setDate(1);monthStart.setHours(12,0,0,0)}else monthStart.setMonth(monthStart.getMonth()+ +d.month);render()}
+ else if(d.pass){passFor=d.pass;render()}
+ else if(d.note){noteOpen=d.note;notesBook=false;render()}
+ else if(d.act==='egg')tapEgg(d.egg)
+ else if(d.plan){planFor=d.plan;render()}
+  else if(d.set&&workout){
+  const c={...checkins[workout.key],rounds:{...checkins[workout.key].rounds}},was=c.rounds[d.set]
+  if(was)delete c.rounds[d.set];else{c.rounds[d.set]=1;startRest(+d.rest)}
+  save(c)
+  if(!was&&roundsDone(c)===totalRounds(programOf(c))){hearts(28);toast('Every set done. So proud of you 🎉');sendCheer('done',{program:c.program});if(c.program==='glutes')findEgg('peach')}
+ }
+ else if(d.pick&&workout){const c={...checkins[workout.key]};c[d.pick]=c[d.pick]===d.id?null:d.id;save(c)}
+ else if(d.step&&workout){
+  if(d.step==='done'){closeWorkout();view='today';return}
+  const n=programOf(checkins[workout.key]).ex.length
+  workout.step=Math.max(0,Math.min(n+2,workout.step+ +d.step));rest=null;confirmRemove=false
+  store.set('workout',JSON.stringify(workout));render.resetScroll=true;render()
+ }
+ else if(d.rest==='skip'){rest=null;drawTimer()}
+ else if(d.rest==='+15'&&rest){rest.ends+=15000;rest.total+=15;drawTimer()}
+ else if(d.act==='close')closeWorkout()
+ else if(d.act==='remove'){if(confirmRemove)remove(workout.key);else{confirmRemove=true;render()}}
+ else if(d.act==='other'){sheetOpen=true;sheetDate=today;render()}
+ else if(d.act==='sheet-bg'){sheetOpen=false;render()}
+ else if(d.tune)tuneIn(d.tune)
+ else if(d.act==='tune-out')tuneOut()
+ else if(d.act==='heart'){sendCheer('heart');hearts(8);toast(`Heart sent to ${NAME[PARTNER[me]]} 💕`)}
+ else if(d.instant)openInstant(d.instant)
+ else if(d.act==='close-instant'){viewing=null;render()}
+ else if(d.act==='send-instant')sendInstant()
+ else if(d.act==='cancel-instant'){URL.revokeObjectURL(composing.preview);composing=null;render()}
+ else if(d.act==='pass'){passFor=me;render()}
+ else if(d.act==='close-pass'){passFor=null;render()}
+ else if(d.act==='close-note'){noteOpen=null;render()}
+ else if(d.act==='book'){notesBook=true;render()}
+ else if(d.act==='book-bg'){notesBook=false;render()}
+ else if(d.act==='day-bg'){dayOpen=null;render()}
+ else if(d.act==='password'){passwordSheet=true;render()}
+ else if(d.act==='save-pass')savePassword()
+ else if(d.act==='cancel-pass'){passwordSheet=false;render()}
+ else if(d.act==='hide-install'){store.set('hideInstall','1');render()}
+ else if(d.act==='share'){const url=location.href.split('#')[0];navigator.share?navigator.share({title:'MG Gym',text:'Our gym plan',url}).catch(()=>{}):navigator.clipboard?.writeText(url).then(()=>{syncNote='Link copied: '+url;view='today';render()})}
+  else if(d.act==='signout'){sb?.auth.signOut();checkins={};store.set('workout',null)}
+})
+document.addEventListener('change',e=>{
+ if(e.target.id==='other-date')sheetDate=e.target.value
+ if(e.target.id==='snap-input'&&e.target.files[0]){
+  if(composing)URL.revokeObjectURL(composing.preview)
+  composing={file:e.target.files[0],preview:URL.createObjectURL(e.target.files[0])};e.target.value='';render()
+ }
+})
+// coming back to the app after a while: refresh the date (it may be a new day) and pull the partner's latest sets
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();if(rest)runTimer();load?.()}})
+
+
+
 // a little picture per program, chosen for what the day trains (the flamingo is for all the single-leg balance work)
 const PROGRAM_EMOJI={glutes:'🍑',chestback:'🦋',hams:'🦩',arms:'💪',legs:'🦵'}
 
@@ -563,7 +917,14 @@ const STATIONS=[
  ['u80s','Underground 80s','📼','Synthpop & new wave','Throwback mood'],
  ['metal','Metal Detector','🤘','Metal, all of it','Leg-day PRs'],
  ['groovesalad','Groove Salad','🥗','Chilled ambient grooves','Stretching & recovery']
-].map(([id,name,emoji,vibe,bestFor])=>({id,name,emoji,vibe,bestFor,stream:`https://ice.somafm.com/${id}`}))
+].map(([id,name,emoji,vibe,bestFor])=>({id,name,emoji,vibe,bestFor}))
+// SomaFM's short ice.somafm.com links don't play in a browser at all; the full -128-mp3 addresses do.
+// Both servers go in as <source>s so the player falls back to ice4 by itself, inside the same tap iOS requires for audio
+const STREAM_SERVERS=['ice2.somafm.com','ice4.somafm.com']
+function loadStream(id){
+ radio.replaceChildren(...STREAM_SERVERS.map(server=>Object.assign(document.createElement('source'),{src:`https://${server}/${id}-128-mp3`,type:'audio/mpeg'})))
+ radio.load()
+}
 const stationById=id=>STATIONS.find(s=>s.id===id)
 const RECOVERY_STATION='groovesalad'
 // a station shared hours ago is just a leftover, not someone listening right now
@@ -575,7 +936,7 @@ let tuned=null,switching=false,listening={}   // listening = {v:{station,at}, d:
 
 function tuneIn(id){
  const station=stationById(id)
- switching=true;tuned=id;radio.src=station.stream
+ switching=true;tuned=id;loadStream(id)
  radio.play().then(()=>{switching=false}).catch(()=>{switching=false;tuned=null;toast('The stream didn\'t start. Check your connection and tap the station again.');render()})
  if('mediaSession' in navigator){
   navigator.mediaSession.metadata=new MediaMetadata({title:station.name,artist:`SomaFM · ${station.vibe}`,album:'MG Gym radio',artwork:[{src:'icon-512.png',sizes:'512x512',type:'image/png'}]})
@@ -584,7 +945,7 @@ function tuneIn(id){
  }
  shareListening(id);render()
 }
-function tuneOut(){switching=true;radio.pause();radio.removeAttribute('src');radio.load();switching=false;tuned=null;shareListening(null);render()}
+function tuneOut(){switching=true;radio.pause();radio.replaceChildren();radio.load();switching=false;tuned=null;shareListening(null);render()}
 // headphones unplugged or a phone call: the stream stops by itself, so the partner shouldn't still see "listening"
 radio.addEventListener('pause',()=>{if(tuned&&!switching){tuned=null;shareListening(null);render()}})
 
@@ -646,6 +1007,7 @@ async function sendInstant(){
  if(up.error||row.error){toast('Your instant didn\'t send. Check your connection and try again.');render();return}
  URL.revokeObjectURL(composing.preview);composing=null
  toast(`Sent to ${NAME[PARTNER[me]]} 💌`);hearts(6);loadInstants()
+ if(caption&&/delian/i.test(caption))findEgg('caption')
 }
 async function openInstant(id){
  viewing=id;render()
@@ -661,9 +1023,10 @@ const clock=at=>new Date(at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'
 // hearts and "I finished" go over a live channel, not the database: they only matter while the other phone is open
 let cheers=null
 function sendCheer(kind,extra={}){cheers?.send({type:'broadcast',event:'cheer',payload:{from:me,kind,...extra}})}
-function receiveCheer({from,kind,program}){
+function receiveCheer({from,kind,program,count}){
  if(from===me)return
  if(kind==='heart'){hearts(18);toast(`${NAME[from]} sent you a heart 💕`)}
+ if(kind==='egg'){toast(`Vicky just found love note ${count} of ${LOVE_NOTES.length} 💌`);hearts(10)}
  if(kind==='done'){hearts(24);toast(`${NAME[from]} just finished ${PROGRAM_NAME[program].toLowerCase()} ${PROGRAM_EMOJI[program]} Go tell them!`)}
 }
 function hearts(count){
@@ -745,338 +1108,159 @@ function renderViewer(){
 }
 
 
-// Program ids stay the same as before, so check-ins already saved in Supabase still match their programs
-const programId=title=>/glute/i.test(title)?'glutes':/chest/i.test(title)?'chestback':/ham/i.test(title)?'hams':/arm/i.test(title)?'arms':'legs'
-const PROGRAMS={v:PLAN.v.days.map(x=>({...x,id:programId(x.t)})),d:PLAN.d.days.map(x=>({...x,id:programId(x.t)}))}
-const NAME={v:'Vicky',d:'Delian'}
-const PARTNER={v:'d',d:'v'}
-const PROGRAM_NAME={glutes:'Glutes',chestback:'Chest & back',hams:'Hamstrings & lower back',arms:'Arms & shoulders',legs:'Legs & abs'}
-const WEEKDAY=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
-// what each of you should do on a day off, taken from your own plan rules
-const REST_TIP={v:'Get your 8–10k steps in and keep the calorie deficit.',d:'Eat the surplus today too: 3 meals and 2 snacks, 100–110 g protein.'}
-
-const pad=n=>String(n).padStart(2,'0')
-const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
-const atNoon=s=>new Date(s+'T12:00')
-const mondayOf=d=>{const x=new Date(d);x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
-const shortDate=s=>atNoon(s).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})
-const $=id=>document.getElementById(id)
-const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}}
-
-let today=iso(new Date())
-let me=store.get('who'),view='today',planFor=null,weekStart=mondayOf(new Date())
-let checkins={},sb=null,syncNote='',confirmRemove=false
-let workout=null   // {key, step}; step 0 = warm-up, 1..n = exercises, n+1 = recovery, n+2 = finished
-let rest=null      // {ends, total}
-
-const totalRounds=program=>program.ex.reduce((sum,e)=>sum+e[4],0)
-const roundsDone=c=>Object.keys(c?.rounds||{}).length
-const programOf=c=>PROGRAMS[c.person].find(p=>p.id===c.program)
-const checkinsOf=(person,date)=>Object.values(checkins).filter(c=>c.person===person&&(!date||c.date===date))
-const scheduledOn=(person,date)=>PROGRAMS[person].find(p=>p.d===WEEKDAY[atNoon(date).getDay()])
-const accentClass=(program,person)=>program?.both?'pb':'p'+person
-
-// the 8-week block starts at each person's first check-in, like the original plan says
-function programWeek(person){
- const first=checkinsOf(person).map(c=>c.date).sort()[0]
- if(!first)return 1
- return Math.min(8,Math.floor((mondayOf(atNoon(today))-mondayOf(atNoon(first)))/6048e5)+1)
+const lastDone=(person,id)=>checkinsOf(person).filter(c=>c.program===id).map(c=>c.date).sort().pop()||''
+// no fixed weekdays any more: suggest joining whatever the partner is training right now, otherwise the program you've gone longest without
+function suggestedProgram(){
+ const joinable=checkinsOf(PARTNER[me],today).map(c=>c.program).find(id=>PROGRAMS[me].some(p=>p.id===id))
+ if(joinable)return [joinable,'join']
+ return [[...PROGRAMS[me]].sort((a,b)=>lastDone(me,a.id).localeCompare(lastDone(me,b.id)))[0].id,'rotation']
 }
-const sentence=t=>t.charAt(0).toUpperCase()+t.slice(1)
-const phaseIndex=week=>week<=2?0:week<=6?1:week===7?2:3
-
-// rest values in the plan read like "90 s", "1–2 min" or "2–3 min"; the timer uses the lower bound so nobody waits longer than planned
-function restSeconds(text){const n=parseFloat(text);return /min/.test(text)?n*60:n}
-
-const row=c=>({key:c.key,date:c.date,person:c.person,program:c.program,rounds:c.rounds||{},warm:c.warm||null,cool:c.cool||null,at:c.at||new Date().toISOString()})
-async function save(c){
- checkins[c.key]=c;render()
- if(!sb)return
- const {error}=await sb.from('checkins').upsert(row(c))
- if(error){syncNote='That change didn\'t reach the server. It\'s kept on this phone; check your connection.';render()}
-}
-async function remove(key){
- delete checkins[key];closeWorkout()
- if(!sb)return
- const {error}=await sb.from('checkins').delete().eq('key',key)
- if(error){syncNote='Couldn\'t remove that check-in from the server. Try again with a connection.';render()}
-}
-function startWorkout(person,programIdToStart,date=today){
- const key=`${date}_${person}_${programIdToStart}`
- if(!checkins[key])save({key,date,person,program:programIdToStart,rounds:{},warm:null,cool:null,at:new Date().toISOString()})
- openWorkout(key)
-}
-function openWorkout(key,step){
- const c=checkins[key],program=programOf(c)
- // reopening jumps to the first exercise with unticked sets, so a paused session picks up where it stopped
- const resume=c.warm?1+Math.max(0,program.ex.findIndex((e,ei)=>[...Array(e[4])].some((_,ri)=>!c.rounds?.[`${ei}-${ri}`]))):0
- workout={key,step:step??(roundsDone(c)===totalRounds(program)?program.ex.length+1:resume)}
- store.set('workout',JSON.stringify(workout));confirmRemove=false;keepAwake(true);render()
-}
-function closeWorkout(){workout=null;rest=null;store.set('workout',null);keepAwake(false);render()}
-
-let wakeLock=null
-async function keepAwake(on){
- try{if(on&&!wakeLock&&navigator.wakeLock)wakeLock=await navigator.wakeLock.request('screen');if(!on&&wakeLock){wakeLock.release();wakeLock=null}}catch(e){wakeLock=null}
+function sinceLabel(date){
+ if(!date)return 'not done yet'
+ const days=Math.round((atNoon(today)-atNoon(date))/864e5)
+ return days===0?'done today':days===1?'yesterday':`${days} days ago`
 }
 
-let tick=null
-function startRest(seconds){rest={ends:Date.now()+seconds*1000,total:seconds};runTimer()}
-// the "Go" state stays up for a few seconds after the rest ends, then the bar tucks itself away
-function runTimer(){
- clearInterval(tick);drawTimer()
- tick=setInterval(()=>{if(rest&&Date.now()>rest.ends+5000)rest=null;drawTimer();if(!rest)clearInterval(tick)},250)
-}
-function drawTimer(){
- const el=$('timer');if(!el)return
- if(!rest){el.hidden=true;return}
- const left=Math.max(0,Math.ceil((rest.ends-Date.now())/1000)),done=left===0
- if(done&&!rest.buzzed){rest.buzzed=true;navigator.vibrate?.([120,60,120])}
- const r=16,len=2*Math.PI*r,frac=done?1:1-left/rest.total
- el.hidden=false;el.className='timer'+(done?' go':'')
- el.innerHTML=`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="${r}" stroke="currentColor" stroke-opacity=".2"/><circle cx="20" cy="20" r="${r}" stroke="currentColor" stroke-dasharray="${len}" stroke-dashoffset="${len*(1-frac)}" stroke-linecap="round"/></svg>
- <div class="grow"><b>${done?'Go':Math.floor(left/60)+':'+pad(left%60)}</b><span>${done?'Next set when you\'re ready':'Rest'}</span></div>
- ${done?'':'<button data-rest="+15">+15 s</button>'}<button data-rest="skip">${done?'OK':'Skip'}</button>`
+// each plan's own rhythm is the weekly goal: Vicky's has five programs, Delian's three
+const WEEKLY_GOAL={v:PROGRAMS.v.length,d:PROGRAMS.d.length}
+function weekDates(monday){return [...Array(7)].map((_,i)=>{const d=new Date(monday);d.setDate(d.getDate()+i);return iso(d)})}
+const gymDays=(person,monday)=>weekDates(monday).filter(d=>checkinsOf(person,d).length).length
+const trainedTogether=monday=>weekDates(monday).some(d=>checkinsOf('v',d).some(c=>checkins[`${d}_d_${c.program}`]))
+// the running week only ever adds to a streak; it can't break it until the week is over
+function weekStreak(hit){
+ const monday=mondayOf(new Date());let weeks=hit(monday)?1:0
+ for(let i=0;i<104;i++){monday.setDate(monday.getDate()-7);if(!hit(monday))break;weeks++}
+ return weeks
 }
 
-const avatar=p=>`<span class="avatar p${p}">${NAME[p][0]}</span>`
-
-function partnerLine(program){
- const mate=PARTNER[me],theirs=checkinsOf(mate,today)[0],theirProgram=theirs?programOf(theirs):scheduledOn(mate,today)
- let text
- if(theirs)text=roundsDone(theirs)===totalRounds(theirProgram)?`Finished ${PROGRAM_NAME[theirs.program].toLowerCase()} ✓`:`${PROGRAM_NAME[theirs.program]} · ${roundsDone(theirs)} of ${totalRounds(theirProgram)} sets`
- else if(theirProgram)text=theirProgram.id===program?.id?'Hasn\'t started yet':`Planned: ${PROGRAM_NAME[theirProgram.id].toLowerCase()}`
- else text='Rest day'
- const together=sessionsTogether()
- return `<div class="card partner p${mate}">${avatar(mate)}<div style="flex:1"><b>${NAME[mate]}</b><span class="muted small">${text}</span>${together?`<span class="small together">💞 ${together} session${together>1?'s':''} together</span>`:''}</div><button class="heart" data-act="heart" aria-label="Send ${NAME[mate]} a heart">💗</button></div>`
-}
-
-function weekStrip(person){
- const monday=mondayOf(atNoon(today)),mate=PARTNER[person]
- return `<div class="card strip p${person}" style="--mate:var(--${mate})">${[...Array(7)].map((_,i)=>{
-  const d=new Date(monday);d.setDate(d.getDate()+i);const s=iso(d)
-  const cls=[checkinsOf(person,s).length&&'done',s===today&&'today',checkinsOf(mate,s).length&&'mate'].filter(Boolean).join(' ')
-  return `<div><span>${'MTWTFSS'[i]}</span><i class="${cls}">${d.getDate()}</i></div>`}).join('')}</div>`
-}
-
-function nextScheduled(person){
- for(let i=1;i<=7;i++){const d=atNoon(today);d.setDate(d.getDate()+i);const p=scheduledOn(person,iso(d));if(p)return [WEEKDAY[d.getDay()],p]}
-}
-
-function installBanner(){
- const iphone=/iPhone|iPad/.test(navigator.userAgent),installed=navigator.standalone||matchMedia('(display-mode: standalone)').matches
- if(!iphone||installed||store.get('hideInstall'))return ''
- return `<div class="banner"><div style="flex:1"><b>Put MG Gym on your Home Screen</b>Tap <b style="display:inline">Share ⬆︎</b>, then <b style="display:inline">Add to Home Screen</b>. It opens full-screen like any app.</div><button class="icon" data-act="hide-install" aria-label="Hide">✕</button></div>`
-}
-
-function renderToday(){
- const greet=greeting()
- const program=scheduledOn(me,today),mine=checkinsOf(me,today),started=mine.find(c=>c.program===program?.id)||mine[0]
- const shown=started?programOf(started):program,week=programWeek(me),phase=PLAN[me].phases[phaseIndex(week)]
- const [phaseLabel,...phaseText]=phase.split(': ')
- let hero
- if(shown){
-  const total=totalRounds(shown),done=started?roundsDone(started):0,finished=started&&done===total
-  const label=finished?'Done · view session':started?'Continue workout':'Start workout'
-  hero=`<section class="hero ${accentClass(shown,me)}"><img src="${IMG[shown.ex[0][2]]}" alt="">
-   <p class="eyebrow">${started&&started.program!==program?.id?'Extra session':'Today'} · ${shown.both?`with ${NAME[PARTNER[me]]}`:'solo'}</p>
-   <h2>${shown.t} <span class="emo">${PROGRAM_EMOJI[shown.id]}</span></h2>
-   <p class="meta">${shown.ex.length} exercises · ${total} sets · ${shown.s.split('· ').pop()}</p>
-   ${started?`<div class="bar"><i style="width:${done/total*100}%"></i></div><p class="meta">${done} of ${total} sets done</p>`:''}
-   <button class="big" ${started?`data-open="${started.key}"`:`data-start="${shown.id}"`}>${label}</button></section>`
- }else{
-  const next=nextScheduled(me)
-  hero=`<section class="hero rest p${me}"><p class="eyebrow">Today</p><h2>Rest day <span class="emo">🛋️</span></h2><p class="meta muted">${REST_TIP[me]}</p>${next?`<p class="meta muted">Next: <b style="color:var(--ink)">${next[0]} · ${next[1].t}</b></p>`:''}</section>`
- }
+let monthStart=(()=>{const d=new Date();d.setDate(1);d.setHours(12,0,0,0);return d})(),dayOpen=null
+function renderProgress(){
+ const mate=PARTNER[me],thisMonday=mondayOf(new Date())
+ const mine=weekStreak(m=>gymDays(me,m)>=WEEKLY_GOAL[me]),ours=weekStreak(trainedTogether),theirs=weekStreak(m=>gymDays(mate,m)>=WEEKLY_GOAL[mate])
+ const ring=p=>{const done=gymDays(p,thisMonday),goal=WEEKLY_GOAL[p],r=26,len=2*Math.PI*r
+  return `<div class="ring p${p}"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="${r}" class="bg"/><circle cx="32" cy="32" r="${r}" class="fg" stroke-dasharray="${len}" stroke-dashoffset="${len*(1-Math.min(1,done/goal))}"/></svg><b>${done}/${goal}</b><span>${NAME[p]}${done>=goal?' 🏅':''}</span></div>`}
+ const first=mondayOf(monthStart),last=new Date(monthStart.getFullYear(),monthStart.getMonth()+1,0,12)
+ const weeks=[];for(const m=new Date(first);m<=last;m.setDate(m.getDate()+7))weeks.push(new Date(m))
+ const isThisMonth=monthStart.getMonth()===new Date().getMonth()&&monthStart.getFullYear()===new Date().getFullYear()
  return `<div class="view p${me}">
-  <header class="top"><div><p class="eyebrow">${atNoon(today).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</p><h1 class="title">${greet[0]},<br>${NAME[me]} ${greet[1]}</h1></div><button data-view="plan" aria-label="Your plan">${avatar(me)}</button></header>
-  ${installBanner()}
-  ${syncNote?`<p class="status">${syncNote}</p>`:''}
-  ${joinBanner()}
-  ${hero}
-  ${instantsSection()}
-  ${partnerLine(shown)}
-  <h2 class="section">This week</h2>
-  ${weekStrip(me)}
-  <section class="card phase"><div class="steps4">${[0,1,2,3].map(i=>`<i class="${i<=phaseIndex(week)?'on':''}"></i>`).join('')}</div><p class="eyebrow">Week ${week} of 8 · ${phaseLabel}</p><h3>${sentence(phaseText.join(': '))}</h3></section>
-  <button class="big soft" data-act="other">Log a different workout</button>
- </div>`
-}
-
-function renderWeek(){
- const days=[...Array(7)].map((_,i)=>{const d=new Date(weekStart);d.setDate(d.getDate()+i);return iso(d)})
- const count=p=>days.filter(d=>checkinsOf(p,d).length).length,thisWeek=iso(weekStart)===iso(mondayOf(new Date()))
- return `<div class="view p${me}">
-  <header class="top"><div><p class="eyebrow">${thisWeek?'This week':'Week of '+shortDate(days[0]).replace(/^\w+ /,'')}</p><h1 class="title">Week</h1></div></header>
-  <div class="weekhead"><button class="circle" data-week="-1" aria-label="Previous week">‹</button>
-   <div class="chips">${['v','d'].map(p=>`<span class="chip p${p}"><i class="dot"></i>${NAME[p]} <small>${count(p)} days</small></span>`).join('')}</div>
-   <button class="circle" data-week="1" aria-label="Next week">›</button></div>
-  <div class="list">${days.map(d=>{const cs=Object.values(checkins).filter(c=>c.date===d).sort((a,b)=>a.person===me?-1:1)
-   return `<div class="dayrow${d===today?' now':''}"><div class="d">${shortDate(d).split(' ')[0]}<b>${atNoon(d).getDate()}</b></div><div class="chips">${cs.length?cs.map(c=>{const p=programOf(c)
-    return `<button class="chip p${c.person}" data-open="${c.key}">${PROGRAM_EMOJI[c.program]} ${PROGRAM_NAME[c.program]} <small>${roundsDone(c)}/${totalRounds(p)}</small></button>`}).join(''):`<span class="muted small">${d<today?'Rest':d===today?'Nothing yet':'—'}</span>`}</div></div>`}).join('')}</div>
-  ${thisWeek?'':'<button class="big soft" data-week="0">Back to this week</button>'}
- </div>`
-}
-
-function howTo(key){
- const det=DET[key],demos=(DEMO[key]||[]).map(([label,url])=>`<a href="${url}" target="_blank" rel="noopener">▶ ${label}</a>`).join('')
- if(!det&&!demos)return ''
- return `<details class="how"><summary>How to do it ›</summary><div class="in">${det?`${sketch(key)}<p><b>Feel it in:</b> ${det[0]}</p><ul>${det[1].map(t=>`<li>${t}</li>`).join('')}</ul>`:''}<div class="links">${demos}</div></div></details>`
-}
-
-function renderPlan(){
- const who=planFor||me,P=PLAN[who],week=programWeek(who),mine=checkinsOf(who)
- return `<div class="view p${who}">
-  <header class="top"><div><p class="eyebrow">8-week program</p><h1 class="title">Plan</h1></div>${avatar(who)}</header>
-  <div class="seg" role="group" aria-label="Whose plan">${['v','d'].map(p=>`<button class="p${p}" data-plan="${p}" aria-pressed="${p===who}">${NAME[p]}${p===me?' (you)':''}</button>`).join('')}</div>
-  <div class="stats">${P.goal.map(([label,value])=>`<div class="stat"><span class="eyebrow">${label}</span><b>${value}</b></div>`).join('')}
-   <div class="stat"><span class="eyebrow">Program week</span><b>${week} of 8</b></div><div class="stat"><span class="eyebrow">Sessions logged</span><b>${mine.length}</b></div></div>
-  <section class="card phase"><div class="steps4">${[0,1,2,3].map(i=>`<i class="${i<=phaseIndex(week)?'on':''}"></i>`).join('')}</div>
-   ${P.phases.map((x,i)=>{const [l,...t]=x.split(': ');return `<p class="small${i===phaseIndex(week)?'':' muted'}"><b>${l}.</b> ${sentence(t.join(': '))}</p>`}).join('')}</section>
-  <h2 class="section">Training days</h2>
-  ${PROGRAMS[who].map(p=>`<details class="day ${accentClass(p,who)}"><summary><span class="wkday">${PROGRAM_EMOJI[p.id]}</span><span class="grow" style="flex:1;display:grid;gap:2px"><span class="eyebrow">${p.d}</span><b>${p.t}</b><span class="muted small">${p.ex.length} exercises · ${p.s.split('· ').pop()}</span></span>${p.both?'<span class="tag">Together</span>':''}<span class="chev">›</span></summary>
-   ${p.ex.map(([name,cue,img,key,rounds,reps,restText,start,goal])=>`<div class="exrow"><img src="${IMG[img]}" alt="" loading="lazy"><div><b>${name}</b><p class="muted small">${cue}</p><p class="load">${rounds} × ${reps} · rest ${restText}<br>${start} → ${goal}</p>${howTo(key)}</div></div>`).join('')}
-   <div style="padding:12px 16px 16px"><button class="big solid" data-start="${p.id}" data-for="${who}">Start ${p.t.toLowerCase()} now</button></div></details>`).join('')}
-  <section class="card"><h3 class="section" style="margin-bottom:8px">Rules for ${NAME[who]}</h3><ul style="margin:0;padding-left:18px;display:grid;gap:6px">${P.notes.map(n=>`<li>${n}</li>`).join('')}</ul></section>
-  <div class="list">
-   <button class="row" data-act="share"><span class="grow"><b>Share the app</b><span class="muted small">Send the link to ${NAME[PARTNER[me]]}</span></span><span class="chev">›</span></button>
-   <button class="row" data-act="switch"><span class="grow"><b>This phone is ${NAME[me]}'s</b><span class="muted small">Tap to change</span></span><span class="chev">›</span></button>
-   <button class="row" data-act="signout"><span class="grow"><b style="color:var(--v)">Sign out</b></span></button>
+  <header class="top"><div><p class="eyebrow">Streaks & stickers</p><h1 class="title">Progress</h1></div></header>
+  <div class="streaks">
+   <div class="streak p${me}"><span class="bigemo">🔥</span><b>${mine} week${mine===1?'':'s'}</b><span class="small muted">you · ${WEEKLY_GOAL[me]}×/week</span></div>
+   <div class="streak pb"><span class="bigemo">💞</span><b>${ours} week${ours===1?'':'s'}</b><span class="small muted">together</span></div>
+   <div class="streak p${mate}"><span class="bigemo">⚡</span><b>${theirs} week${theirs===1?'':'s'}</b><span class="small muted">${NAME[mate]} · ${WEEKLY_GOAL[mate]}×/week</span></div>
   </div>
-  <p class="muted small">Weights are starting estimates: pick the load where the last 2 reps are hard but clean. Plate-loaded numbers are per side unless marked total. Photos: moderncoachgym.de.</p>
+  <section class="card"><p class="eyebrow" style="margin-bottom:10px">This week</p><div class="rings">${ring(me)}${ring(mate)}</div></section>
+  <section class="card cal">
+   <div class="weekhead"><button class="circle" data-month="-1" aria-label="Previous month">‹</button><h2 class="section">${monthStart.toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</h2><button class="circle" data-month="1" aria-label="Next month">›</button></div>
+   <div class="calgrid"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span>⭐</span>
+   ${weeks.map(m=>weekDates(m).map(d=>{
+     const inMonth=atNoon(d).getMonth()===monthStart.getMonth(),mineThere=checkinsOf(me,d),theirsThere=checkinsOf(mate,d)
+     const together=mineThere.some(c=>theirsThere.some(t=>t.program===c.program))
+     const sticker=together?'💞':mineThere[0]?PROGRAM_EMOJI[mineThere[0].program]:''
+     return `<button class="day${inMonth?'':' out'}${d===today?' now':''}${d>today?' future':''}" ${mineThere.length||theirsThere.length?`data-day="${d}"`:'disabled'}><i>${atNoon(d).getDate()}</i>${sticker?`<em>${sticker}</em>`:''}${theirsThere.length&&!together?'<u class="matedot"></u>':''}</button>`}).join('')
+     +`<span class="wk">${gymDays(me,m)>=WEEKLY_GOAL[me]?'🏅':trainedTogether(m)?'💞':gymDays(me,m)?gymDays(me,m):''}</span>`).join('')}</div>
+   <p class="small muted">Stickers are your workouts, 💞 means you both trained it that day, a little dot is ${NAME[mate]} alone. 🏅 = weekly goal reached.</p>
+   ${isThisMonth?'':'<button class="big soft" data-month="0">Back to this month</button>'}
+  </section>
+ </div>`
+}
+function renderDaySheet(){
+ if(!dayOpen)return ''
+ const cs=Object.values(checkins).filter(c=>c.date===dayOpen).sort((a,b)=>a.person===me?-1:1)
+ return `<div class="sheet" data-act="day-bg"><div class="p${me}"><span class="grab"></span><h2 class="section">${shortDate(dayOpen)}</h2>
+  <div class="list">${cs.map(c=>`<button class="row p${c.person}" data-open="${c.key}"><span class="wkday">${PROGRAM_EMOJI[c.program]}</span><span class="grow"><b>${NAME[c.person]} · ${PROGRAM_NAME[c.program]}</b><span class="muted small">${roundsDone(c)} of ${totalRounds(programOf(c))} sets${c.warm?' · warm-up ✓':''}${c.cool?' · recovery ✓':''}</span></span><span class="chev">›</span></button>`).join('')}</div></div></div>`
+}
+
+// the membership QR lives in a private table, never in the public code; each phone keeps a copy so the pass opens at the door without signal
+let passes={v:store.get('pass-v'),d:store.get('pass-d')},passFor=null
+async function loadPasses(){
+ const {data,error}=await sb.from('gym_passes').select('person,qr_png')
+ if(error)return
+ data.forEach(p=>{passes[p.person]=p.qr_png;store.set('pass-'+p.person,p.qr_png)})
+ render()
+}
+function renderPass(){
+ if(!passFor)return ''
+ return `<div class="passview p${passFor}">
+  <div class="bar"><div class="seg">${['v','d'].map(p=>`<button data-pass="${p}" aria-pressed="${p===passFor}">${NAME[p]}</button>`).join('')}</div><button class="icon" data-act="close-pass" aria-label="Close">✕</button></div>
+  <div class="pass"><p class="eyebrow">Moderncoach Gym Deggendorf · 24/7</p><h2 class="exname">${NAME[passFor]} ${PROGRAM_EMOJI[passFor==='v'?'glutes':'arms']}</h2>
+   ${passes[passFor]?`<img class="qr" src="${passes[passFor]}" alt="${NAME[passFor]}'s gym entry QR code" data-act="egg" data-egg="pass">`:'<p class="muted">This pass hasn\'t loaded yet. Open the app once with internet and it stays on the phone.</p>'}
+   <p class="small muted">Turn your brightness all the way up ☀️ and hold it under the scanner.</p></div>
  </div>`
 }
 
-function workoutStep(c,program,step){
- const n=program.ex.length
- if(step===0){
-  const list=program.both?WARM_DUO:WARM_SOLO
-  return `<p class="eyebrow">Step 1 · 10 min</p><h2 class="exname">${program.both?'Warm-up':'Pilates warm-up'}</h2><p class="muted">Pick one video, follow along, then tick it.</p>
-   ${videoList(list,c,'warm')}
-   ${program.both?`<h3 class="section">Posture block</h3><div class="list">${POSTURE.map(([name,dose,url])=>`<a class="row" href="${url}" target="_blank" rel="noopener"><span class="play">▶</span><span class="grow"><b>${name}</b><span class="muted small">${dose}</span></span><span class="chev">›</span></a>`).join('')}</div>`:''}`
+// Delian: these are yours to rewrite. Vicky finds them one by one; the hint shows only after she's found a few
+const LOVE_NOTES=[
+ ['greeting','Say hi to the sky at the top of Today, a few times','Whatever time it is, I\'m thinking about you. Probably right now too.'],
+ ['avatar','Poke your favourite person','You keep tapping my face. I get it, I\'m cute. You\'re cuter.'],
+ ['butterfly','Wings on chest & back day','Fun fact: you still give me these 🦋 every time you walk into the gym.'],
+ ['peach','Finish every set of a 🍑 day','Glute day done 🍑 Strongest girl in Deggendorf, and I\'m not biased. Okay, a little.'],
+ ['caption','Mention someone special in an instant','You wrote my name. I\'m smiling like an idiot right now.'],
+ ['night','Open the app when you should be asleep','It\'s late, my love. Put the phone down and come to sleep, the dumbbells will still be there tomorrow 🌙'],
+ ['pass','Your gym pass likes attention','This QR gets you into the gym. You got into my heart without one.'],
+ ['rules','Read your rules really, really closely','Rule number one, not in any plan: Delian loves you. Always.']
+]
+// how many taps each hiding spot needs, so nobody finds one by accident
+const EGG_TAPS={greeting:3,avatar:5,butterfly:3,pass:3,rules:3}
+let eggsFound=JSON.parse(store.get('eggs')||'[]'),noteOpen=null,notesBook=false,eggTaps={},eggTimer=null
+function tapEgg(name){
+ if(me!=='v')return
+ eggTaps[name]=(eggTaps[name]||0)+1
+ clearTimeout(eggTimer);eggTimer=setTimeout(()=>eggTaps={},1500)
+ if(eggTaps[name]>=EGG_TAPS[name]){eggTaps={};findEgg(name)}
+}
+function findEgg(name){
+ if(me!=='v')return
+ const fresh=!eggsFound.includes(name)
+ if(fresh){
+  eggsFound.push(name);store.set('eggs',JSON.stringify(eggsFound))
+  sb?.auth.updateUser({data:{eggs:eggsFound}})
+  sendCheer('egg',{count:eggsFound.length})
  }
- if(step===n+1)return `<p class="eyebrow">Last step · 10 min</p><h2 class="exname">Recovery</h2><p class="muted">Stretch it out before you leave.</p>${tuned&&tuned!==RECOVERY_STATION?`<button class="big soft" data-tune="${RECOVERY_STATION}">🥗 Switch the music to Groove Salad</button>`:''}${videoList(COOL,c,'cool')}`
- if(step===n+2){
-  const done=roundsDone(c),total=totalRounds(program)
-  return `<div class="finish"><span class="badge">${done===total?'🎉':'✓'}</span><h2 class="exname">${done===total?'Session complete':'Session saved'}</h2><p class="muted">${done} of ${total} sets · warm-up ${c.warm?'✓':'skipped'} · recovery ${c.cool?'✓':'skipped'}</p><p class="muted small">${NAME[c.person]} has trained ${checkinsOf(c.person).filter(x=>x.date>=iso(mondayOf(atNoon(today)))).length} days this week.</p></div>`
- }
- const ei=step-1,[name,cue,img,key,rounds,reps,restText,start,goal]=program.ex[ei]
- return `<div class="photo"><img src="${IMG[img]}" alt="${WHERE[img]} at Moderncoach Deggendorf"><span>📍 ${WHERE[img]}</span></div>
-  <div><p class="eyebrow">Exercise ${step} of ${n}</p><h2 class="exname">${name}</h2><p class="muted" style="margin-top:4px">${cue}</p></div>
-  <div class="sets">${[...Array(rounds)].map((_,ri)=>{const k=`${ei}-${ri}`;return `<button class="set${c.rounds?.[k]?' on':''}" data-set="${k}" data-rest="${restSeconds(restText)}" aria-pressed="${!!c.rounds?.[k]}"><b>${ri+1}</b><span>${c.rounds?.[k]?'done':reps}</span></button>`}).join('')}</div>
-  <div class="specs"><div><b>${start}</b><span>start weight</span></div><div><b>${goal}</b><span>week 8 goal</span></div><div><b>${rounds} × ${reps}</b><span>sets × reps</span></div><div><b>${restText}</b><span>rest between sets</span></div></div>
-  ${howTo(key)}`
+ noteOpen=name;hearts(fresh?20:6);render()
+}
+function renderNote(){
+ const note=noteOpen&&LOVE_NOTES.find(n=>n[0]===noteOpen)
+ if(!note)return ''
+ return `<div class="sheet note-bg" data-act="close-note"><div class="lovenote"><span class="bigemo">💌</span><p class="eyebrow">Love note ${LOVE_NOTES.findIndex(n=>n[0]===noteOpen)+1} · ${eggsFound.length} of ${LOVE_NOTES.length} found</p><p class="paper">${note[2]}</p><p class="sig">— D</p><button class="big solid" data-act="close-note">💗 Keep it</button></div></div>`
+}
+function renderNotesBook(){
+ if(!notesBook)return ''
+ return `<div class="sheet" data-act="book-bg"><div class="pv"><span class="grab"></span><h2 class="section">Love notes 💌 ${eggsFound.length}/${LOVE_NOTES.length}</h2>
+  <div class="list">${LOVE_NOTES.map(([id,hint,text],i)=>eggsFound.includes(id)
+   ?`<button class="row" data-note="${id}"><span class="wkday">💌</span><span class="grow"><b>Note ${i+1}</b><span class="muted small">${text.slice(0,48)}…</span></span><span class="chev">›</span></button>`
+   :`<div class="row"><span class="wkday">🔒</span><span class="grow"><b>Note ${i+1}</b><span class="muted small">${eggsFound.length>=3?hint:'Still hidden somewhere in the app…'}</span></span></div>`).join('')}</div></div></div>`
 }
 
-function videoList(list,c,field){
- return `<div class="list">${list.map(([id,title,url])=>{const used=checkinsOf(c.person).filter(x=>x[field]===id).length
-  return `<div class="opt"><a href="${url}" target="_blank" rel="noopener"><span class="play">▶</span><span class="grow"><b>${title}</b><span class="muted small">${used?`Done ${used}× before`:'New'}</span></span></a><button class="tick${c[field]===id?' on':''}" data-pick="${field}" data-id="${id}" aria-label="Mark done" aria-pressed="${c[field]===id}">✓</button></div>`}).join('')}</div>`
+let passwordSheet=false
+function renderPasswordSheet(){
+ if(!passwordSheet)return ''
+ return `<div class="sheet"><div class="p${me}"><span class="grab"></span><h2 class="section">New password for ${NAME[me]}</h2>
+  <input type="password" id="new-pass" class="field" placeholder="At least 6 characters" autocomplete="new-password">
+  <button class="big solid" data-act="save-pass">Save password</button><button class="big soft" data-act="cancel-pass">Cancel</button></div></div>`
+}
+async function savePassword(){
+ const password=$('new-pass').value
+ if(password.length<6){toast('That one\'s too short: use at least 6 characters.');return}
+ const {error}=await sb.auth.updateUser({password})
+ if(error){toast('Password not changed: '+error.message);return}
+ passwordSheet=false;toast('New password saved 🔐');render()
 }
 
-function renderWorkout(){
- if(!workout||!checkins[workout.key])return ''
- const c=checkins[workout.key],program=programOf(c),n=program.ex.length,step=workout.step
- const exDone=ei=>[...Array(program.ex[ei][4])].every((_,ri)=>c.rounds?.[`${ei}-${ri}`])
- const segs=[c.warm,...program.ex.map((_,ei)=>exDone(ei)),c.cool]
- const nextLabel=step===n+2?'Back to today':step===n+1?'Finish':step===0?'Start exercises':step===n?'Recovery':'Next exercise'
- return `<div class="workout ${accentClass(program,c.person)}">
-  <div class="wtop"><div class="bar"><button class="icon" data-act="close" aria-label="Close">✕</button><div class="wtitle"><h1>${PROGRAM_EMOJI[program.id]} ${program.t}${c.person!==me?` · ${NAME[c.person]}`:''}${c.date!==today?` · ${shortDate(c.date)}`:''}</h1>${tuned?`<button class="onair" data-act="tune-out">♪ ${stationById(tuned).name} · pause</button>`:''}</div><button class="icon${confirmRemove?' confirm':''}" data-act="remove" aria-label="Remove check-in">${confirmRemove?'Remove?':'⋯'}</button></div>
-   <div class="segs">${segs.map((done,i)=>`<i class="${done?'done':i===Math.min(step,n+1)?'here':''}"></i>`).join('')}</div></div>
-  <div class="wbody">${workoutStep(c,program,step)}</div>
-  <div class="timer" id="timer" hidden></div>
-  <nav class="stepnav">${step>0?'<button class="icon" data-step="-1" aria-label="Previous">‹</button>':''}<button class="big solid" data-step="${step===n+2?'done':1}">${nextLabel}</button></nav>
- </div>`
-}
-
-function renderSheet(){
- if(!sheetOpen)return ''
- return `<div class="sheet" data-act="sheet-bg"><div class="p${me}"><span class="grab"></span><h2 class="section">Log a workout</h2>
-  <label class="small muted">Day<input type="date" id="other-date" value="${sheetDate}" max="${today}"></label>
-  <div class="list">${PROGRAMS[me].map(p=>`<button class="row ${accentClass(p,me)}" data-start="${p.id}" data-pick-date><span class="wkday">${PROGRAM_EMOJI[p.id]}</span><span class="grow"><b>${p.t}</b><span class="muted small">${p.ex.length} exercises</span></span><span class="chev">›</span></button>`).join('')}</div></div></div>`
-}
-let sheetOpen=false,sheetDate=today
-
-function render(){
- today=iso(new Date())
- if(!me)return
- document.body.className='p'+me
- const scroll=view==='today'?renderToday():view==='week'?renderWeek():view==='radio'?renderRadio():renderPlan()
- $('app').innerHTML=scroll
- document.querySelectorAll('.tabbar button').forEach(b=>b.dataset.view===view?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'))
- const keepY=$('layer').querySelector('.workout')?.scrollTop
- $('layer').innerHTML=renderWorkout()+renderSheet()+renderComposer()+renderViewer()
- // the Radio screen already has the big now-playing card, so the mini player only follows you elsewhere
- $('mini').innerHTML=miniPlayer();$('mini').hidden=!tuned||view==='radio'
- const w=$('layer').querySelector('.workout');if(w&&keepY!=null&&!render.resetScroll)w.scrollTop=keepY
- render.resetScroll=false
- drawTimer()
-}
-
-document.addEventListener('click',e=>{
- const t=e.target.closest('button,[data-act]');if(!t)return
- const d=t.dataset
- if(d.act==='sheet-bg'&&e.target!==t)return
- if(d.view){view=d.view;planFor=null;render();scrollTo(0,0)}
- else if(d.me){me=d.me;store.set('who',me);sb?.auth.updateUser({data:{who:me}});$('gate').hidden=true;render()}
- else if(d.start){const date=d.pickDate!=null?($('other-date')?.value||today):today;sheetOpen=false;startWorkout(d.for||me,d.start,date)}
- else if(d.open)openWorkout(d.open)
- else if(d.plan){planFor=d.plan;render()}
- else if(d.week){if(d.week==='0')weekStart=mondayOf(new Date());else weekStart.setDate(weekStart.getDate()+7*d.week);render()}
- else if(d.set&&workout){
-  const c={...checkins[workout.key],rounds:{...checkins[workout.key].rounds}},was=c.rounds[d.set]
-  if(was)delete c.rounds[d.set];else{c.rounds[d.set]=1;startRest(+d.rest)}
-  save(c)
-  if(!was&&roundsDone(c)===totalRounds(programOf(c))){hearts(28);toast('Every set done. So proud of you 🎉');sendCheer('done',{program:c.program})}
- }
- else if(d.pick&&workout){const c={...checkins[workout.key]};c[d.pick]=c[d.pick]===d.id?null:d.id;save(c)}
- else if(d.step&&workout){
-  if(d.step==='done'){closeWorkout();view='today';return}
-  const n=programOf(checkins[workout.key]).ex.length
-  workout.step=Math.max(0,Math.min(n+2,workout.step+ +d.step));rest=null;confirmRemove=false
-  store.set('workout',JSON.stringify(workout));render.resetScroll=true;render()
- }
- else if(d.rest==='skip'){rest=null;drawTimer()}
- else if(d.rest==='+15'&&rest){rest.ends+=15000;rest.total+=15;drawTimer()}
- else if(d.act==='close')closeWorkout()
- else if(d.act==='remove'){if(confirmRemove)remove(workout.key);else{confirmRemove=true;render()}}
- else if(d.act==='other'){sheetOpen=true;sheetDate=today;render()}
- else if(d.act==='sheet-bg'){sheetOpen=false;render()}
- else if(d.tune)tuneIn(d.tune)
- else if(d.act==='tune-out')tuneOut()
- else if(d.act==='heart'){sendCheer('heart');hearts(8);toast(`Heart sent to ${NAME[PARTNER[me]]} 💕`)}
- else if(d.instant)openInstant(d.instant)
- else if(d.act==='close-instant'){viewing=null;render()}
- else if(d.act==='send-instant')sendInstant()
- else if(d.act==='cancel-instant'){URL.revokeObjectURL(composing.preview);composing=null;render()}
- else if(d.act==='hide-install'){store.set('hideInstall','1');render()}
- else if(d.act==='share'){const url=location.href.split('#')[0];navigator.share?navigator.share({title:'MG Gym',text:'Our gym plan',url}).catch(()=>{}):navigator.clipboard?.writeText(url).then(()=>{syncNote='Link copied: '+url;view='today';render()})}
- else if(d.act==='switch'){$('gate').hidden=false;$('gate-form').hidden=true;$('who').hidden=false}
- else if(d.act==='signout'){sb?.auth.signOut();checkins={};store.set('workout',null)}
-})
-document.addEventListener('change',e=>{
- if(e.target.id==='other-date')sheetDate=e.target.value
- if(e.target.id==='snap-input'&&e.target.files[0]){
-  if(composing)URL.revokeObjectURL(composing.preview)
-  composing={file:e.target.files[0],preview:URL.createObjectURL(e.target.files[0])};e.target.value='';render()
- }
-})
-// coming back to the app after a while: refresh the date (it may be a new day) and pull the partner's latest sets
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();if(rest)runTimer();load?.()}})
-
-let load=null
+let load=null,chooseLogin=()=>{}
 ;(()=>{
  const C=window.MG_CONFIG||{},gate=$('gate')
  const saved=store.get('workout');if(saved)try{workout=JSON.parse(saved)}catch(e){}
- if(!window.supabase||!C.url||/YOUR_/.test(C.url+C.anonKey)){syncNote='Sync is off: add the Supabase keys to config.js.';if(!me){gate.hidden=false;$('gate-form').hidden=true;$('who').hidden=false}render();return}
+ if(!window.supabase||!C.url||/YOUR_/.test(C.url+C.anonKey)){syncNote='Sync is off: add the Supabase keys to config.js.';gate.hidden=!!me;render();return}
  sb=window.supabase.createClient(C.url,C.anonKey,{auth:{persistSession:true,autoRefreshToken:true}})
- let channel=null,mode='email'
+ let channel=null
  load=async()=>{
   const {data,error}=await sb.from('checkins').select('*')
   if(error){syncNote='Couldn\'t load your check-ins. Close and reopen the app to try again.';render();return}
   checkins={};data.forEach(r=>{checkins[r.key]={...r,date:String(r.date).slice(0,10)}});syncNote='';render()
   const {data:stations}=await sb.from('radio').select('*')
   ;(stations||[]).forEach(r=>{if(r.person!==me)listening[r.person]=r});render()
-  loadInstants()
+  loadInstants();loadPasses()
  }
  const listen=()=>{if(channel)return;channel=sb.channel('checkins-live').on('postgres_changes',{event:'*',schema:'public',table:'checkins'},p=>{
   if(p.eventType==='DELETE'){delete checkins[p.old.key];if(workout?.key===p.old.key)closeWorkout()}else checkins[p.new.key]={...p.new,date:String(p.new.date).slice(0,10)};render()})
@@ -1084,34 +1268,29 @@ let load=null
   .on('postgres_changes',{event:'*',schema:'public',table:'instants'},p=>{if(p.eventType==='INSERT'&&p.new.sender!==me)toast(`${NAME[p.new.sender]} sent you an instant 📸`);loadInstants()})
   .subscribe()
   cheers=sb.channel('couple-cheers',{config:{broadcast:{self:false}}}).on('broadcast',{event:'cheer'},({payload})=>receiveCheer(payload)).subscribe()}
- // who owns this phone is saved on the account too, so reinstalling the app doesn't ask again
+ // the account itself says whose phone this is, so there is nothing to choose after signing in
  async function start(session){
-  gate.hidden=!!session;$('gate-form').hidden=false;$('who').hidden=true
+  gate.hidden=!!session
   if(!session)return
-  const onAccount=session.user.user_metadata?.who
-  me=onAccount||me
-  if(me&&!onAccount)sb.auth.updateUser({data:{who:me}})
-  if(me)store.set('who',me);else{gate.hidden=false;$('gate-form').hidden=true;$('who').hidden=false}
+  me=session.user.user_metadata?.who||me;store.set('who',me)
+  eggsFound=[...new Set([...eggsFound,...(session.user.user_metadata?.eggs||[])])]
   await load();listen()
  }
  sb.auth.getSession().then(({data})=>start(data.session))
  sb.auth.onAuthStateChange((ev,session)=>{if(ev==='SIGNED_IN'||ev==='SIGNED_OUT')start(session)})
- const setMode=m=>{mode=m;const up=m==='signup';document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));$('gate-btn').textContent=up?'Create account':'Sign in';$('gate-pass').autocomplete=up?'new-password':'current-password';$('gate-msg').textContent=up?'Pick a password. You\'ll get one email to confirm it\'s you.':'Your shared plan for Moderncoach Deggendorf.';$('gate-err').hidden=true}
- document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)))
+ let loginAs=null
+ chooseLogin=who=>{loginAs=who;$('gate-form').className='p'+who;document.querySelectorAll('[data-login]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.login===who));$('gate-pass').hidden=$('gate-btn').hidden=false;$('gate-pass').placeholder=`${NAME[who]}'s password`;$('gate-err').hidden=true;$('gate-pass').focus()}
  $('gate-form').addEventListener('submit',async e=>{
-  e.preventDefault();const err=$('gate-err'),btn=$('gate-btn'),email=$('gate-email').value.trim().toLowerCase(),password=$('gate-pass').value;err.hidden=true
-  if(!email||password.length<6){err.textContent='Enter your email and a password of at least 6 characters.';err.hidden=false;return}
+  e.preventDefault();const err=$('gate-err'),btn=$('gate-btn'),password=$('gate-pass').value;err.hidden=true
+  if(!loginAs){err.textContent='Tap your name first.';err.hidden=false;return}
   btn.disabled=true
-  if(mode==='signup'){
-   const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href.split('#')[0]}})
-   btn.disabled=false
-   if(error){err.textContent='Couldn\'t create the account: '+error.message;err.hidden=false;return}
-   if(!data.session){setMode('email');$('gate-msg').textContent='Almost there: open the email from Supabase and tap the link. Then come back here and sign in.'}
-  }else{
-   const {error}=await sb.auth.signInWithPassword({email,password})
-   btn.disabled=false
-   if(error){err.textContent=/confirm/i.test(error.message)?'Confirm your email first: tap the link in the email from Supabase, then sign in here.':'Wrong email or password. New here? Switch to "Create account".';err.hidden=false}
-  }
+  // the emails stay out of the public code: the database hands back the right one for the name that was tapped
+  const {data:email,error:lookup}=await sb.rpc('login_email',{who:loginAs})
+  const {error}=lookup||!email?{error:lookup||{}}:await sb.auth.signInWithPassword({email,password})
+  btn.disabled=false
+  if(lookup)err.textContent='Can\'t reach the server. Check your internet and try again.'
+  else if(error)err.textContent=`That's not ${NAME[loginAs]}'s password. It's case-sensitive, try again.`
+  err.hidden=!error&&!lookup
  })
  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})
 })()
