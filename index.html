@@ -5,126 +5,128 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MG Gym">
-<meta name="theme-color" content="#f4f4f5">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>MG Gym</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600&family=Manrope:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
-*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}img{max-width:100%}[hidden]{display:none!important}body{margin:0;min-height:100vh}
-
-/* Layout: modern fitness app — soft cards on a cool canvas, pill controls, compact type; rose for Vicky, blue for Delian, violet when together */
+/* iPhone system fonts (SF Pro / SF Pro Rounded) so it reads as a native app and works offline */
 :root{
-  --bg:#f4f4f5;--surface:#ffffff;--sunk:#efeff1;--ink:#232428;--muted:#7a7b81;--line:#e2e2e6;
-  --red:#c2453b;--v:#c2453b;--v-soft:#f7ebe9;--d:#4b4d54;--d-soft:#ebebee;--both:#6f7077;--both-soft:#f0f0f2;--ok:#34353a;--ok-soft:#e9e9ec;--on-ok:#ffffff;--warn:#c2453b;
-  --sk:#56575d;--sk2:#bdbec3;--paper:#fafafa;
-  --shadow:0 1px 2px rgba(30,30,35,.04),0 10px 30px rgba(30,30,35,.06);
-  --display:"Sora","Segoe UI",system-ui,sans-serif;--body:"Manrope","Segoe UI",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
+  --bg:#f2f2f7;--card:#fff;--fill:#e9e9ee;--ink:#111114;--muted:#86868f;--line:rgba(60,60,67,.13);
+  --v:#ff5a6e;--d:#3d8bff;--both:#9b6bff;--v-soft:#ffe8eb;--d-soft:#e3eeff;--both-soft:#efe8ff;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+  --round:ui-rounded,"SF Pro Rounded",-apple-system,system-ui,sans-serif;
+  --text:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",monospace;
+  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+  --sk:#56575d;--sk2:#bdbec3;--paper:#fafafa;--red:#ff5a6e;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111113;--surface:#1a1a1d;--sunk:#151517;--ink:#ececee;--muted:#9b9ca2;--line:#2a2a2f;--red:#e06a5f;--v:#e06a5f;--v-soft:#33201e;--d:#c3c4ca;--d-soft:#25252a;--both:#a5a6ac;--both-soft:#212124;--ok:#e3e3e6;--ok-soft:#28282c;--on-ok:#111113;--warn:#e06a5f;--sk:#cfd0d5;--sk2:#4c4d53;--paper:#18181b;--shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3);color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#111113;--surface:#1a1a1d;--sunk:#151517;--ink:#ececee;--muted:#9b9ca2;--line:#2a2a2f;--red:#e06a5f;--v:#e06a5f;--v-soft:#33201e;--d:#c3c4ca;--d-soft:#25252a;--both:#a5a6ac;--both-soft:#212124;--ok:#e3e3e6;--ok-soft:#28282c;--on-ok:#111113;--warn:#e06a5f;--sk:#cfd0d5;--sk2:#4c4d53;--paper:#18181b;--shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3);color-scheme:dark}
-body{background:var(--bg) radial-gradient(1200px 600px at 85% -10%,var(--surface),transparent 70%) no-repeat;color:var(--ink);font:14.5px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
-.wrap{max-width:920px;margin:0 auto;display:grid;gap:22px}
-h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.015em;margin:0;text-wrap:balance;line-height:1.15}
-h1{font-size:clamp(1.5rem,4vw,2rem)}h2{font-size:1.1rem}h3{font-size:.98rem}
-p{margin:0}
-.lede{color:var(--muted);max-width:62ch;font-size:.92rem}
-.label{font:600 .68rem/1.2 var(--body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.foot{color:var(--muted);font-size:.76rem}
-.foot a{color:inherit}
-.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-button{font-family:var(--body)}
-button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--both);outline-offset:2px}
-.tabs{display:inline-flex;gap:4px;flex-wrap:wrap;background:var(--sunk);padding:4px;border-radius:999px}
-.tabs button{font:600 .84rem/1 var(--body);padding:8px 14px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer}
-.tabs button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
-.tabs button[aria-pressed="true"][data-p="v"],.tabs [data-who="v"][aria-pressed="true"]{color:var(--v)}
-.tabs button[aria-pressed="true"][data-p="d"],.tabs [data-who="d"][aria-pressed="true"]{color:var(--d)}
-.tabs [data-who="b"][aria-pressed="true"]{color:var(--both)}
-.ci,.phase,.notes,.day,.goal div,.wd{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
-.ci{padding:16px;display:grid;gap:12px}
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.tile{font:600 .9rem/1.25 var(--display);text-align:left;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--sunk);color:var(--ink);cursor:pointer;display:grid;gap:4px;transition:transform .12s,border-color .12s}
-.tile:hover{border-color:var(--both);transform:translateY(-1px)}
-.tile small{font:500 .72rem/1 var(--body);color:var(--muted)}
-.tile.on{background:var(--ok-soft);border-color:transparent}
-.tile.on small{color:var(--ok)}
-.other summary{cursor:pointer;font-size:.78rem;color:var(--muted)}
-.other input{margin-top:8px;font:500 .9rem var(--body);padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--sunk);color:var(--ink)}
-.status{background:var(--both-soft);color:var(--both);border-radius:12px;padding:10px 14px;font-size:.84rem}
-.wk{display:flex;align-items:center;gap:6px}
-.wk button{font:600 .82rem/1 var(--body);width:32px;height:32px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.wk #wk-today{width:auto;padding:0 12px}
-.wk span{font:600 .84rem/1 var(--body);min-width:11ch;text-align:center}
-.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
-.wd{padding:10px 8px;display:grid;gap:6px;align-content:start;min-height:84px;box-shadow:none}
-.wd.today{border-color:var(--ink)}
-.wd b{font:600 .78rem/1 var(--display)}
-.wd b small{font:500 .7rem var(--mono);color:var(--muted)}
-.rest{color:var(--muted);font-size:.72rem}
-.chip{font:600 .68rem/1.25 var(--body);padding:5px 6px;border-radius:8px}
-button.chip{border:0;text-align:left;cursor:pointer;display:grid;gap:2px;width:100%}
-button.chip small{font:500 .62rem/1 var(--mono);opacity:.8}
-button.chip.sel{outline:2px solid currentColor;outline-offset:1px}
-.cv{background:var(--v-soft);color:var(--v)}.cd{background:var(--d-soft);color:var(--d)}.cb{background:var(--both-soft);color:var(--both)}
-@media (max-width:640px){.week{grid-template-columns:1fr 1fr}.wd{min-height:0}}
-.goal{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
-.goal div{padding:10px 12px;display:grid;gap:4px;box-shadow:none}
-.goal strong{font:600 1.05rem/1.15 var(--display)}
-.phase{padding:14px 16px;display:grid;gap:6px;font-size:.88rem}
-.phase ol,.notes ul{margin:0;padding-left:18px;display:grid;gap:4px}
-.notes{padding:14px 16px;display:grid;gap:8px;font-size:.88rem}
-.day{overflow:hidden}
-.dayhead{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;position:relative}
-.dayhead::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--acc)}
-.dayhead p{color:var(--muted);font-size:.8rem}
-.prog{font:500 .76rem/1 var(--mono);color:var(--ok);background:var(--ok-soft);padding:3px 7px;border-radius:999px}
-.acts{display:flex;gap:6px;flex-wrap:wrap}
-.cta{font:600 .82rem/1 var(--body);padding:9px 14px;border-radius:999px;border:0;background:var(--ink);color:var(--bg);cursor:pointer}
-.ghost{font:600 .76rem/1 var(--body);padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.danger{color:var(--warn)}
-.slot{padding:12px 16px;border-top:1px solid var(--line);display:grid;gap:8px;background:var(--sunk)}
-.slothead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
-.slothead b{font:600 .84rem/1 var(--display);color:var(--acc)}
-.slothead span{font-size:.76rem;color:var(--muted)}
-.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px}
-.opt{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
-.opt.on{border-color:var(--ok)}
-.opt a{color:var(--ink);text-decoration:none;font-size:.78rem;font-weight:600}
-.opt a:hover{color:var(--acc)}
-.cnt{font:500 .7rem/1 var(--mono);color:var(--muted)}
-.opt button{font:600 .7rem/1 var(--body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 9px;cursor:pointer;white-space:nowrap}
-.opt.on button{background:var(--ok);border-color:var(--ok);color:var(--on-ok)}
-.block{background:var(--both-soft);padding:12px 16px;border-top:1px solid var(--line);display:grid;gap:6px;font-size:.84rem}
-.block b{color:var(--both);font-weight:700}
-.ex{display:grid;grid-template-columns:96px minmax(0,1fr) 180px;gap:12px;padding:12px 16px;border-top:1px solid var(--line);align-items:start}
-.ex img{width:96px;aspect-ratio:4/3;object-fit:cover;border-radius:10px;max-width:100%;background:var(--line)}
-.nm{font:600 .9rem/1.3 var(--display)}
-.cue{color:var(--muted);font-size:.8rem}
-.where{font-size:.7rem;color:var(--acc);font-weight:700;margin-top:2px}
-.links{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
-.links a{font:600 .7rem/1 var(--body);color:var(--ink);text-decoration:none;background:var(--sunk);border-radius:999px;padding:5px 9px}
-.links a:hover{color:var(--acc)}
-.det{margin-top:8px;border-radius:10px;background:var(--sunk);padding:8px 10px;font-size:.8rem}
-.det summary{cursor:pointer;font-weight:700;color:var(--acc)}
-.det p{margin-top:6px}
-.det ul{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}
-.load{display:grid;gap:6px;font-variant-numeric:tabular-nums}
-.load .sets{font:500 .82rem/1.2 var(--mono)}
-.load .kg{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.76rem}
-.load .kg span:nth-child(odd){color:var(--muted)}
-.load .kg b{font-family:var(--mono);font-weight:500}
-.rounds{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
-.rounds label{display:grid;place-items:center;width:28px;height:28px;border:1px solid var(--line);background:var(--sunk);border-radius:8px;font:500 .74rem/1 var(--mono);cursor:pointer;user-select:none}
-.rounds input{position:absolute;opacity:0;width:1px;height:1px}
-.rounds input:checked+label{background:var(--ok);border-color:var(--ok);color:var(--on-ok)}
-.rounds input:focus-visible+label{outline:2px solid var(--both);outline-offset:2px}
-@media (max-width:640px){.ex{grid-template-columns:72px minmax(0,1fr)}.ex img{width:72px}.load{grid-column:1/-1}}
-#session{scroll-margin-top:16px}
-.detin{display:grid;grid-template-columns:170px minmax(0,1fr);gap:12px;align-items:start;margin-top:8px}
-.sk{width:100%;max-width:170px;aspect-ratio:4/3;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#000;--card:#1c1c1e;--fill:#2c2c2e;--ink:#f5f5f7;--muted:#98989f;--line:rgba(255,255,255,.1);
+  --v-soft:#3a1a20;--d-soft:#13243f;--both-soft:#261b3d;--shadow:none;
+  --sk:#cfd0d5;--sk2:#4c4d53;--paper:#232325;color-scheme:dark}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 var(--text);min-height:100dvh;overscroll-behavior-y:none}
+[hidden]{display:none!important}
+h1,h2,h3,p{margin:0}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--acc,var(--d));outline-offset:2px}
+
+/* each person keeps their colour everywhere: coral Vicky, blue Delian, violet when it's a shared session */
+.pv{--acc:var(--v);--acc-soft:var(--v-soft)}.pd{--acc:var(--d);--acc-soft:var(--d-soft)}.pb{--acc:var(--both);--acc-soft:var(--both-soft)}
+
+.view{padding:calc(var(--safe-t) + 14px) 16px calc(var(--safe-b) + 96px);max-width:560px;margin:0 auto;display:grid;gap:18px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:6px}
+.eyebrow{font:600 .78rem/1.2 var(--text);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.title{font:800 2.1rem/1.05 var(--round);letter-spacing:-.02em}
+.avatar{display:inline-block;width:38px;height:38px;border-radius:50%;background:var(--acc);color:#fff;font:700 1rem/38px var(--round);text-align:center;flex:none}
+.section{font:700 1.25rem/1.2 var(--round);letter-spacing:-.01em}
+.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+
+.hero{position:relative;overflow:hidden;border-radius:26px;padding:20px;color:#fff;background:var(--acc);display:grid;gap:14px;min-height:220px;align-content:end;isolation:isolate}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:saturate(.8)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.25) 40%,color-mix(in srgb,var(--acc) 82%,#000) 100%)}
+.hero .eyebrow{color:rgba(255,255,255,.85)}
+.hero h2{font:800 2rem/1.05 var(--round);letter-spacing:-.02em}
+.hero .meta{font-size:.92rem;opacity:.92}
+.hero .bar{height:6px;border-radius:9px;background:rgba(255,255,255,.3);overflow:hidden}
+.hero .bar i{display:block;height:100%;background:#fff;border-radius:9px}
+.hero.rest{background:var(--card);color:var(--ink);min-height:0}
+.hero.rest::before{display:none}
+.hero.rest .eyebrow{color:var(--muted)}
+.big{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:16px;border-radius:16px;font:700 1.08rem/1 var(--round);background:#fff;color:color-mix(in srgb,var(--acc) 85%,#000)}
+.big.solid{background:var(--acc);color:#fff}
+.big.soft{background:var(--fill);color:var(--ink)}
+
+.partner{display:flex;align-items:center;gap:12px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--acc);flex:none}
+.partner .avatar{width:34px;height:34px;line-height:34px;font-size:.9rem}
+.partner div{display:grid;gap:1px;min-width:0}
+.partner b{font-weight:600}
+
+.strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center}
+.strip span{font:600 .72rem/1 var(--text);color:var(--muted)}
+.strip i{display:grid;place-items:center;margin:6px auto 0;width:34px;height:34px;border-radius:50%;background:var(--fill);font:700 .85rem/1 var(--round);font-style:normal;color:var(--muted);position:relative}
+.strip i.done{background:var(--acc);color:#fff}
+.strip i.today{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--acc)}
+.strip i.mate::after{content:"";position:absolute;bottom:-7px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--mate)}
+
+.phase{display:grid;gap:10px}
+.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.steps4 i{height:5px;border-radius:9px;background:var(--fill)}
+.steps4 i.on{background:var(--acc)}
+.phase h3{font:700 1.05rem/1.2 var(--round)}
+
+.list{background:var(--card);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:13px 16px;width:100%;text-align:left;border-top:1px solid var(--line);text-decoration:none}
+.row:first-child{border-top:0}
+.row .grow{flex:1;min-width:0;display:grid;gap:2px}
+.row .grow b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{color:var(--muted);font-size:1.2rem}
+.tag{font:700 .7rem/1 var(--text);padding:5px 8px;border-radius:99px;background:var(--acc-soft);color:var(--acc);white-space:nowrap}
+
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;justify-content:space-around;padding:8px 8px calc(var(--safe-b) + 6px);background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);border-top:1px solid var(--line)}
+.tabbar button{display:grid;justify-items:center;gap:3px;font:600 .68rem/1 var(--text);color:var(--muted);padding:4px 18px}
+.tabbar button[aria-current="page"]{color:var(--acc)}
+.tabbar svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--fill);border-radius:12px;padding:3px}
+.seg button{padding:9px;border-radius:10px;font:600 .92rem/1 var(--text);color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--acc);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+.stats{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+.stats::-webkit-scrollbar{display:none}
+.stat{flex:none;min-width:120px;background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:14px;display:grid;gap:4px}
+.stat b{font:800 1.35rem/1.1 var(--round);letter-spacing:-.01em}
+
+details.day{background:var(--card);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+details.day>summary{list-style:none;display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer}
+details.day>summary::-webkit-details-marker{display:none}
+details.day>summary .chev{transition:transform .2s}
+details.day[open]>summary .chev{transform:rotate(90deg)}
+.wkday{width:48px;height:48px;border-radius:14px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;font:800 .82rem/1 var(--round);flex:none;text-transform:uppercase}
+.exrow{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.exrow img{width:56px;height:56px;border-radius:12px;object-fit:cover;background:var(--fill)}
+.exrow b{font-weight:600}
+.load{font:500 .8rem/1.3 var(--mono);color:var(--muted)}
+
+.how{margin-top:8px}
+.how summary{cursor:pointer;font:600 .86rem/1 var(--text);color:var(--acc);list-style:none}
+.how summary::-webkit-details-marker{display:none}
+.how .in{display:grid;gap:10px;margin-top:10px;font-size:.9rem}
+.how ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.links{display:flex;gap:6px;flex-wrap:wrap}
+.links a{font:600 .8rem/1 var(--text);text-decoration:none;background:var(--fill);border-radius:99px;padding:8px 12px}
+.sk{width:100%;max-width:240px;aspect-ratio:4/3;background:var(--paper);border-radius:14px}
 .sk .bd{fill:none;stroke:var(--sk);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .sk .bd2{fill:none;stroke:var(--sk2);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
 .sk .hd{fill:var(--paper);stroke:var(--sk);stroke-width:2.2}
@@ -134,83 +136,120 @@ button.chip.sel{outline:2px solid currentColor;outline-offset:1px}
 .sk .gd{fill:none;stroke:var(--sk);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
 .sk .mu{fill:var(--red);fill-opacity:.2;stroke:var(--red);stroke-width:1;stroke-dasharray:2 2}
 .sk .ar{fill:none;stroke:var(--red);stroke-width:1.8;stroke-linecap:round}
-.key{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:.7rem;color:var(--muted)}
-.key span{display:inline-block;width:12px;height:8px;border-radius:4px;margin-right:-6px}
-.k1{background:var(--red);opacity:.35}.k2{background:var(--red);height:2px!important}.k3{border-top:1px dashed var(--sk);height:0!important}
-@media (max-width:520px){.detin{grid-template-columns:1fr}.sk{max-width:220px}}
-@media (prefers-reduced-motion:reduce){.tile{transition:none}.tile:hover{transform:none}}
-.gate{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:var(--bg);padding:max(16px,env(safe-area-inset-left,0px))}
-.gate .box{width:100%;max-width:360px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:22px;display:grid;gap:12px}
-.gate img{width:64px;height:64px;border-radius:14px}
-.gate input{font:500 1rem var(--body);padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--sunk);color:var(--ink);width:100%}
-.gate .cta{width:100%;padding:13px}
-.gate .msg{font-size:.82rem;color:var(--muted)}
-.gate .err{color:var(--warn)}
+
+.weekhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.weekhead button.circle{width:36px;height:36px;border-radius:50%;background:var(--card);box-shadow:var(--shadow);font:600 1.1rem/1 var(--text)}
+.dayrow{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
+.dayrow:first-child{border-top:0}
+.dayrow .d{display:grid;justify-items:center;font:600 .72rem/1.1 var(--text);color:var(--muted)}
+.dayrow .d b{font:800 1.3rem/1 var(--round);color:var(--ink)}
+.dayrow.now .d b{color:var(--acc)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border-radius:12px;background:var(--acc-soft);font:600 .84rem/1 var(--text)}
+.chip small{font:700 .78rem/1 var(--round);color:var(--acc)}
+
+/* workout mode is a full-screen sheet so the tab bar and everything else get out of the way at the gym */
+.workout{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.wtop{position:sticky;top:0;z-index:2;display:grid;gap:10px;padding:calc(var(--safe-t) + 8px) 16px 10px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.wtop .bar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wtop h1{font:700 1rem/1.2 var(--round);text-align:center;flex:1}
+.icon.confirm{width:auto;padding:0 12px;border-radius:99px;color:var(--v);font-size:.8rem}
+.icon{width:36px;height:36px;border-radius:50%;background:var(--fill);display:grid;place-items:center;font:600 1.05rem/1 var(--text)}
+.segs{display:flex;gap:3px}
+.segs i{flex:1;height:4px;border-radius:9px;background:var(--fill)}
+.segs i.done{background:var(--acc)}
+.segs i.here{background:color-mix(in srgb,var(--acc) 45%,var(--fill))}
+.wbody{max-width:560px;margin:0 auto;padding:6px 16px calc(var(--safe-b) + 170px);display:grid;gap:16px}
+.photo{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:2/1;background:var(--fill)}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo span{position:absolute;left:12px;bottom:12px;font:600 .76rem/1 var(--text);color:#fff;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:7px 10px;border-radius:99px}
+.exname{font:800 1.7rem/1.1 var(--round);letter-spacing:-.02em}
+.specs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.specs div{background:var(--card);border-radius:16px;padding:12px 14px;display:grid;gap:3px;box-shadow:var(--shadow)}
+.specs b{font:700 1.08rem/1.15 var(--round)}
+.specs span{font-size:.76rem;color:var(--muted)}
+.sets{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:10px}
+.set{aspect-ratio:1;border-radius:20px;background:var(--card);box-shadow:inset 0 0 0 2px var(--line);display:grid;place-content:center;justify-items:center;gap:2px;transition:transform .12s}
+.set b{font:800 1.5rem/1 var(--round)}
+.set span{font:600 .68rem/1 var(--text);color:var(--muted)}
+.set:active{transform:scale(.94)}
+.set.on{background:var(--acc);box-shadow:none;color:#fff}
+.set.on span{color:rgba(255,255,255,.85)}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line)}
+.opt:first-child{border-top:0}
+.opt a{flex:1;min-width:0;display:flex;align-items:center;gap:12px;text-decoration:none}
+.play{width:36px;height:36px;border-radius:12px;background:var(--acc-soft);color:var(--acc);display:grid;place-items:center;flex:none;font-size:.8rem}
+.opt .grow{display:grid;gap:2px;min-width:0}
+.tick{width:30px;height:30px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line);display:grid;place-items:center;flex:none;font-weight:800;color:transparent}
+.tick.on{background:var(--acc);box-shadow:none;color:#fff}
+.stepnav{position:fixed;left:0;right:0;bottom:0;z-index:31;display:flex;gap:10px;padding:12px 16px calc(var(--safe-b) + 12px);background:linear-gradient(transparent,var(--bg) 30%)}
+.stepnav .big{flex:1}
+.stepnav .icon{width:54px;height:54px;border-radius:16px;font-size:1.3rem}
+.timer{position:fixed;left:16px;right:16px;bottom:calc(var(--safe-b) + 84px);z-index:32;max-width:528px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 10px 10px 14px;border-radius:20px;background:var(--ink);color:var(--bg);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.timer svg{width:40px;height:40px;transform:rotate(-90deg);flex:none}
+.timer circle{fill:none;stroke-width:4}
+.timer .grow{flex:1;display:grid;gap:1px}
+.timer b{font:800 1.4rem/1 var(--round);font-variant-numeric:tabular-nums}
+.timer span{font-size:.76rem;opacity:.7}
+.timer button{padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--bg) 16%,transparent);font:700 .84rem/1 var(--text)}
+.timer.go{background:var(--acc);color:#fff}
+.finish{text-align:center;display:grid;gap:12px;justify-items:center;padding-top:30px}
+.finish .badge{width:96px;height:96px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-size:2.8rem}
+
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.35);display:grid;align-items:end}
+.sheet>div{background:var(--bg);border-radius:24px 24px 0 0;padding:10px 16px calc(var(--safe-b) + 20px);display:grid;gap:14px;max-height:85dvh;overflow:auto}
+.grab{width:38px;height:5px;border-radius:9px;background:var(--fill);margin:0 auto}
+.sheet input[type=date]{font:600 1rem var(--text);padding:12px;border-radius:12px;border:0;background:var(--card);color:var(--ink);width:100%}
+
+.banner{display:flex;gap:12px;align-items:center;background:var(--acc-soft);border-radius:18px;padding:12px 14px;font-size:.88rem}
+.banner b{display:block}
+.status{background:var(--fill);border-radius:14px;padding:10px 14px;font-size:.86rem}
+
+.gate{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;padding:24px 20px}
+.gate form,.gate .who{width:100%;max-width:380px;display:grid;gap:12px}
+.gate img{width:76px;height:76px;border-radius:18px;box-shadow:var(--shadow);margin-bottom:6px}
+.gate h1{font:800 2rem/1.05 var(--round);letter-spacing:-.02em}
+.gate input{font:500 1.05rem var(--text);padding:15px 14px;border:0;border-radius:14px;background:var(--card);color:var(--ink);width:100%;box-shadow:var(--shadow)}
+.gate .err{color:var(--v);font-size:.88rem}
+.gate .pick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gate .pick button{border-radius:20px;padding:22px 10px;background:var(--acc);color:#fff;font:800 1.2rem/1 var(--round);display:grid;justify-items:center;gap:10px}
+.gate .pick .avatar{background:rgba(255,255,255,.25);width:52px;height:52px;line-height:52px;font-size:1.4rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
-<body>
-<div class="gate" id="gate" hidden><form class="box" id="gate-form" novalidate>
- <img src="icon-180.png" alt="">
- <h1 style="font-size:1.3rem">MG Gym</h1>
- <p class="msg" id="gate-msg">Sign in with your email and password.</p>
- <input type="email" id="gate-email" placeholder="you@example.com" autocomplete="email" inputmode="email">
- <input type="password" id="gate-pass" placeholder="Password (at least 6 characters)" autocomplete="current-password">
- <button class="cta" id="gate-btn" type="submit">Sign in</button>
- <button type="button" id="gate-switch" style="background:none;border:0;color:var(--muted);font:500 .85rem var(--body);text-decoration:underline;cursor:pointer;padding:4px">First time? Create an account</button>
- <p class="msg err" id="gate-err" hidden></p>
-</form></div>
-
+<body class="pd">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--red)"/></marker></defs></svg>
-<div class="wrap">
-  <header style="display:grid;gap:10px">
-    <span class="label">Moderncoach Gym Deggendorf · Östlicher Stadtgraben 30 · open 24/7</span>
-    <h1>Vicky & Delian Gym Plan</h1>
-    <p class="lede">Pick a program when you get to the gym and check in. It goes straight onto the shared calendar, and you tick off rounds, warm-up and recovery as you go. Vicky has five programs, Delian three; the three shared ones can be done together.</p>
-  </header>
 
-  <section class="ci" aria-label="Check in">
-    <div class="bar"><h2>Check in</h2><span class="label" id="ci-day">Today</span></div>
-    <div class="tabs" role="group" aria-label="Who is training">
-      <button data-who="v">Vicky</button><button data-who="d">Delian</button><button data-who="b">Both</button>
-    </div>
-    <div class="tiles" id="ci-tiles"></div>
-    <details class="other"><summary>Not today?</summary><input type="date" id="ci-date" aria-label="Day to check in"></details>
-  </section>
-
-  <p class="status" id="status" hidden></p>
-
-  <section style="display:grid;gap:10px">
-    <div class="bar">
-      <h2>Our schedule</h2>
-      <div class="wk" aria-label="Choose week">
-        <button id="wk-prev" aria-label="Previous week">‹</button>
-        <span id="wk-label">This week</span>
-        <button id="wk-next" aria-label="Next week">›</button>
-        <button class="ghost" id="wk-today">Today</button>
-      </div>
-    </div>
-    <div class="week" id="cal"></div>
-    <p class="foot">V = Vicky, D = Delian. Numbers show rounds done; W and R mean warm-up and recovery done. Tap a check-in to open it.</p>
-  </section>
-
-  <section id="session" hidden></section>
-
-  <section style="display:grid;gap:14px">
-    <div class="bar">
-      <h2>Programs</h2>
-      <div class="tabs" role="group" aria-label="Choose person">
-        <button id="tab-v" data-p="v" aria-pressed="true">Vicky</button>
-        <button id="tab-d" data-p="d" aria-pressed="false">Delian</button>
-      </div>
-    </div>
-    <section class="goal" id="goal"></section>
-    <section class="phase" id="phase"></section>
-    <section style="display:grid;gap:18px" id="days"></section>
-    <section class="notes" id="notes"></section>
-  </section>
-  <p class="foot"><button class="ghost" id="signout" type="button">Sign out</button></p>
-  <p class="foot">Weights are starting estimates: pick the load where the last 2 reps of a round are hard but clean. Plate-loaded numbers are the plates you add per side unless marked total. Program week counts from your first check-in. Photos: moderncoachgym.de studio gallery. Demos: <a href="https://www.muscleandstrength.com/exercises" target="_blank" rel="noopener">Muscle & Strength</a>, <a href="https://www.physitrack.com/exercise-library" target="_blank" rel="noopener">Physitrack</a> and YouTube.</p>
+<div class="gate" id="gate" hidden>
+ <form id="gate-form" novalidate>
+  <img src="icon-180.png" alt="">
+  <h1>MG Gym</h1>
+  <p class="muted" id="gate-msg">Your shared plan for Moderncoach Deggendorf.</p>
+  <div class="seg" role="group" aria-label="Sign in or create account">
+   <button type="button" data-mode="email" aria-pressed="true">Sign in</button>
+   <button type="button" data-mode="signup" aria-pressed="false">Create account</button>
+  </div>
+  <input type="email" id="gate-email" placeholder="Email" autocomplete="email" inputmode="email">
+  <input type="password" id="gate-pass" placeholder="Password" autocomplete="current-password">
+  <button class="big solid" id="gate-btn" type="submit">Sign in</button>
+  <p class="err" id="gate-err" hidden></p>
+ </form>
+ <div class="who" id="who" hidden>
+  <img src="icon-180.png" alt="">
+  <h1>Whose phone is this?</h1>
+  <p class="muted">The app opens on your own plan and colour from now on.</p>
+  <div class="pick"><button class="pv" data-me="v"><span class="avatar">V</span>Vicky</button><button class="pd" data-me="d"><span class="avatar">D</span>Delian</button></div>
+ </div>
 </div>
+
+<main id="app"></main>
+<div id="layer"></div>
+
+<nav class="tabbar" aria-label="Sections">
+ <button data-view="today" aria-current="page"><svg viewBox="0 0 24 24"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.2 1.5 1 2.5 2 3 0-3 0-6 1-8.5z"/></svg>Today</button>
+ <button data-view="week"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Week</button>
+ <button data-view="plan"><svg viewBox="0 0 24 24"><path d="M2.5 9.5v5M5.5 7v10M18.5 7v10M21.5 9.5v5M5.5 12h13"/></svg>Plan</button>
+</nav>
 
 <script src="vendor/supabase.js"></script>
 <script src="config.js"></script>
@@ -440,131 +479,348 @@ function sketch(k){
  ${s.a.map(a=>`<path d="${pl(a)}" class="ar" marker-end="url(#ah)"/>`).join('')}</svg>`
 }
 
-const pid=t=>/glute/i.test(t)?'glutes':/chest/i.test(t)?'chestback':/ham/i.test(t)?'hams':/arm/i.test(t)?'arms':'legs'
-const PROGS={v:PLAN.v.days.map(x=>({...x,id:pid(x.t)})),d:PLAN.d.days.map(x=>({...x,id:pid(x.t)}))}
+
+// Program ids stay the same as before, so check-ins already saved in Supabase still match their programs
+const programId=title=>/glute/i.test(title)?'glutes':/chest/i.test(title)?'chestback':/ham/i.test(title)?'hams':/arm/i.test(title)?'arms':'legs'
+const PROGRAMS={v:PLAN.v.days.map(x=>({...x,id:programId(x.t)})),d:PLAN.d.days.map(x=>({...x,id:programId(x.t)}))}
 const NAME={v:'Vicky',d:'Delian'}
-const PNAME={glutes:'Glutes',chestback:'Chest & back',hams:'Hamstrings & lower back',arms:'Arms & shoulders',legs:'Legs & abs'}
-const SHARED=['chestback','arms','legs']
+const PARTNER={v:'d',d:'v'}
+const PROGRAM_NAME={glutes:'Glutes',chestback:'Chest & back',hams:'Hamstrings & lower back',arms:'Arms & shoulders',legs:'Legs & abs'}
+const WEEKDAY=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+// what each of you should do on a day off, taken from your own plan rules
+const REST_TIP={v:'Get your 8–10k steps in and keep the calorie deficit.',d:'Eat the surplus today too: 3 meals and 2 snacks, 100–110 g protein.'}
+
 const pad=n=>String(n).padStart(2,'0')
 const iso=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
-const today=iso(new Date())
-const monday=d=>{const x=new Date(d);x.setHours(12);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
-const fmt=s=>new Date(s+'T12:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})
-let tab='v',weekStart=monday(new Date()),open=null,checks={},db=null,live=false,status='Connecting…'
-try{tab=localStorage.getItem('who')||'v'}catch(e){}
+const atNoon=s=>new Date(s+'T12:00')
+const mondayOf=d=>{const x=new Date(d);x.setHours(12,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+const shortDate=s=>atNoon(s).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})
 const $=id=>document.getElementById(id)
-const links=k=>(DEMO[k]||[]).map(([l,u])=>`<a href="${u}" target="_blank" rel="noopener">▶ ${l}</a>`).join('')
-const mine=p=>Object.values(checks).filter(c=>c.person===p)
-const times=(p,id)=>mine(p).filter(c=>c.warm===id||c.cool===id).length
-const progOf=(p,id)=>PROGS[p].find(x=>x.id===id)
-function weekNo(p){const ds=mine(p).map(c=>c.date).sort();if(!ds.length)return 1;return Math.min(8,Math.floor((monday(new Date(today+'T12:00'))-monday(new Date(ds[0]+'T12:00')))/6048e5)+1)}
-let sb=null
+const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}}
+
+let today=iso(new Date())
+let me=store.get('who'),view='today',planFor=null,weekStart=mondayOf(new Date())
+let checkins={},sb=null,syncNote='',confirmRemove=false
+let workout=null   // {key, step}; step 0 = warm-up, 1..n = exercises, n+1 = recovery, n+2 = finished
+let rest=null      // {ends, total}
+
+const totalRounds=program=>program.ex.reduce((sum,e)=>sum+e[4],0)
+const roundsDone=c=>Object.keys(c?.rounds||{}).length
+const programOf=c=>PROGRAMS[c.person].find(p=>p.id===c.program)
+const checkinsOf=(person,date)=>Object.values(checkins).filter(c=>c.person===person&&(!date||c.date===date))
+const scheduledOn=(person,date)=>PROGRAMS[person].find(p=>p.d===WEEKDAY[atNoon(date).getDay()])
+const accentClass=(program,person)=>program?.both?'pb':'p'+person
+
+// the 8-week block starts at each person's first check-in, like the original plan says
+function programWeek(person){
+ const first=checkinsOf(person).map(c=>c.date).sort()[0]
+ if(!first)return 1
+ return Math.min(8,Math.floor((mondayOf(atNoon(today))-mondayOf(atNoon(first)))/6048e5)+1)
+}
+const sentence=t=>t.charAt(0).toUpperCase()+t.slice(1)
+const phaseIndex=week=>week<=2?0:week<=6?1:week===7?2:3
+
+// rest values in the plan read like "90 s", "1–2 min" or "2–3 min"; the timer uses the lower bound so nobody waits longer than planned
+function restSeconds(text){const n=parseFloat(text);return /min/.test(text)?n*60:n}
+
 const row=c=>({key:c.key,date:c.date,person:c.person,program:c.program,rounds:c.rounds||{},warm:c.warm||null,cool:c.cool||null,at:c.at||new Date().toISOString()})
-async function save(c){checks[c.key]=c;render();if(!sb)return;const {error}=await sb.from('checkins').upsert(row(c));if(error){status='Couldn\'t save that change. Check your connection and try again.';render()}}
-async function remove(k){delete checks[k];if(open===k)open=null;render();if(sb){const {error}=await sb.from('checkins').delete().eq('key',k);if(error){status='Couldn\'t remove that check-in. Try again.';render()}}}
-function checkIn(prog){
- const date=$('ci-date').value||today,ppl=ciWho==='b'?['v','d']:[ciWho];let first=null
- ppl.forEach(p=>{const key=`${date}_${p}_${prog}`;if(!checks[key])save({key,date,person:p,program:prog,rounds:{},warm:null,cool:null,at:new Date().toISOString()});first=first||key})
- open=first;render();setTimeout(()=>$('session')?.scrollIntoView({behavior:'smooth',block:'start'}),50)
+async function save(c){
+ checkins[c.key]=c;render()
+ if(!sb)return
+ const {error}=await sb.from('checkins').upsert(row(c))
+ if(error){syncNote='That change didn\'t reach the server. It\'s kept on this phone; check your connection.';render()}
 }
-function renderCi(){
- const ids=ciWho==='b'?SHARED:PROGS[ciWho].map(x=>x.id),d=$('ci-date').value||today
- document.querySelectorAll('[data-who]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.who===ciWho))
- $('ci-day').textContent=d===today?'Today':fmt(d)
- $('ci-tiles').innerHTML=ids.map(i=>{const done=(ciWho==='b'?['v','d']:[ciWho]).every(p=>checks[`${d}_${p}_${i}`]);return `<button class="tile${done?' on':''}" data-go="${i}">${PNAME[i]}<small>${done?'Checked in ✓':'Tap to start'}</small></button>`}).join('')
+async function remove(key){
+ delete checkins[key];closeWorkout()
+ if(!sb)return
+ const {error}=await sb.from('checkins').delete().eq('key',key)
+ if(error){syncNote='Couldn\'t remove that check-in from the server. Try again with a connection.';render()}
 }
-function slot(title,list,c,field){
- const cur=c?.[field]
- return `<div class="slot"><div class="slothead"><b>${title}</b><span>${cur?'✓ Done: '+ALLOPT[cur]:'Pick one, then mark it done'}</span></div>
- <div class="opts">${list.map(([id,n,u])=>`<div class="opt${cur===id?' on':''}"><a href="${u}" target="_blank" rel="noopener">▶ ${n}</a><span class="cnt">×${times(c?c.person:tab,id)}</span>${c?`<button data-f="${field}" data-opt="${id}" aria-pressed="${cur===id}">${cur===id?'Done ✓':'Mark done'}</button>`:''}</div>`).join('')}</div></div>`
+function startWorkout(person,programIdToStart,date=today){
+ const key=`${date}_${person}_${programIdToStart}`
+ if(!checkins[key])save({key,date,person,program:programIdToStart,rounds:{},warm:null,cool:null,at:new Date().toISOString()})
+ openWorkout(key)
 }
-function card(p,x,c){
- const acc=x.both?'var(--both)':p==='v'?'var(--v)':'var(--d)',total=x.ex.reduce((a,e)=>a+e[4],0)
- const got=c?Object.keys(c.rounds||{}).length:0
- return `<article class="day" style="--acc:${acc}">
- <div class="dayhead"><div><span class="label">${c?NAME[p]+' · '+fmt(c.date):'Suggested: '+x.d+(x.both?' · together':' · solo')}</span><h2>${x.t}</h2></div><p>${x.s.replace(/^[^·]*· /,'')}${c?` · <span class="prog">${got}/${total} rounds</span>`:''}</p>
- ${c?`<div class="acts"><button class="ghost" data-close>Close</button><button class="ghost danger" data-del="${c.key}">Remove check-in</button></div>`:`<button class="cta" data-quick="${p}|${x.id}">Check in today</button>`}</div>
- ${slot('Start · 10 min '+(x.both?'warm-up':'Pilates warm-up'),x.both?WARM_DUO:WARM_SOLO,c,'warm')}
- ${x.both?`<div class="block"><b>Posture block · first 10 min</b><div class="links">${POSTURE.map(([n,s,u])=>`<a href="${u}" target="_blank" rel="noopener">▶ ${n} · ${s}</a>`).join('')}</div></div>`:''}
- ${x.ex.map(([n,cue,i,dk,r,reps,rest,st,goal],ei)=>`<div class="ex"><img src="${IMG[i]}" alt="${WHERE[i]} at Moderncoach Deggendorf" loading="lazy">
-  <div style="min-width:0"><div class="nm">${n}</div><div class="cue">${cue}</div><div class="where">${WHERE[i]}</div><div class="links">${links(dk)}</div>${DET[dk]?`<details class="det"><summary>Form &amp; feel</summary><div class="detin">${sketch(dk)}<div><p><b>Feel it in:</b> ${DET[dk][0]}</p><ul>${DET[dk][1].map(t=>`<li>${t}</li>`).join('')}</ul><p class="key"><span class="k1"></span>feel it here <span class="k2"></span>movement <span class="k3"></span>keep this line</p></div></div></details>`:''}</div>
-  <div class="load"><div class="sets">${r} × ${reps} <small style="color:var(--muted)">· rest ${rest}</small></div>
-   <div class="kg"><span>Start</span><b>${st}</b><span>Week 8</span><b>${goal}</b></div>
-   ${c?`<div class="rounds">${[...Array(r)].map((_,ri)=>{const k=ei+'-'+ri,id='r-'+c.key+'-'+k;return `<input type="checkbox" id="${id}" data-r="${k}" ${c.rounds?.[k]?'checked':''}><label for="${id}" title="Round ${ri+1}">${ri+1}</label>`}).join('')}</div>`:''}</div></div>`).join('')}
- ${slot('Finish · 10 min recovery',COOL,c,'cool')}
- </article>`
+function openWorkout(key,step){
+ const c=checkins[key],program=programOf(c)
+ // reopening jumps to the first exercise with unticked sets, so a paused session picks up where it stopped
+ const resume=c.warm?1+Math.max(0,program.ex.findIndex((e,ei)=>[...Array(e[4])].some((_,ri)=>!c.rounds?.[`${ei}-${ri}`]))):0
+ workout={key,step:step??(roundsDone(c)===totalRounds(program)?program.ex.length+1:resume)}
+ store.set('workout',JSON.stringify(workout));confirmRemove=false;keepAwake(true);render()
 }
-function render(){
+function closeWorkout(){workout=null;rest=null;store.set('workout',null);keepAwake(false);render()}
+
+let wakeLock=null
+async function keepAwake(on){
+ try{if(on&&!wakeLock&&navigator.wakeLock)wakeLock=await navigator.wakeLock.request('screen');if(!on&&wakeLock){wakeLock.release();wakeLock=null}}catch(e){wakeLock=null}
+}
+
+let tick=null
+function startRest(seconds){rest={ends:Date.now()+seconds*1000,total:seconds};runTimer()}
+// the "Go" state stays up for a few seconds after the rest ends, then the bar tucks itself away
+function runTimer(){
+ clearInterval(tick);drawTimer()
+ tick=setInterval(()=>{if(rest&&Date.now()>rest.ends+5000)rest=null;drawTimer();if(!rest)clearInterval(tick)},250)
+}
+function drawTimer(){
+ const el=$('timer');if(!el)return
+ if(!rest){el.hidden=true;return}
+ const left=Math.max(0,Math.ceil((rest.ends-Date.now())/1000)),done=left===0
+ if(done&&!rest.buzzed){rest.buzzed=true;navigator.vibrate?.([120,60,120])}
+ const r=16,len=2*Math.PI*r,frac=done?1:1-left/rest.total
+ el.hidden=false;el.className='timer'+(done?' go':'')
+ el.innerHTML=`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="${r}" stroke="currentColor" stroke-opacity=".2"/><circle cx="20" cy="20" r="${r}" stroke="currentColor" stroke-dasharray="${len}" stroke-dashoffset="${len*(1-frac)}" stroke-linecap="round"/></svg>
+ <div class="grow"><b>${done?'Go':Math.floor(left/60)+':'+pad(left%60)}</b><span>${done?'Next set when you\'re ready':'Rest'}</span></div>
+ ${done?'':'<button data-rest="+15">+15 s</button>'}<button data-rest="skip">${done?'OK':'Skip'}</button>`
+}
+
+const avatar=p=>`<span class="avatar p${p}">${NAME[p][0]}</span>`
+
+function partnerLine(program){
+ const mate=PARTNER[me],theirs=checkinsOf(mate,today)[0],theirProgram=theirs?programOf(theirs):scheduledOn(mate,today)
+ let text
+ if(theirs)text=roundsDone(theirs)===totalRounds(theirProgram)?`Finished ${PROGRAM_NAME[theirs.program].toLowerCase()} ✓`:`${PROGRAM_NAME[theirs.program]} · ${roundsDone(theirs)} of ${totalRounds(theirProgram)} sets`
+ else if(theirProgram)text=theirProgram.id===program?.id?'Hasn\'t started yet':`Planned: ${PROGRAM_NAME[theirProgram.id].toLowerCase()}`
+ else text='Rest day'
+ return `<div class="card partner p${mate}">${avatar(mate)}<div><b>${NAME[mate]}</b><span class="muted small">${text}</span></div></div>`
+}
+
+function weekStrip(person){
+ const monday=mondayOf(atNoon(today)),mate=PARTNER[person]
+ return `<div class="card strip p${person}" style="--mate:var(--${mate})">${[...Array(7)].map((_,i)=>{
+  const d=new Date(monday);d.setDate(d.getDate()+i);const s=iso(d)
+  const cls=[checkinsOf(person,s).length&&'done',s===today&&'today',checkinsOf(mate,s).length&&'mate'].filter(Boolean).join(' ')
+  return `<div><span>${'MTWTFSS'[i]}</span><i class="${cls}">${d.getDate()}</i></div>`}).join('')}</div>`
+}
+
+function nextScheduled(person){
+ for(let i=1;i<=7;i++){const d=atNoon(today);d.setDate(d.getDate()+i);const p=scheduledOn(person,iso(d));if(p)return [WEEKDAY[d.getDay()],p]}
+}
+
+function installBanner(){
+ const iphone=/iPhone|iPad/.test(navigator.userAgent),installed=navigator.standalone||matchMedia('(display-mode: standalone)').matches
+ if(!iphone||installed||store.get('hideInstall'))return ''
+ return `<div class="banner"><div style="flex:1"><b>Put MG Gym on your Home Screen</b>Tap <b style="display:inline">Share ⬆︎</b>, then <b style="display:inline">Add to Home Screen</b>. It opens full-screen like any app.</div><button class="icon" data-act="hide-install" aria-label="Hide">✕</button></div>`
+}
+
+function renderToday(){
+ const program=scheduledOn(me,today),mine=checkinsOf(me,today),started=mine.find(c=>c.program===program?.id)||mine[0]
+ const shown=started?programOf(started):program,week=programWeek(me),phase=PLAN[me].phases[phaseIndex(week)]
+ const [phaseLabel,...phaseText]=phase.split(': ')
+ let hero
+ if(shown){
+  const total=totalRounds(shown),done=started?roundsDone(started):0,finished=started&&done===total
+  const label=finished?'Done · view session':started?'Continue workout':'Start workout'
+  hero=`<section class="hero ${accentClass(shown,me)}"><img src="${IMG[shown.ex[0][2]]}" alt="">
+   <p class="eyebrow">${started&&started.program!==program?.id?'Extra session':'Today'} · ${shown.both?`with ${NAME[PARTNER[me]]}`:'solo'}</p>
+   <h2>${shown.t}</h2>
+   <p class="meta">${shown.ex.length} exercises · ${total} sets · ${shown.s.split('· ').pop()}</p>
+   ${started?`<div class="bar"><i style="width:${done/total*100}%"></i></div><p class="meta">${done} of ${total} sets done</p>`:''}
+   <button class="big" ${started?`data-open="${started.key}"`:`data-start="${shown.id}"`}>${label}</button></section>`
+ }else{
+  const next=nextScheduled(me)
+  hero=`<section class="hero rest p${me}"><p class="eyebrow">Today</p><h2>Rest day</h2><p class="meta muted">${REST_TIP[me]}</p>${next?`<p class="meta muted">Next: <b style="color:var(--ink)">${next[0]} · ${next[1].t}</b></p>`:''}</section>`
+ }
+ return `<div class="view p${me}">
+  <header class="top"><div><p class="eyebrow">${atNoon(today).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</p><h1 class="title">Today</h1></div><button data-view="plan" aria-label="Your plan">${avatar(me)}</button></header>
+  ${installBanner()}
+  ${syncNote?`<p class="status">${syncNote}</p>`:''}
+  ${hero}
+  ${partnerLine(shown)}
+  <h2 class="section">This week</h2>
+  ${weekStrip(me)}
+  <section class="card phase"><div class="steps4">${[0,1,2,3].map(i=>`<i class="${i<=phaseIndex(week)?'on':''}"></i>`).join('')}</div><p class="eyebrow">Week ${week} of 8 · ${phaseLabel}</p><h3>${sentence(phaseText.join(': '))}</h3></section>
+  <button class="big soft" data-act="other">Log a different workout</button>
+ </div>`
+}
+
+function renderWeek(){
  const days=[...Array(7)].map((_,i)=>{const d=new Date(weekStart);d.setDate(d.getDate()+i);return iso(d)})
- renderCi()
- $('wk-label').textContent='Week of '+fmt(days[0]).replace(/^\w+ /,'')
- $('status').textContent=status;$('status').hidden=!status
- $('cal').innerHTML=days.map(d=>{const cs=Object.values(checks).filter(c=>c.date===d).sort((a,b)=>a.person<b.person?1:-1)
-  return `<div class="wd${d===today?' today':''}"><b>${fmt(d).split(' ')[0]} <small>${d.slice(8)}</small></b>${cs.length?cs.map(c=>{const p=progOf(c.person,c.program),tot=p?p.ex.reduce((a,e)=>a+e[4],0):0,g=Object.keys(c.rounds||{}).length
-  return `<button class="chip c${c.person}${open===c.key?' sel':''}" data-open="${c.key}">${NAME[c.person][0]} · ${PNAME[c.program]}<small>${g}/${tot}${c.warm?' · W':''}${c.cool?' · R':''}</small></button>`}).join(''):`<span class="rest">${d<today?'Rest':'—'}</span>`}</div>`}).join('')
- const c=open&&checks[open]
- $('session').innerHTML=c&&progOf(c.person,c.program)?card(c.person,progOf(c.person,c.program),c):''
- $('session').hidden=!c
- document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p===tab))
- const P=PLAN[tab],ms=mine(tab),wk=days.filter(d=>ms.some(c=>c.date===d)).length
- $('goal').innerHTML=P.goal.map(([l,v])=>`<div><span class="label">${l}</span><strong>${v}</strong></div>`).join('')+
-  `<div><span class="label">Gym days this week</span><strong>${wk}</strong></div><div><span class="label">Program week</span><strong>${weekNo(tab)} of 8</strong></div><div><span class="label">Warm-ups · recoveries</span><strong>${ms.filter(x=>x.warm).length} · ${ms.filter(x=>x.cool).length}</strong></div>`
- $('phase').innerHTML=`<h3>8-week progression</h3><ol>${P.phases.map(x=>`<li>${x}</li>`).join('')}</ol>`
- $('days').innerHTML=PROGS[tab].map(x=>card(tab,x,null)).join('')
- $('notes').innerHTML=`<h3>Rules for ${NAME[tab]}</h3><ul>${P.notes.map(n=>`<li>${n}</li>`).join('')}</ul>`
- try{localStorage.setItem('who',tab)}catch(e){}
+ const count=p=>days.filter(d=>checkinsOf(p,d).length).length,thisWeek=iso(weekStart)===iso(mondayOf(new Date()))
+ return `<div class="view p${me}">
+  <header class="top"><div><p class="eyebrow">${thisWeek?'This week':'Week of '+shortDate(days[0]).replace(/^\w+ /,'')}</p><h1 class="title">Week</h1></div></header>
+  <div class="weekhead"><button class="circle" data-week="-1" aria-label="Previous week">‹</button>
+   <div class="chips">${['v','d'].map(p=>`<span class="chip p${p}"><i class="dot"></i>${NAME[p]} <small>${count(p)} days</small></span>`).join('')}</div>
+   <button class="circle" data-week="1" aria-label="Next week">›</button></div>
+  <div class="list">${days.map(d=>{const cs=Object.values(checkins).filter(c=>c.date===d).sort((a,b)=>a.person===me?-1:1)
+   return `<div class="dayrow${d===today?' now':''}"><div class="d">${shortDate(d).split(' ')[0]}<b>${atNoon(d).getDate()}</b></div><div class="chips">${cs.length?cs.map(c=>{const p=programOf(c)
+    return `<button class="chip p${c.person}" data-open="${c.key}"><i class="dot"></i>${PROGRAM_NAME[c.program]} <small>${roundsDone(c)}/${totalRounds(p)}</small></button>`}).join(''):`<span class="muted small">${d<today?'Rest':d===today?'Nothing yet':'—'}</span>`}</div></div>`}).join('')}</div>
+  ${thisWeek?'':'<button class="big soft" data-week="0">Back to this week</button>'}
+ </div>`
 }
+
+function howTo(key){
+ const det=DET[key],demos=(DEMO[key]||[]).map(([label,url])=>`<a href="${url}" target="_blank" rel="noopener">▶ ${label}</a>`).join('')
+ if(!det&&!demos)return ''
+ return `<details class="how"><summary>How to do it ›</summary><div class="in">${det?`${sketch(key)}<p><b>Feel it in:</b> ${det[0]}</p><ul>${det[1].map(t=>`<li>${t}</li>`).join('')}</ul>`:''}<div class="links">${demos}</div></div></details>`
+}
+
+function renderPlan(){
+ const who=planFor||me,P=PLAN[who],week=programWeek(who),mine=checkinsOf(who)
+ return `<div class="view p${who}">
+  <header class="top"><div><p class="eyebrow">8-week program</p><h1 class="title">Plan</h1></div>${avatar(who)}</header>
+  <div class="seg" role="group" aria-label="Whose plan">${['v','d'].map(p=>`<button class="p${p}" data-plan="${p}" aria-pressed="${p===who}">${NAME[p]}${p===me?' (you)':''}</button>`).join('')}</div>
+  <div class="stats">${P.goal.map(([label,value])=>`<div class="stat"><span class="eyebrow">${label}</span><b>${value}</b></div>`).join('')}
+   <div class="stat"><span class="eyebrow">Program week</span><b>${week} of 8</b></div><div class="stat"><span class="eyebrow">Sessions logged</span><b>${mine.length}</b></div></div>
+  <section class="card phase"><div class="steps4">${[0,1,2,3].map(i=>`<i class="${i<=phaseIndex(week)?'on':''}"></i>`).join('')}</div>
+   ${P.phases.map((x,i)=>{const [l,...t]=x.split(': ');return `<p class="small${i===phaseIndex(week)?'':' muted'}"><b>${l}.</b> ${sentence(t.join(': '))}</p>`}).join('')}</section>
+  <h2 class="section">Training days</h2>
+  ${PROGRAMS[who].map(p=>`<details class="day ${accentClass(p,who)}"><summary><span class="wkday">${p.d.slice(0,3)}</span><span class="grow" style="flex:1;display:grid;gap:2px"><b>${p.t}</b><span class="muted small">${p.ex.length} exercises · ${p.s.split('· ').pop()}</span></span>${p.both?'<span class="tag">Together</span>':''}<span class="chev">›</span></summary>
+   ${p.ex.map(([name,cue,img,key,rounds,reps,restText,start,goal])=>`<div class="exrow"><img src="${IMG[img]}" alt="" loading="lazy"><div><b>${name}</b><p class="muted small">${cue}</p><p class="load">${rounds} × ${reps} · rest ${restText}<br>${start} → ${goal}</p>${howTo(key)}</div></div>`).join('')}
+   <div style="padding:12px 16px 16px"><button class="big solid" data-start="${p.id}" data-for="${who}">Start ${p.t.toLowerCase()} now</button></div></details>`).join('')}
+  <section class="card"><h3 class="section" style="margin-bottom:8px">Rules for ${NAME[who]}</h3><ul style="margin:0;padding-left:18px;display:grid;gap:6px">${P.notes.map(n=>`<li>${n}</li>`).join('')}</ul></section>
+  <div class="list">
+   <button class="row" data-act="share"><span class="grow"><b>Share the app</b><span class="muted small">Send the link to ${NAME[PARTNER[me]]}</span></span><span class="chev">›</span></button>
+   <button class="row" data-act="switch"><span class="grow"><b>This phone is ${NAME[me]}'s</b><span class="muted small">Tap to change</span></span><span class="chev">›</span></button>
+   <button class="row" data-act="signout"><span class="grow"><b style="color:var(--v)">Sign out</b></span></button>
+  </div>
+  <p class="muted small">Weights are starting estimates: pick the load where the last 2 reps are hard but clean. Plate-loaded numbers are per side unless marked total. Photos: moderncoachgym.de.</p>
+ </div>`
+}
+
+function workoutStep(c,program,step){
+ const n=program.ex.length
+ if(step===0){
+  const list=program.both?WARM_DUO:WARM_SOLO
+  return `<p class="eyebrow">Step 1 · 10 min</p><h2 class="exname">${program.both?'Warm-up':'Pilates warm-up'}</h2><p class="muted">Pick one video, follow along, then tick it.</p>
+   ${videoList(list,c,'warm')}
+   ${program.both?`<h3 class="section">Posture block</h3><div class="list">${POSTURE.map(([name,dose,url])=>`<a class="row" href="${url}" target="_blank" rel="noopener"><span class="play">▶</span><span class="grow"><b>${name}</b><span class="muted small">${dose}</span></span><span class="chev">›</span></a>`).join('')}</div>`:''}`
+ }
+ if(step===n+1)return `<p class="eyebrow">Last step · 10 min</p><h2 class="exname">Recovery</h2><p class="muted">Stretch it out before you leave.</p>${videoList(COOL,c,'cool')}`
+ if(step===n+2){
+  const done=roundsDone(c),total=totalRounds(program)
+  return `<div class="finish"><span class="badge">✓</span><h2 class="exname">${done===total?'Session complete':'Session saved'}</h2><p class="muted">${done} of ${total} sets · warm-up ${c.warm?'✓':'skipped'} · recovery ${c.cool?'✓':'skipped'}</p><p class="muted small">${NAME[c.person]} has trained ${checkinsOf(c.person).filter(x=>x.date>=iso(mondayOf(atNoon(today)))).length} days this week.</p></div>`
+ }
+ const ei=step-1,[name,cue,img,key,rounds,reps,restText,start,goal]=program.ex[ei]
+ return `<div class="photo"><img src="${IMG[img]}" alt="${WHERE[img]} at Moderncoach Deggendorf"><span>📍 ${WHERE[img]}</span></div>
+  <div><p class="eyebrow">Exercise ${step} of ${n}</p><h2 class="exname">${name}</h2><p class="muted" style="margin-top:4px">${cue}</p></div>
+  <div class="sets">${[...Array(rounds)].map((_,ri)=>{const k=`${ei}-${ri}`;return `<button class="set${c.rounds?.[k]?' on':''}" data-set="${k}" data-rest="${restSeconds(restText)}" aria-pressed="${!!c.rounds?.[k]}"><b>${ri+1}</b><span>${c.rounds?.[k]?'done':reps}</span></button>`}).join('')}</div>
+  <div class="specs"><div><b>${start}</b><span>start weight</span></div><div><b>${goal}</b><span>week 8 goal</span></div><div><b>${rounds} × ${reps}</b><span>sets × reps</span></div><div><b>${restText}</b><span>rest between sets</span></div></div>
+  ${howTo(key)}`
+}
+
+function videoList(list,c,field){
+ return `<div class="list">${list.map(([id,title,url])=>{const used=checkinsOf(c.person).filter(x=>x[field]===id).length
+  return `<div class="opt"><a href="${url}" target="_blank" rel="noopener"><span class="play">▶</span><span class="grow"><b>${title}</b><span class="muted small">${used?`Done ${used}× before`:'New'}</span></span></a><button class="tick${c[field]===id?' on':''}" data-pick="${field}" data-id="${id}" aria-label="Mark done" aria-pressed="${c[field]===id}">✓</button></div>`}).join('')}</div>`
+}
+
+function renderWorkout(){
+ if(!workout||!checkins[workout.key])return ''
+ const c=checkins[workout.key],program=programOf(c),n=program.ex.length,step=workout.step
+ const exDone=ei=>[...Array(program.ex[ei][4])].every((_,ri)=>c.rounds?.[`${ei}-${ri}`])
+ const segs=[c.warm,...program.ex.map((_,ei)=>exDone(ei)),c.cool]
+ const nextLabel=step===n+2?'Back to today':step===n+1?'Finish':step===0?'Start exercises':step===n?'Recovery':'Next exercise'
+ return `<div class="workout ${accentClass(program,c.person)}">
+  <div class="wtop"><div class="bar"><button class="icon" data-act="close" aria-label="Close">✕</button><h1>${program.t}${c.person!==me?` · ${NAME[c.person]}`:''}${c.date!==today?` · ${shortDate(c.date)}`:''}</h1><button class="icon${confirmRemove?' confirm':''}" data-act="remove" aria-label="Remove check-in">${confirmRemove?'Remove?':'⋯'}</button></div>
+   <div class="segs">${segs.map((done,i)=>`<i class="${done?'done':i===Math.min(step,n+1)?'here':''}"></i>`).join('')}</div></div>
+  <div class="wbody">${workoutStep(c,program,step)}</div>
+  <div class="timer" id="timer" hidden></div>
+  <nav class="stepnav">${step>0?'<button class="icon" data-step="-1" aria-label="Previous">‹</button>':''}<button class="big solid" data-step="${step===n+2?'done':1}">${nextLabel}</button></nav>
+ </div>`
+}
+
+function renderSheet(){
+ if(!sheetOpen)return ''
+ return `<div class="sheet" data-act="sheet-bg"><div class="p${me}"><span class="grab"></span><h2 class="section">Log a workout</h2>
+  <label class="small muted">Day<input type="date" id="other-date" value="${sheetDate}" max="${today}"></label>
+  <div class="list">${PROGRAMS[me].map(p=>`<button class="row ${accentClass(p,me)}" data-start="${p.id}" data-pick-date><span class="wkday">${p.d.slice(0,3)}</span><span class="grow"><b>${p.t}</b><span class="muted small">${p.ex.length} exercises</span></span><span class="chev">›</span></button>`).join('')}</div></div></div>`
+}
+let sheetOpen=false,sheetDate=today
+
+function render(){
+ today=iso(new Date())
+ if(!me)return
+ document.body.className='p'+me
+ const scroll=view==='today'?renderToday():view==='week'?renderWeek():renderPlan()
+ $('app').innerHTML=scroll
+ document.querySelectorAll('.tabbar button').forEach(b=>b.dataset.view===view?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'))
+ const keepY=$('layer').querySelector('.workout')?.scrollTop
+ $('layer').innerHTML=renderWorkout()+renderSheet()
+ const w=$('layer').querySelector('.workout');if(w&&keepY!=null&&!render.resetScroll)w.scrollTop=keepY
+ render.resetScroll=false
+ drawTimer()
+}
+
 document.addEventListener('click',e=>{
- const t=e.target.closest('button');if(!t)return
- if(t.dataset.p){tab=t.dataset.p;render()}
- else if(t.id==='wk-prev'||t.id==='wk-next'){weekStart.setDate(weekStart.getDate()+(t.id==='wk-prev'?-7:7));render()}
- else if(t.id==='wk-today'){weekStart=monday(new Date());render()}
- else if(t.dataset.who){ciWho=t.dataset.who;render()}
- else if(t.dataset.go)checkIn(t.dataset.go)
- else if(t.dataset.open){open=open===t.dataset.open?null:t.dataset.open;render();if(open)setTimeout(()=>$('session').scrollIntoView({behavior:'smooth',block:'start'}),50)}
- else if('close' in t.dataset){open=null;render()}
- else if(t.dataset.del){remove(t.dataset.del)}
- else if(t.dataset.quick){const [p,id]=t.dataset.quick.split('|');$('ci-date').value=today;ciWho=p;checkIn(id)}
- else if(t.dataset.f&&open){const c={...checks[open]};c[t.dataset.f]=c[t.dataset.f]===t.dataset.opt?null:t.dataset.opt;save(c)}
+ const t=e.target.closest('button,[data-act]');if(!t)return
+ const d=t.dataset
+ if(d.act==='sheet-bg'&&e.target!==t)return
+ if(d.view){view=d.view;planFor=null;render();scrollTo(0,0)}
+ else if(d.me){me=d.me;store.set('who',me);sb?.auth.updateUser({data:{who:me}});$('gate').hidden=true;render()}
+ else if(d.start){const date=d.pickDate!=null?($('other-date')?.value||today):today;sheetOpen=false;startWorkout(d.for||me,d.start,date)}
+ else if(d.open)openWorkout(d.open)
+ else if(d.plan){planFor=d.plan;render()}
+ else if(d.week){if(d.week==='0')weekStart=mondayOf(new Date());else weekStart.setDate(weekStart.getDate()+7*d.week);render()}
+ else if(d.set&&workout){
+  const c={...checkins[workout.key],rounds:{...checkins[workout.key].rounds}},was=c.rounds[d.set]
+  if(was)delete c.rounds[d.set];else{c.rounds[d.set]=1;startRest(+d.rest)}
+  save(c)
+ }
+ else if(d.pick&&workout){const c={...checkins[workout.key]};c[d.pick]=c[d.pick]===d.id?null:d.id;save(c)}
+ else if(d.step&&workout){
+  if(d.step==='done'){closeWorkout();view='today';return}
+  const n=programOf(checkins[workout.key]).ex.length
+  workout.step=Math.max(0,Math.min(n+2,workout.step+ +d.step));rest=null;confirmRemove=false
+  store.set('workout',JSON.stringify(workout));render.resetScroll=true;render()
+ }
+ else if(d.rest==='skip'){rest=null;drawTimer()}
+ else if(d.rest==='+15'&&rest){rest.ends+=15000;rest.total+=15;drawTimer()}
+ else if(d.act==='close')closeWorkout()
+ else if(d.act==='remove'){if(confirmRemove)remove(workout.key);else{confirmRemove=true;render()}}
+ else if(d.act==='other'){sheetOpen=true;sheetDate=today;render()}
+ else if(d.act==='sheet-bg'){sheetOpen=false;render()}
+ else if(d.act==='hide-install'){store.set('hideInstall','1');render()}
+ else if(d.act==='share'){const url=location.href.split('#')[0];navigator.share?navigator.share({title:'MG Gym',text:'Our gym plan',url}).catch(()=>{}):navigator.clipboard?.writeText(url).then(()=>{syncNote='Link copied: '+url;view='today';render()})}
+ else if(d.act==='switch'){$('gate').hidden=false;$('gate-form').hidden=true;$('who').hidden=false}
+ else if(d.act==='signout'){sb?.auth.signOut();checkins={};store.set('workout',null)}
 })
-document.addEventListener('change',e=>{
- if(e.target.id==='ci-date')render()
- if(e.target.dataset.r&&open){const c={...checks[open],rounds:{...checks[open].rounds}};if(e.target.checked)c.rounds[e.target.dataset.r]=1;else delete c.rounds[e.target.dataset.r];const y=scrollY;save(c);scrollTo(0,y)}
-})
-$('ci-date').value=today;ciWho=tab;render()
+document.addEventListener('change',e=>{if(e.target.id==='other-date')sheetDate=e.target.value})
+// coming back to the app after a while: refresh the date (it may be a new day) and pull the partner's latest sets
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();if(rest)runTimer();load?.()}})
+
+let load=null
 ;(()=>{
  const C=window.MG_CONFIG||{},gate=$('gate')
- if(!window.supabase||!C.url||/YOUR_/.test(C.url+C.anonKey)){status='Add your Supabase project URL and anon key to config.js to turn on syncing.';render();return}
+ const saved=store.get('workout');if(saved)try{workout=JSON.parse(saved)}catch(e){}
+ if(!window.supabase||!C.url||/YOUR_/.test(C.url+C.anonKey)){syncNote='Sync is off: add the Supabase keys to config.js.';if(!me){gate.hidden=false;$('gate-form').hidden=true;$('who').hidden=false}render();return}
  sb=window.supabase.createClient(C.url,C.anonKey,{auth:{persistSession:true,autoRefreshToken:true}})
- let chan=null,step='email'
- async function load(){
+ let channel=null,mode='email'
+ load=async()=>{
   const {data,error}=await sb.from('checkins').select('*')
-  if(error){status='Saved check-ins couldn\'t load. Pull down or reopen the app to try again.';render();return}
-  checks={};data.forEach(r=>{checks[r.key]={...r,date:String(r.date).slice(0,10)}});status='';render()
+  if(error){syncNote='Couldn\'t load your check-ins. Close and reopen the app to try again.';render();return}
+  checkins={};data.forEach(r=>{checkins[r.key]={...r,date:String(r.date).slice(0,10)}});syncNote='';render()
  }
- function live(){if(chan)return;chan=sb.channel('checkins-live').on('postgres_changes',{event:'*',schema:'public',table:'checkins'},p=>{if(p.eventType==='DELETE'){delete checks[p.old.key];if(open===p.old.key)open=null}else checks[p.new.key]={...p.new,date:String(p.new.date).slice(0,10)};render()}).subscribe()}
- async function start(session){gate.hidden=!!session;if(!session)return;await load();live()}
+ const listen=()=>{if(channel)return;channel=sb.channel('checkins-live').on('postgres_changes',{event:'*',schema:'public',table:'checkins'},p=>{
+  if(p.eventType==='DELETE'){delete checkins[p.old.key];if(workout?.key===p.old.key)closeWorkout()}else checkins[p.new.key]={...p.new,date:String(p.new.date).slice(0,10)};render()}).subscribe()}
+ // who owns this phone is saved on the account too, so reinstalling the app doesn't ask again
+ async function start(session){
+  gate.hidden=!!session;$('gate-form').hidden=false;$('who').hidden=true
+  if(!session)return
+  const onAccount=session.user.user_metadata?.who
+  me=onAccount||me
+  if(me&&!onAccount)sb.auth.updateUser({data:{who:me}})
+  if(me)store.set('who',me);else{gate.hidden=false;$('gate-form').hidden=true;$('who').hidden=false}
+  await load();listen()
+ }
  sb.auth.getSession().then(({data})=>start(data.session))
  sb.auth.onAuthStateChange((ev,session)=>{if(ev==='SIGNED_IN'||ev==='SIGNED_OUT')start(session)})
- document.addEventListener('visibilitychange',()=>{if(!document.hidden&&gate.hidden)load()})
- const setMode=m=>{step=m;const up=m==='signup';$('gate-btn').textContent=up?'Create account':'Sign in';$('gate-switch').textContent=up?'Already have an account? Sign in':'First time? Create an account';$('gate-pass').autocomplete=up?'new-password':'current-password';$('gate-msg').textContent=up?'Pick a password. We\'ll email you a link to confirm it\'s you.':'Sign in with your email and password.';$('gate-err').hidden=true}
- $('gate-switch').addEventListener('click',()=>setMode(step==='signup'?'email':'signup'))
+ const setMode=m=>{mode=m;const up=m==='signup';document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));$('gate-btn').textContent=up?'Create account':'Sign in';$('gate-pass').autocomplete=up?'new-password':'current-password';$('gate-msg').textContent=up?'Pick a password. You\'ll get one email to confirm it\'s you.':'Your shared plan for Moderncoach Deggendorf.';$('gate-err').hidden=true}
+ document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)))
  $('gate-form').addEventListener('submit',async e=>{
   e.preventDefault();const err=$('gate-err'),btn=$('gate-btn'),email=$('gate-email').value.trim().toLowerCase(),password=$('gate-pass').value;err.hidden=true
   if(!email||password.length<6){err.textContent='Enter your email and a password of at least 6 characters.';err.hidden=false;return}
   btn.disabled=true
-  if(step==='signup'){
+  if(mode==='signup'){
    const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:location.href.split('#')[0]}})
    btn.disabled=false
    if(error){err.textContent='Couldn\'t create the account: '+error.message;err.hidden=false;return}
-   if(!data.session){setMode('email');$('gate-msg').textContent='Almost done: open the email from Supabase and tap the confirmation link. Then come back to this app and sign in.'}
+   if(!data.session){setMode('email');$('gate-msg').textContent='Almost there: open the email from Supabase and tap the link. Then come back here and sign in.'}
   }else{
    const {error}=await sb.auth.signInWithPassword({email,password})
    btn.disabled=false
-   if(error){err.textContent=/confirm/i.test(error.message)?'Confirm your email first: tap the link in the email from Supabase, then sign in here.':'Wrong email or password. First time here? Tap "Create an account".';err.hidden=false}
+   if(error){err.textContent=/confirm/i.test(error.message)?'Confirm your email first: tap the link in the email from Supabase, then sign in here.':'Wrong email or password. New here? Switch to "Create account".';err.hidden=false}
   }
  })
- $('signout').addEventListener('click',async()=>{await sb.auth.signOut();checks={};render()})
  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})
 })()
 </script>
