@@ -7,17 +7,17 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MG Gym">
-<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fdf6f3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#120d10" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>MG Gym</title>
 <style>
 /* iPhone system fonts (SF Pro / SF Pro Rounded) so it reads as a native app and works offline */
 :root{
-  --bg:#f2f2f7;--card:#fff;--fill:#e9e9ee;--ink:#111114;--muted:#86868f;--line:rgba(60,60,67,.13);
-  --v:#ff5a6e;--d:#3d8bff;--both:#9b6bff;--v-soft:#ffe8eb;--d-soft:#e3eeff;--both-soft:#efe8ff;
-  --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+  --bg:#fdf6f3;--card:#fff;--fill:#f4e9e6;--ink:#2a1f24;--muted:#97868c;--line:rgba(120,70,80,.12);
+  --v:#ff6f91;--d:#5b8cff;--both:#a77bff;--v-soft:#ffe6ee;--d-soft:#e6eeff;--both-soft:#f1e9ff;
+  --shadow:0 1px 2px rgba(120,60,70,.05),0 10px 28px rgba(160,90,100,.09);
   --round:ui-rounded,"SF Pro Rounded",-apple-system,system-ui,sans-serif;
   --text:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
   --mono:ui-monospace,"SF Mono",monospace;
@@ -26,8 +26,8 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root{
-  --bg:#000;--card:#1c1c1e;--fill:#2c2c2e;--ink:#f5f5f7;--muted:#98989f;--line:rgba(255,255,255,.1);
-  --v-soft:#3a1a20;--d-soft:#13243f;--both-soft:#261b3d;--shadow:none;
+  --bg:#120d10;--card:#1f181c;--fill:#2d2429;--ink:#f8eef1;--muted:#a3949a;--line:rgba(255,220,230,.1);
+  --v-soft:#3d1a26;--d-soft:#16244a;--both-soft:#2a1d45;--shadow:none;
   --sk:#cfd0d5;--sk2:#4c4d53;--paper:#232325;color-scheme:dark}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
@@ -45,14 +45,14 @@ img{display:block;max-width:100%}
 .view{padding:calc(var(--safe-t) + 14px) 16px calc(var(--safe-b) + 96px);max-width:560px;margin:0 auto;display:grid;gap:18px}
 .top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:6px}
 .eyebrow{font:600 .78rem/1.2 var(--text);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-.title{font:800 2.1rem/1.05 var(--round);letter-spacing:-.02em}
+.title{font:800 1.85rem/1.08 var(--round);letter-spacing:-.02em}
 .avatar{display:inline-block;width:38px;height:38px;border-radius:50%;background:var(--acc);color:#fff;font:700 1rem/38px var(--round);text-align:center;flex:none}
 .section{font:700 1.25rem/1.2 var(--round);letter-spacing:-.01em}
-.card{background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+.card{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:16px}
 .muted{color:var(--muted)}
 .small{font-size:.86rem}
 
-.hero{position:relative;overflow:hidden;border-radius:26px;padding:20px;color:#fff;background:var(--acc);display:grid;gap:14px;min-height:220px;align-content:end;isolation:isolate}
+.hero{position:relative;overflow:hidden;border-radius:30px;padding:20px;color:#fff;background:var(--acc);display:grid;gap:14px;min-height:220px;align-content:end;isolation:isolate}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:saturate(.8)}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.25) 40%,color-mix(in srgb,var(--acc) 82%,#000) 100%)}
 .hero .eyebrow{color:rgba(255,255,255,.85)}
@@ -95,7 +95,10 @@ img{display:block;max-width:100%}
 .tag{font:700 .7rem/1 var(--text);padding:5px 8px;border-radius:99px;background:var(--acc-soft);color:var(--acc);white-space:nowrap}
 
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;justify-content:space-around;padding:8px 8px calc(var(--safe-b) + 6px);background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);border-top:1px solid var(--line)}
-.tabbar button{display:grid;justify-items:center;gap:3px;font:600 .68rem/1 var(--text);color:var(--muted);padding:4px 18px}
+.tabbar button,.tabbar label{display:grid;justify-items:center;gap:3px;font:600 .68rem/1 var(--text);color:var(--muted);padding:4px 6px;flex:1;cursor:pointer}
+/* the camera sits raised in the middle so sending an instant is one thumb-tap from anywhere */
+.tabbar .cam{flex:none;width:58px;height:58px;margin-top:-22px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--both));color:#fff;place-content:center;box-shadow:0 8px 20px color-mix(in srgb,var(--v) 40%,transparent),0 0 0 5px var(--bg)}
+.tabbar .cam svg{width:28px;height:28px}
 .tabbar button[aria-current="page"]{color:var(--acc)}
 .tabbar svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 
@@ -152,7 +155,9 @@ details.day[open]>summary .chev{transform:rotate(90deg)}
 .workout{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
 .wtop{position:sticky;top:0;z-index:2;display:grid;gap:10px;padding:calc(var(--safe-t) + 8px) 16px 10px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .wtop .bar{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.wtop h1{font:700 1rem/1.2 var(--round);text-align:center;flex:1}
+.wtitle{flex:1;display:grid;justify-items:center;gap:4px;min-width:0}
+.wtop h1{font:700 1rem/1.2 var(--round);text-align:center}
+.onair{font:600 .72rem/1 var(--text);color:var(--acc);background:var(--acc-soft);padding:5px 9px;border-radius:99px}
 .icon.confirm{width:auto;padding:0 12px;border-radius:99px;color:var(--v);font-size:.8rem}
 .icon{width:36px;height:36px;border-radius:50%;background:var(--fill);display:grid;place-items:center;font:600 1.05rem/1 var(--text)}
 .segs{display:flex;gap:3px}
@@ -214,7 +219,66 @@ details.day[open]>summary .chev{transform:rotate(90deg)}
 .gate .pick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gate .pick button{border-radius:20px;padding:22px 10px;background:var(--acc);color:#fff;font:800 1.2rem/1 var(--round);display:grid;justify-items:center;gap:10px}
 .gate .pick .avatar{background:rgba(255,255,255,.25);width:52px;height:52px;line-height:52px;font-size:1.4rem}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.emo{font-size:.85em}
+.heart{width:44px;height:44px;border-radius:50%;background:var(--acc-soft);font-size:1.3rem;flex:none;transition:transform .15s}
+.heart:active{transform:scale(1.3)}
+.together{display:block;color:var(--acc);font-weight:600;margin-top:2px}
+.center{text-align:center}
+.sechead{display:flex;align-items:center;justify-content:space-between}
+.pill{font:700 .82rem/1 var(--text);padding:9px 13px;border-radius:99px;background:var(--acc-soft);color:var(--acc);cursor:pointer}
+.instants{display:grid;gap:12px}
+.empty{display:grid;justify-items:center;gap:6px;text-align:center;padding:22px 18px;border-radius:24px;border:2px dashed color-mix(in srgb,var(--acc) 35%,transparent);background:color-mix(in srgb,var(--acc-soft) 50%,var(--card));cursor:pointer}
+.bigemo{font-size:2rem;line-height:1}
+.polaroids{display:flex;gap:14px;justify-content:center;padding:6px 0}
+/* instants look like little polaroids, slightly tilted, blurred until opened */
+.polaroid{background:#fff;padding:10px 10px 0;border-radius:6px;box-shadow:0 10px 26px rgba(80,40,50,.18);transform:rotate(var(--tilt));display:grid;width:150px;transition:transform .2s}
+.polaroid:active{transform:rotate(0) scale(.97)}
+.polaroid .ph{display:block;aspect-ratio:4/5;background:#eee center/cover;border-radius:2px}
+.polaroid .ph.blur{filter:blur(14px) saturate(1.3);transform:scale(1.02)}
+.polaroid .cap{font:600 .78rem/1.2 var(--round);color:#5a4a50;padding:10px 2px 12px;text-align:center;border:0;background:none;width:100%}
+.polaroid.big{width:min(78%,300px);margin:6px auto}
+.polaroid input.cap:focus{outline:none}
+.sent{color:var(--muted);text-align:center}
+.sent b{color:var(--acc)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.big{cursor:pointer}
+.join{width:100%;text-align:left;color:var(--ink)}
+.join b{display:block}
+.eq{display:inline-flex;align-items:flex-end;gap:2px;height:18px;flex:none}
+.eq i{width:4px;border-radius:2px;background:var(--acc);animation:eq 1s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.6s}
+@keyframes eq{0%,100%{height:5px}50%{height:18px}}
+.stations{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.station{position:relative;text-align:left;background:var(--card);border-radius:22px;padding:14px;display:grid;gap:4px;align-content:start;box-shadow:var(--shadow)}
+.station b{font:700 1rem/1.2 var(--round)}
+.station .tag{justify-self:start;margin-top:4px}
+.station.on{box-shadow:0 0 0 2.5px var(--acc),var(--shadow)}
+.station .eq,.station .mate{position:absolute;top:14px;right:14px;margin:0}
+.tag.mate{background:var(--d-soft);color:var(--d)}
+.onair-card{display:flex;align-items:center;gap:14px;padding:18px;border-radius:26px;background:linear-gradient(135deg,var(--acc-soft),var(--card));box-shadow:var(--shadow)}
+.live{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff3b5c;margin-right:4px;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.playbtn{width:46px;height:46px;border-radius:50%;background:var(--acc);color:#fff;font:700 .9rem/1 var(--text);flex:none}
+.mini{position:fixed;left:12px;right:12px;bottom:calc(var(--safe-b) + 78px);z-index:9;max-width:536px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:20px;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 8px 24px rgba(80,40,50,.15)}
+.mini-in{flex:1;display:flex;align-items:center;gap:12px;min-width:0}
+.mini-in b{display:block}
+.mini .playbtn{width:40px;height:40px}
+body:has(.mini:not([hidden])) .view{padding-bottom:calc(var(--safe-b) + 160px)}
+.viewer{position:fixed;inset:0;z-index:60;background:#000;display:grid;place-items:center}
+.viewer img{width:100%;height:100%;object-fit:contain;background:#000}
+.vtop{position:absolute;top:calc(var(--safe-t) + 10px);left:14px;right:14px;display:flex;align-items:center;gap:10px;color:#fff}
+.vtop span:nth-child(2){flex:1}
+.vtop .icon{background:rgba(255,255,255,.18);color:#fff}
+.vcap{position:absolute;left:20px;right:20px;bottom:calc(var(--safe-b) + 100px);text-align:center;color:#fff;font:700 1.15rem/1.3 var(--round);text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.big-heart{position:absolute;bottom:calc(var(--safe-b) + 28px);left:50%;margin-left:-30px;width:60px;height:60px;font-size:1.7rem;background:rgba(255,255,255,.16)}
+.toast{position:fixed;top:calc(var(--safe-t) + 10px);left:16px;right:16px;z-index:80;max-width:440px;margin:0 auto;padding:13px 16px;border-radius:18px;background:var(--ink);color:var(--bg);font:600 .92rem/1.3 var(--text);text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.25);animation:drop .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes drop{from{transform:translateY(-30px);opacity:0}}
+#hearts{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+#hearts span{position:absolute;bottom:-40px;animation:floatup 2.8s ease-out forwards}
+@keyframes floatup{to{transform:translateY(-105vh) rotate(25deg);opacity:0}}
+.hidden-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body class="pd">
@@ -243,11 +307,17 @@ details.day[open]>summary .chev{transform:rotate(90deg)}
 </div>
 
 <main id="app"></main>
+<div class="mini" id="mini" hidden></div>
 <div id="layer"></div>
+<div id="hearts" aria-hidden="true"></div>
+<p class="toast" id="toast" role="status" hidden></p>
+<input type="file" id="snap-input" class="hidden-input" accept="image/*" capture="environment">
 
 <nav class="tabbar" aria-label="Sections">
  <button data-view="today" aria-current="page"><svg viewBox="0 0 24 24"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5.2 1.5 1 2.5 2 3 0-3 0-6 1-8.5z"/></svg>Today</button>
  <button data-view="week"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Week</button>
+ <label class="cam" for="snap-input" aria-label="Send an instant"><svg viewBox="0 0 24 24"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.6l1.4-2h5l1.4 2h1.6A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.5"/></svg></label>
+ <button data-view="radio"><svg viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>Radio</button>
  <button data-view="plan"><svg viewBox="0 0 24 24"><path d="M2.5 9.5v5M5.5 7v10M18.5 7v10M21.5 9.5v5M5.5 12h13"/></svg>Plan</button>
 </nav>
 
@@ -480,6 +550,201 @@ function sketch(k){
 }
 
 
+// a little picture per program, chosen for what the day trains (the flamingo is for all the single-leg balance work)
+const PROGRAM_EMOJI={glutes:'🍑',chestback:'🦋',hams:'🦩',arms:'💪',legs:'🦵'}
+
+// SomaFM: free, listener-funded, no ads; every channel streams live, so two phones on one channel hear the same song
+const STATIONS=[
+ ['poptron','PopTron','⚡','Electropop & indie dance','Warm-up & cardio'],
+ ['indiepop','Indie Pop Rocks!','🎸','New and classic indie pop','Feel-good sets'],
+ ['beatblender','Beat Blender','🪩','Deep house & downtempo','Machine circuits'],
+ ['defcon','DEF CON Radio','💥','Hard electronic for focus','Heavy lifts'],
+ ['fluid','Fluid','🌊','Instrumental hip-hop','Back & arms days'],
+ ['u80s','Underground 80s','📼','Synthpop & new wave','Throwback mood'],
+ ['metal','Metal Detector','🤘','Metal, all of it','Leg-day PRs'],
+ ['groovesalad','Groove Salad','🥗','Chilled ambient grooves','Stretching & recovery']
+].map(([id,name,emoji,vibe,bestFor])=>({id,name,emoji,vibe,bestFor,stream:`https://ice.somafm.com/${id}`}))
+const stationById=id=>STATIONS.find(s=>s.id===id)
+const RECOVERY_STATION='groovesalad'
+// a station shared hours ago is just a leftover, not someone listening right now
+const LISTENING_FRESH_MS=3*3600e3
+
+const radio=new Audio()
+radio.preload='none'
+let tuned=null,switching=false,listening={}   // listening = {v:{station,at}, d:{...}} from the radio table
+
+function tuneIn(id){
+ const station=stationById(id)
+ switching=true;tuned=id;radio.src=station.stream
+ radio.play().then(()=>{switching=false}).catch(()=>{switching=false;tuned=null;toast('The stream didn\'t start. Check your connection and tap the station again.');render()})
+ if('mediaSession' in navigator){
+  navigator.mediaSession.metadata=new MediaMetadata({title:station.name,artist:`SomaFM · ${station.vibe}`,album:'MG Gym radio',artwork:[{src:'icon-512.png',sizes:'512x512',type:'image/png'}]})
+  navigator.mediaSession.setActionHandler('pause',tuneOut)
+  navigator.mediaSession.setActionHandler('play',()=>tuneIn(id))
+ }
+ shareListening(id);render()
+}
+function tuneOut(){switching=true;radio.pause();radio.removeAttribute('src');radio.load();switching=false;tuned=null;shareListening(null);render()}
+// headphones unplugged or a phone call: the stream stops by itself, so the partner shouldn't still see "listening"
+radio.addEventListener('pause',()=>{if(tuned&&!switching){tuned=null;shareListening(null);render()}})
+
+async function shareListening(station){
+ listening[me]={station,at:new Date().toISOString()}
+ if(!sb)return
+ const {error}=await sb.from('radio').upsert({person:me,station,at:listening[me].at})
+ if(error)toast('Couldn\'t tell your partner what you\'re playing. The music keeps going.')
+}
+function partnerStation(){
+ const theirs=listening[PARTNER[me]]
+ return theirs?.station&&Date.now()-new Date(theirs.at)<LISTENING_FRESH_MS?theirs.station:null
+}
+
+let instants=[],instantUrls={},composing=null,viewing=null,sending=false
+const MAX_EDGE=1280
+// a viewed instant stays visible to the sender as "Seen" for a day, then the sender's phone deletes photo and row to stay inside the free 1 GB
+const KEEP_SEEN_MS=24*3600e3,KEEP_UNSEEN_MS=7*24*3600e3
+
+// phone photos are 3–5 MB; a 1280 px JPEG is about 250 KB and still sharp on an iPhone screen
+async function shrinkPhoto(file){
+ const img=new Image();img.src=URL.createObjectURL(file);await img.decode()
+ const scale=Math.min(1,MAX_EDGE/Math.max(img.naturalWidth,img.naturalHeight))
+ const canvas=document.createElement('canvas')
+ canvas.width=Math.round(img.naturalWidth*scale);canvas.height=Math.round(img.naturalHeight*scale)
+ canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height)
+ URL.revokeObjectURL(img.src)
+ return new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.82))
+}
+async function loadInstants(){
+ const {data,error}=await sb.from('instants').select('*').order('sent_at',{ascending:false})
+ if(error){toast('Instants didn\'t load. Pull the app closed and open it again.');return}
+ instants=data
+ await sweepInstants()
+ const unsigned=instants.filter(i=>!instantUrls[i.id])
+ if(unsigned.length){
+  const {data:signed}=await sb.storage.from('instants').createSignedUrls(unsigned.map(i=>i.path),3600)
+  ;(signed||[]).forEach((s,n)=>{if(s.signedUrl)instantUrls[unsigned[n].id]=s.signedUrl})
+ }
+ render()
+}
+async function sweepInstants(){
+ const now=Date.now()
+ const old=instants.filter(i=>i.sender===me&&(i.seen_at?now-new Date(i.seen_at)>KEEP_SEEN_MS:now-new Date(i.sent_at)>KEEP_UNSEEN_MS))
+ if(!old.length)return
+ await sb.storage.from('instants').remove(old.map(i=>i.path))
+ await sb.from('instants').delete().in('id',old.map(i=>i.id))
+ instants=instants.filter(i=>!old.includes(i))
+}
+async function sendInstant(){
+ if(sending)return
+ // read the note before re-rendering, or the redraw wipes what was typed
+ const caption=$('snap-caption')?.value.trim()||null,path=`${me}/${Date.now()}.jpg`
+ sending=true;render()
+ const photo=await shrinkPhoto(composing.file)
+ const up=await sb.storage.from('instants').upload(path,photo,{contentType:'image/jpeg'})
+ const row=up.error?null:await sb.from('instants').insert({sender:me,path,caption})
+ sending=false
+ if(up.error||row.error){toast('Your instant didn\'t send. Check your connection and try again.');render();return}
+ URL.revokeObjectURL(composing.preview);composing=null
+ toast(`Sent to ${NAME[PARTNER[me]]} 💌`);hearts(6);loadInstants()
+}
+async function openInstant(id){
+ viewing=id;render()
+ const instant=instants.find(i=>i.id===id)
+ if(instant.sender!==me&&!instant.seen_at){
+  instant.seen_at=new Date().toISOString()
+  await sb.from('instants').update({seen_at:instant.seen_at}).eq('id',id)
+ }
+}
+const ago=at=>{const m=Math.round((Date.now()-new Date(at))/6e4);return m<1?'just now':m<60?`${m} min ago`:m<1440?`${Math.round(m/60)} h ago`:`${Math.round(m/1440)} d ago`}
+const clock=at=>new Date(at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})
+
+// hearts and "I finished" go over a live channel, not the database: they only matter while the other phone is open
+let cheers=null
+function sendCheer(kind,extra={}){cheers?.send({type:'broadcast',event:'cheer',payload:{from:me,kind,...extra}})}
+function receiveCheer({from,kind,program}){
+ if(from===me)return
+ if(kind==='heart'){hearts(18);toast(`${NAME[from]} sent you a heart 💕`)}
+ if(kind==='done'){hearts(24);toast(`${NAME[from]} just finished ${PROGRAM_NAME[program].toLowerCase()} ${PROGRAM_EMOJI[program]} Go tell them!`)}
+}
+function hearts(count){
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)return
+ const layer=$('hearts')
+ for(let i=0;i<count;i++){
+  const h=document.createElement('span')
+  h.textContent=['💗','💕','💖','🩷','✨'][i%5]
+  h.style.left=8+Math.random()*84+'%';h.style.animationDelay=Math.random()*.6+'s';h.style.fontSize=18+Math.random()*18+'px'
+  layer.append(h);setTimeout(()=>h.remove(),3200)
+ }
+}
+let toastTimer=null
+function toast(message){const t=$('toast');t.textContent=message;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.hidden=true,3200)}
+
+// days you both checked into the same shared program: the number that counts for "together"
+function sessionsTogether(){
+ return Object.values(checkins).filter(c=>c.person==='v'&&checkins[`${c.date}_d_${c.program}`]).length
+}
+function greeting(){
+ const h=new Date().getHours()
+ return h<5?['Still up','🌙']:h<11?['Good morning','☀️']:h<17?['Hey','🌸']:h<22?['Good evening','🌙']:['Night owl','✨']
+}
+
+function joinBanner(){
+ const theirs=partnerStation()
+ if(!theirs||theirs===tuned)return ''
+ const s=stationById(theirs)
+ return `<button class="banner join p${PARTNER[me]}" data-tune="${theirs}"><span class="eq"><i></i><i></i><i></i></span><span style="flex:1;text-align:left"><b>${NAME[PARTNER[me]]} is listening to ${s.name}</b>Tap to hear the same song ${s.emoji}</span><span class="chev">›</span></button>`
+}
+
+function instantsSection(){
+ const mate=PARTNER[me],waiting=instants.filter(i=>i.sender===mate&&!i.seen_at),mine=instants.find(i=>i.sender===me)
+ const cards=waiting.map((i,n)=>`<button class="polaroid" data-instant="${i.id}" style="--tilt:${n%2?3:-3}deg"><span class="ph blur" style="background-image:url('${instantUrls[i.id]||''}')"></span><span class="cap">${NAME[mate]} · ${ago(i.sent_at)}</span></button>`).join('')
+ return `<section class="instants p${mate}">
+  <div class="sechead"><h2 class="section">Instants</h2><label class="pill" for="snap-input">📸 New</label></div>
+  ${cards?`<div class="polaroids">${cards}</div><p class="muted small center">${waiting.length===1?'A new instant':`${waiting.length} new instants`} from ${NAME[mate]}. It disappears after you look 👀</p>`
+   :`<label class="empty" for="snap-input"><span class="bigemo">📸</span><b>Send ${NAME[mate]} a little moment</b><span class="muted small">A mirror selfie, the plates you just added, your post-gym snack.</span></label>`}
+  ${mine?`<p class="sent small">Your last instant · ${mine.seen_at?`<b>Seen ${clock(mine.seen_at)} ✓</b>`:`Delivered ${ago(mine.sent_at)}`}</p>`:''}
+ </section>`
+}
+
+function renderRadio(){
+ const theirs=partnerStation(),now=tuned&&stationById(tuned)
+ return `<div class="view p${me}">
+  <header class="top"><div><p class="eyebrow">SomaFM · live, no ads</p><h1 class="title">Radio</h1></div></header>
+  ${joinBanner()}
+  ${now?`<section class="onair-card"><span class="bigemo">${now.emoji}</span><div style="flex:1"><p class="eyebrow"><i class="live"></i> Live now</p><h2 class="section">${now.name}</h2><p class="small">${theirs===tuned?`Listening together with ${NAME[PARTNER[me]]} 💞`:now.vibe}</p></div><button class="playbtn" data-act="tune-out" aria-label="Pause">❚❚</button></section>`:''}
+  <div class="stations">${STATIONS.map(s=>`<button class="station${s.id===tuned?' on':''}" data-${s.id===tuned?'act="tune-out"':`tune="${s.id}"`}>
+   <span class="bigemo">${s.emoji}</span><b>${s.name}</b><span class="small muted">${s.vibe}</span><span class="tag">${s.bestFor}</span>
+   ${s.id===tuned?'<span class="eq"><i></i><i></i><i></i></span>':s.id===theirs?`<span class="tag mate">${NAME[PARTNER[me]]} ♪</span>`:''}</button>`).join('')}</div>
+  <p class="muted small">Both phones on the same station hear the same song: it's live radio, a second or two apart at most. SomaFM stays ad-free because listeners chip in at somafm.com/support.</p>
+ </div>`
+}
+
+function miniPlayer(){
+ if(!tuned)return ''
+ const s=stationById(tuned),together=partnerStation()===tuned
+ return `<button class="mini-in" data-view="radio"><span class="eq"><i></i><i></i><i></i></span><span style="flex:1;text-align:left"><b>${s.emoji} ${s.name}</b><span class="small muted">${together?`with ${NAME[PARTNER[me]]} 💞`:'Live radio'}</span></span></button><button class="playbtn" data-act="tune-out" aria-label="Pause">❚❚</button>`
+}
+
+function renderComposer(){
+ if(!composing)return ''
+ return `<div class="sheet"><div class="p${me}"><span class="grab"></span>
+  <div class="polaroid big" style="--tilt:-2deg"><span class="ph" style="background-image:url('${composing.preview}')"></span>
+   <input id="snap-caption" class="cap" maxlength="60" placeholder="Add a little note…" autocomplete="off"></div>
+  <button class="big solid" data-act="send-instant" ${sending?'disabled':''}>${sending?'Sending…':`Send to ${NAME[PARTNER[me]]} 💌`}</button>
+  <div class="pair"><label class="big soft" for="snap-input">Retake</label><button class="big soft" data-act="cancel-instant">Cancel</button></div>
+ </div></div>`
+}
+
+function renderViewer(){
+ const i=viewing&&instants.find(x=>x.id===viewing)
+ if(!i)return ''
+ return `<div class="viewer" data-act="close-instant"><img src="${instantUrls[i.id]||''}" alt="Instant from ${NAME[i.sender]}">
+  <div class="vtop">${avatar(i.sender)}<span><b>${NAME[i.sender]}</b> · ${ago(i.sent_at)}</span><span class="icon">✕</span></div>
+  ${i.caption?`<p class="vcap">${i.caption.replace(/</g,'&lt;')}</p>`:''}
+  ${i.sender!==me?'<button class="heart big-heart" data-act="heart" aria-label="Send a heart back">💗</button>':''}</div>`
+}
+
+
 // Program ids stay the same as before, so check-ins already saved in Supabase still match their programs
 const programId=title=>/glute/i.test(title)?'glutes':/chest/i.test(title)?'chestback':/ham/i.test(title)?'hams':/arm/i.test(title)?'arms':'legs'
 const PROGRAMS={v:PLAN.v.days.map(x=>({...x,id:programId(x.t)})),d:PLAN.d.days.map(x=>({...x,id:programId(x.t)}))}
@@ -582,7 +847,8 @@ function partnerLine(program){
  if(theirs)text=roundsDone(theirs)===totalRounds(theirProgram)?`Finished ${PROGRAM_NAME[theirs.program].toLowerCase()} ✓`:`${PROGRAM_NAME[theirs.program]} · ${roundsDone(theirs)} of ${totalRounds(theirProgram)} sets`
  else if(theirProgram)text=theirProgram.id===program?.id?'Hasn\'t started yet':`Planned: ${PROGRAM_NAME[theirProgram.id].toLowerCase()}`
  else text='Rest day'
- return `<div class="card partner p${mate}">${avatar(mate)}<div><b>${NAME[mate]}</b><span class="muted small">${text}</span></div></div>`
+ const together=sessionsTogether()
+ return `<div class="card partner p${mate}">${avatar(mate)}<div style="flex:1"><b>${NAME[mate]}</b><span class="muted small">${text}</span>${together?`<span class="small together">💞 ${together} session${together>1?'s':''} together</span>`:''}</div><button class="heart" data-act="heart" aria-label="Send ${NAME[mate]} a heart">💗</button></div>`
 }
 
 function weekStrip(person){
@@ -604,6 +870,7 @@ function installBanner(){
 }
 
 function renderToday(){
+ const greet=greeting()
  const program=scheduledOn(me,today),mine=checkinsOf(me,today),started=mine.find(c=>c.program===program?.id)||mine[0]
  const shown=started?programOf(started):program,week=programWeek(me),phase=PLAN[me].phases[phaseIndex(week)]
  const [phaseLabel,...phaseText]=phase.split(': ')
@@ -613,19 +880,21 @@ function renderToday(){
   const label=finished?'Done · view session':started?'Continue workout':'Start workout'
   hero=`<section class="hero ${accentClass(shown,me)}"><img src="${IMG[shown.ex[0][2]]}" alt="">
    <p class="eyebrow">${started&&started.program!==program?.id?'Extra session':'Today'} · ${shown.both?`with ${NAME[PARTNER[me]]}`:'solo'}</p>
-   <h2>${shown.t}</h2>
+   <h2>${shown.t} <span class="emo">${PROGRAM_EMOJI[shown.id]}</span></h2>
    <p class="meta">${shown.ex.length} exercises · ${total} sets · ${shown.s.split('· ').pop()}</p>
    ${started?`<div class="bar"><i style="width:${done/total*100}%"></i></div><p class="meta">${done} of ${total} sets done</p>`:''}
    <button class="big" ${started?`data-open="${started.key}"`:`data-start="${shown.id}"`}>${label}</button></section>`
  }else{
   const next=nextScheduled(me)
-  hero=`<section class="hero rest p${me}"><p class="eyebrow">Today</p><h2>Rest day</h2><p class="meta muted">${REST_TIP[me]}</p>${next?`<p class="meta muted">Next: <b style="color:var(--ink)">${next[0]} · ${next[1].t}</b></p>`:''}</section>`
+  hero=`<section class="hero rest p${me}"><p class="eyebrow">Today</p><h2>Rest day <span class="emo">🛋️</span></h2><p class="meta muted">${REST_TIP[me]}</p>${next?`<p class="meta muted">Next: <b style="color:var(--ink)">${next[0]} · ${next[1].t}</b></p>`:''}</section>`
  }
  return `<div class="view p${me}">
-  <header class="top"><div><p class="eyebrow">${atNoon(today).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</p><h1 class="title">Today</h1></div><button data-view="plan" aria-label="Your plan">${avatar(me)}</button></header>
+  <header class="top"><div><p class="eyebrow">${atNoon(today).toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</p><h1 class="title">${greet[0]},<br>${NAME[me]} ${greet[1]}</h1></div><button data-view="plan" aria-label="Your plan">${avatar(me)}</button></header>
   ${installBanner()}
   ${syncNote?`<p class="status">${syncNote}</p>`:''}
+  ${joinBanner()}
   ${hero}
+  ${instantsSection()}
   ${partnerLine(shown)}
   <h2 class="section">This week</h2>
   ${weekStrip(me)}
@@ -644,7 +913,7 @@ function renderWeek(){
    <button class="circle" data-week="1" aria-label="Next week">›</button></div>
   <div class="list">${days.map(d=>{const cs=Object.values(checkins).filter(c=>c.date===d).sort((a,b)=>a.person===me?-1:1)
    return `<div class="dayrow${d===today?' now':''}"><div class="d">${shortDate(d).split(' ')[0]}<b>${atNoon(d).getDate()}</b></div><div class="chips">${cs.length?cs.map(c=>{const p=programOf(c)
-    return `<button class="chip p${c.person}" data-open="${c.key}"><i class="dot"></i>${PROGRAM_NAME[c.program]} <small>${roundsDone(c)}/${totalRounds(p)}</small></button>`}).join(''):`<span class="muted small">${d<today?'Rest':d===today?'Nothing yet':'—'}</span>`}</div></div>`}).join('')}</div>
+    return `<button class="chip p${c.person}" data-open="${c.key}">${PROGRAM_EMOJI[c.program]} ${PROGRAM_NAME[c.program]} <small>${roundsDone(c)}/${totalRounds(p)}</small></button>`}).join(''):`<span class="muted small">${d<today?'Rest':d===today?'Nothing yet':'—'}</span>`}</div></div>`}).join('')}</div>
   ${thisWeek?'':'<button class="big soft" data-week="0">Back to this week</button>'}
  </div>`
 }
@@ -665,7 +934,7 @@ function renderPlan(){
   <section class="card phase"><div class="steps4">${[0,1,2,3].map(i=>`<i class="${i<=phaseIndex(week)?'on':''}"></i>`).join('')}</div>
    ${P.phases.map((x,i)=>{const [l,...t]=x.split(': ');return `<p class="small${i===phaseIndex(week)?'':' muted'}"><b>${l}.</b> ${sentence(t.join(': '))}</p>`}).join('')}</section>
   <h2 class="section">Training days</h2>
-  ${PROGRAMS[who].map(p=>`<details class="day ${accentClass(p,who)}"><summary><span class="wkday">${p.d.slice(0,3)}</span><span class="grow" style="flex:1;display:grid;gap:2px"><b>${p.t}</b><span class="muted small">${p.ex.length} exercises · ${p.s.split('· ').pop()}</span></span>${p.both?'<span class="tag">Together</span>':''}<span class="chev">›</span></summary>
+  ${PROGRAMS[who].map(p=>`<details class="day ${accentClass(p,who)}"><summary><span class="wkday">${PROGRAM_EMOJI[p.id]}</span><span class="grow" style="flex:1;display:grid;gap:2px"><span class="eyebrow">${p.d}</span><b>${p.t}</b><span class="muted small">${p.ex.length} exercises · ${p.s.split('· ').pop()}</span></span>${p.both?'<span class="tag">Together</span>':''}<span class="chev">›</span></summary>
    ${p.ex.map(([name,cue,img,key,rounds,reps,restText,start,goal])=>`<div class="exrow"><img src="${IMG[img]}" alt="" loading="lazy"><div><b>${name}</b><p class="muted small">${cue}</p><p class="load">${rounds} × ${reps} · rest ${restText}<br>${start} → ${goal}</p>${howTo(key)}</div></div>`).join('')}
    <div style="padding:12px 16px 16px"><button class="big solid" data-start="${p.id}" data-for="${who}">Start ${p.t.toLowerCase()} now</button></div></details>`).join('')}
   <section class="card"><h3 class="section" style="margin-bottom:8px">Rules for ${NAME[who]}</h3><ul style="margin:0;padding-left:18px;display:grid;gap:6px">${P.notes.map(n=>`<li>${n}</li>`).join('')}</ul></section>
@@ -686,10 +955,10 @@ function workoutStep(c,program,step){
    ${videoList(list,c,'warm')}
    ${program.both?`<h3 class="section">Posture block</h3><div class="list">${POSTURE.map(([name,dose,url])=>`<a class="row" href="${url}" target="_blank" rel="noopener"><span class="play">▶</span><span class="grow"><b>${name}</b><span class="muted small">${dose}</span></span><span class="chev">›</span></a>`).join('')}</div>`:''}`
  }
- if(step===n+1)return `<p class="eyebrow">Last step · 10 min</p><h2 class="exname">Recovery</h2><p class="muted">Stretch it out before you leave.</p>${videoList(COOL,c,'cool')}`
+ if(step===n+1)return `<p class="eyebrow">Last step · 10 min</p><h2 class="exname">Recovery</h2><p class="muted">Stretch it out before you leave.</p>${tuned&&tuned!==RECOVERY_STATION?`<button class="big soft" data-tune="${RECOVERY_STATION}">🥗 Switch the music to Groove Salad</button>`:''}${videoList(COOL,c,'cool')}`
  if(step===n+2){
   const done=roundsDone(c),total=totalRounds(program)
-  return `<div class="finish"><span class="badge">✓</span><h2 class="exname">${done===total?'Session complete':'Session saved'}</h2><p class="muted">${done} of ${total} sets · warm-up ${c.warm?'✓':'skipped'} · recovery ${c.cool?'✓':'skipped'}</p><p class="muted small">${NAME[c.person]} has trained ${checkinsOf(c.person).filter(x=>x.date>=iso(mondayOf(atNoon(today)))).length} days this week.</p></div>`
+  return `<div class="finish"><span class="badge">${done===total?'🎉':'✓'}</span><h2 class="exname">${done===total?'Session complete':'Session saved'}</h2><p class="muted">${done} of ${total} sets · warm-up ${c.warm?'✓':'skipped'} · recovery ${c.cool?'✓':'skipped'}</p><p class="muted small">${NAME[c.person]} has trained ${checkinsOf(c.person).filter(x=>x.date>=iso(mondayOf(atNoon(today)))).length} days this week.</p></div>`
  }
  const ei=step-1,[name,cue,img,key,rounds,reps,restText,start,goal]=program.ex[ei]
  return `<div class="photo"><img src="${IMG[img]}" alt="${WHERE[img]} at Moderncoach Deggendorf"><span>📍 ${WHERE[img]}</span></div>
@@ -711,7 +980,7 @@ function renderWorkout(){
  const segs=[c.warm,...program.ex.map((_,ei)=>exDone(ei)),c.cool]
  const nextLabel=step===n+2?'Back to today':step===n+1?'Finish':step===0?'Start exercises':step===n?'Recovery':'Next exercise'
  return `<div class="workout ${accentClass(program,c.person)}">
-  <div class="wtop"><div class="bar"><button class="icon" data-act="close" aria-label="Close">✕</button><h1>${program.t}${c.person!==me?` · ${NAME[c.person]}`:''}${c.date!==today?` · ${shortDate(c.date)}`:''}</h1><button class="icon${confirmRemove?' confirm':''}" data-act="remove" aria-label="Remove check-in">${confirmRemove?'Remove?':'⋯'}</button></div>
+  <div class="wtop"><div class="bar"><button class="icon" data-act="close" aria-label="Close">✕</button><div class="wtitle"><h1>${PROGRAM_EMOJI[program.id]} ${program.t}${c.person!==me?` · ${NAME[c.person]}`:''}${c.date!==today?` · ${shortDate(c.date)}`:''}</h1>${tuned?`<button class="onair" data-act="tune-out">♪ ${stationById(tuned).name} · pause</button>`:''}</div><button class="icon${confirmRemove?' confirm':''}" data-act="remove" aria-label="Remove check-in">${confirmRemove?'Remove?':'⋯'}</button></div>
    <div class="segs">${segs.map((done,i)=>`<i class="${done?'done':i===Math.min(step,n+1)?'here':''}"></i>`).join('')}</div></div>
   <div class="wbody">${workoutStep(c,program,step)}</div>
   <div class="timer" id="timer" hidden></div>
@@ -723,7 +992,7 @@ function renderSheet(){
  if(!sheetOpen)return ''
  return `<div class="sheet" data-act="sheet-bg"><div class="p${me}"><span class="grab"></span><h2 class="section">Log a workout</h2>
   <label class="small muted">Day<input type="date" id="other-date" value="${sheetDate}" max="${today}"></label>
-  <div class="list">${PROGRAMS[me].map(p=>`<button class="row ${accentClass(p,me)}" data-start="${p.id}" data-pick-date><span class="wkday">${p.d.slice(0,3)}</span><span class="grow"><b>${p.t}</b><span class="muted small">${p.ex.length} exercises</span></span><span class="chev">›</span></button>`).join('')}</div></div></div>`
+  <div class="list">${PROGRAMS[me].map(p=>`<button class="row ${accentClass(p,me)}" data-start="${p.id}" data-pick-date><span class="wkday">${PROGRAM_EMOJI[p.id]}</span><span class="grow"><b>${p.t}</b><span class="muted small">${p.ex.length} exercises</span></span><span class="chev">›</span></button>`).join('')}</div></div></div>`
 }
 let sheetOpen=false,sheetDate=today
 
@@ -731,11 +1000,13 @@ function render(){
  today=iso(new Date())
  if(!me)return
  document.body.className='p'+me
- const scroll=view==='today'?renderToday():view==='week'?renderWeek():renderPlan()
+ const scroll=view==='today'?renderToday():view==='week'?renderWeek():view==='radio'?renderRadio():renderPlan()
  $('app').innerHTML=scroll
  document.querySelectorAll('.tabbar button').forEach(b=>b.dataset.view===view?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'))
  const keepY=$('layer').querySelector('.workout')?.scrollTop
- $('layer').innerHTML=renderWorkout()+renderSheet()
+ $('layer').innerHTML=renderWorkout()+renderSheet()+renderComposer()+renderViewer()
+ // the Radio screen already has the big now-playing card, so the mini player only follows you elsewhere
+ $('mini').innerHTML=miniPlayer();$('mini').hidden=!tuned||view==='radio'
  const w=$('layer').querySelector('.workout');if(w&&keepY!=null&&!render.resetScroll)w.scrollTop=keepY
  render.resetScroll=false
  drawTimer()
@@ -755,6 +1026,7 @@ document.addEventListener('click',e=>{
   const c={...checkins[workout.key],rounds:{...checkins[workout.key].rounds}},was=c.rounds[d.set]
   if(was)delete c.rounds[d.set];else{c.rounds[d.set]=1;startRest(+d.rest)}
   save(c)
+  if(!was&&roundsDone(c)===totalRounds(programOf(c))){hearts(28);toast('Every set done. So proud of you 🎉');sendCheer('done',{program:c.program})}
  }
  else if(d.pick&&workout){const c={...checkins[workout.key]};c[d.pick]=c[d.pick]===d.id?null:d.id;save(c)}
  else if(d.step&&workout){
@@ -769,12 +1041,25 @@ document.addEventListener('click',e=>{
  else if(d.act==='remove'){if(confirmRemove)remove(workout.key);else{confirmRemove=true;render()}}
  else if(d.act==='other'){sheetOpen=true;sheetDate=today;render()}
  else if(d.act==='sheet-bg'){sheetOpen=false;render()}
+ else if(d.tune)tuneIn(d.tune)
+ else if(d.act==='tune-out')tuneOut()
+ else if(d.act==='heart'){sendCheer('heart');hearts(8);toast(`Heart sent to ${NAME[PARTNER[me]]} 💕`)}
+ else if(d.instant)openInstant(d.instant)
+ else if(d.act==='close-instant'){viewing=null;render()}
+ else if(d.act==='send-instant')sendInstant()
+ else if(d.act==='cancel-instant'){URL.revokeObjectURL(composing.preview);composing=null;render()}
  else if(d.act==='hide-install'){store.set('hideInstall','1');render()}
  else if(d.act==='share'){const url=location.href.split('#')[0];navigator.share?navigator.share({title:'MG Gym',text:'Our gym plan',url}).catch(()=>{}):navigator.clipboard?.writeText(url).then(()=>{syncNote='Link copied: '+url;view='today';render()})}
  else if(d.act==='switch'){$('gate').hidden=false;$('gate-form').hidden=true;$('who').hidden=false}
  else if(d.act==='signout'){sb?.auth.signOut();checkins={};store.set('workout',null)}
 })
-document.addEventListener('change',e=>{if(e.target.id==='other-date')sheetDate=e.target.value})
+document.addEventListener('change',e=>{
+ if(e.target.id==='other-date')sheetDate=e.target.value
+ if(e.target.id==='snap-input'&&e.target.files[0]){
+  if(composing)URL.revokeObjectURL(composing.preview)
+  composing={file:e.target.files[0],preview:URL.createObjectURL(e.target.files[0])};e.target.value='';render()
+ }
+})
 // coming back to the app after a while: refresh the date (it may be a new day) and pull the partner's latest sets
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();if(rest)runTimer();load?.()}})
 
@@ -789,9 +1074,16 @@ let load=null
   const {data,error}=await sb.from('checkins').select('*')
   if(error){syncNote='Couldn\'t load your check-ins. Close and reopen the app to try again.';render();return}
   checkins={};data.forEach(r=>{checkins[r.key]={...r,date:String(r.date).slice(0,10)}});syncNote='';render()
+  const {data:stations}=await sb.from('radio').select('*')
+  ;(stations||[]).forEach(r=>{if(r.person!==me)listening[r.person]=r});render()
+  loadInstants()
  }
  const listen=()=>{if(channel)return;channel=sb.channel('checkins-live').on('postgres_changes',{event:'*',schema:'public',table:'checkins'},p=>{
-  if(p.eventType==='DELETE'){delete checkins[p.old.key];if(workout?.key===p.old.key)closeWorkout()}else checkins[p.new.key]={...p.new,date:String(p.new.date).slice(0,10)};render()}).subscribe()}
+  if(p.eventType==='DELETE'){delete checkins[p.old.key];if(workout?.key===p.old.key)closeWorkout()}else checkins[p.new.key]={...p.new,date:String(p.new.date).slice(0,10)};render()})
+  .on('postgres_changes',{event:'*',schema:'public',table:'radio'},p=>{if(p.new?.person&&p.new.person!==me){listening[p.new.person]=p.new;render()}})
+  .on('postgres_changes',{event:'*',schema:'public',table:'instants'},p=>{if(p.eventType==='INSERT'&&p.new.sender!==me)toast(`${NAME[p.new.sender]} sent you an instant 📸`);loadInstants()})
+  .subscribe()
+  cheers=sb.channel('couple-cheers',{config:{broadcast:{self:false}}}).on('broadcast',{event:'cheer'},({payload})=>receiveCheer(payload)).subscribe()}
  // who owns this phone is saved on the account too, so reinstalling the app doesn't ask again
  async function start(session){
   gate.hidden=!!session;$('gate-form').hidden=false;$('who').hidden=true
